@@ -18,7 +18,6 @@ $resultado = $conexion->query($sql);
 // Verificar si se encontró un usuario con esas credenciales
 if ($resultado->num_rows > 0) {
     // Usuario autenticado
-    // Iniciar sesión (puedes implementarlo según tu necesidad)
     session_start();
     $_SESSION['email'] = $email;
     // Redirigir al usuario a la página de cotización

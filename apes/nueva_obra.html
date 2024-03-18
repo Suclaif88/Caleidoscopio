@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Obra</title>
+</head>
+<body>
+    <h2>Nueva Obra</h2>
+    <form action="insertar_obra.php" method="post">
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" name="nombre" required><br>
+        <label for="descripcion">Descripción:</label><br>
+        <textarea id="descripcion" name="descripcion" required></textarea><br>
+        <label for="fecha_inicio">Fecha de Inicio:</label><br>
+        <input type="date" id="fecha_inicio" name="fecha_inicio" required><br>
+        <label for="presupuesto">Presupuesto:</label><br>
+        <input type="number" id="presupuesto" name="presupuesto" step="0.01" required><br>
+        <label for="nombre">Director de obra:</label><br>
+        <input type="text" id="director_obra" name="director_de_obra" required><br>
+        <button type="submit">Agregar Obra</button>
+        <a href="inicio.html">inicio</a>
+    </form>
+</body>
+</html>

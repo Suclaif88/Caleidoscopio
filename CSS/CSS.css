@@ -25,17 +25,20 @@
     text-decoration: none;
   }
 
-.botones {
+  .botones {
     display: grid;
-grid-template-columns: repeat(5, 1fr);
-grid-template-rows: repeat(3, 1fr) repeat(2, 0fr);
-grid-column-gap: 0px;
-grid-row-gap: 0px;
-}
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr) repeat(2, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    min-width: 0;
+    min-height: 0;
+  }
 .div1 { grid-area: 1 / 2 / 2 / 3; }
 .div2 { grid-area: 3 / 2 / 4 / 3; }
 .div3 { grid-area: 1 / 4 / 2 / 5; }
 .div4 { grid-area: 3 / 4 / 4 / 5; }
+.div5 { grid-area: 3 / 3 / 3 / 4; }
 
 .cabeza{
     width: 100%;

@@ -51,10 +51,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="navbar">
     <h1>COTIZACIONES</h1>
     <ul>
-        <li><a href="#">Inicio</a></li>
-        <li><a href="#">Acerca</a></li>
-        <li><a href="#">Servicios</a></li>
-        <li><a href="#">Contacto</a></li>
+        <li><a href="COMPRA-MATERIALES.php">Compra de materiales</a></li>
+        <li><a href="COMPRA-SIMPLE.php">Compra simple</a></li>
+        <li><a href="OBRAS.php">Obras</a></li>
+        <li><a href="" style="color:white;">Cotizaciones</a></li>
     </ul>
 </div>
 
@@ -68,11 +68,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
 </div>
 
-<?php echo $resultados; ?>
+<div class="table-container">
+    <?php echo $resultados; ?>
+</div>
 
 <div class="cont">
-    <div class="div1 btn" href="agrcot.php">Agregar cotizaciones</div>
-    <div class="div2 btn" href="inicio.html">Inicio</div>
+    <a href="AGREGARCO.php" class="div1 btn">Agregar cotizaciones</a>
 </div>
 
 </body>

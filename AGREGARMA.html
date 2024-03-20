@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Material</title>
+</head>
+<body>
+    <h1>Agregar Material</h1>
+    <form action="procesar_material.php" method="POST">
+        <label for="material">Material:</label>
+        <input type="text" id="material" name="material" required><br>
+        <label for="unidad">Unidad de medida:</label>
+        <input type="text" id="nombre" name="unidad" required><br>
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion" required></textarea><br>
+        <input type="submit" value="Agregar Material"><br>
+    </form>
+    <a href="agrcot.php">cotizaciones</a>
+</body>
+</html>

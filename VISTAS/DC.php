@@ -31,6 +31,7 @@
         <button class="btn div3" onclick="window.location.href='obras.php'">Obras</button>
         <button class="btn div4" onclick="window.location.href='COTIZACION.php'">Cotizaciones</button>
     </div>
+<br>
     
 </body>
 </html>

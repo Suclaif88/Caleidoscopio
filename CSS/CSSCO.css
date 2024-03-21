@@ -3,16 +3,16 @@ body {
 }
 
 .table-container {
-  width: 90%; /* Establece el ancho máximo del contenedor de la tabla */
-  max-width: 1000px; /* Establece un ancho máximo absoluto del contenedor de la tabla */
-  margin: 0 auto; /* Centra el contenedor de la tabla en la página */
+  width: 90%;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 table {
-  width: 100%; /* La tabla ocupa todo el ancho del contenedor */
+  width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
-  font-size: 16px; /* Ajusta el tamaño de fuente de la tabla */
+  font-size: 16px;
 }
 
 table, th, td {
@@ -291,4 +291,17 @@ input[type="submit"]:hover {
   .v {
       width: 100%;
   }
+}
+
+.container {
+  max-width: 800px; /* Ancho máximo del contenedor */
+  margin: 20px auto; /* Centrar el contenedor */
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.cont2{
+  margin-top: 20px;
 }

@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
 <div class="navbar">
-    <h1>COTIZACIONES</h1>
+    <h1 style="cursor:default;">COTIZACIONES</h1>
     <ul>
         <li><a href="COMPRA-MATERIALES.php">Compra de materiales</a></li>
         <li><a href="COMPRA-SIMPLE.php">Compra simple</a></li>

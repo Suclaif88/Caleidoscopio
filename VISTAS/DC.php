@@ -1,6 +1,6 @@
 <?php
     require_once("../PHP/CONN.php");
-    session_start();//inicie la sesion
+    session_start();
     if(!isset($_SESSION["nombre"])){
         header("Location:../DC.php");
         exit();

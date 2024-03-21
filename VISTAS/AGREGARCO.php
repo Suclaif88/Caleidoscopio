@@ -49,6 +49,8 @@
         }
     </style>
 
+    
+
 <div class="navbar">
     <h1>COTIZACIONES</h1>
     <ul>

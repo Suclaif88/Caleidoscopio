@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: ../DO.html");
         }
         elseif($fila["rol"] === '5') {
-            header("Location: ../RE.html");
+            header("Location: ../VISTAS/RE.php");
         }
     } else {
         echo "<script>alert('Error en las credenciales de inicio de sesión');</script>";

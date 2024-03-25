@@ -23,13 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: ../GE.html");
         }
         elseif($fila["rol"] === '3') {
-            header("Location: ../VISTAS/DC.php");
+            header("Location: ../VISTADC/DC.php");
         }
         elseif($fila["rol"] === '4') {
-            header("Location: ../DO.html");
+            header("Location: ../VISTADO/DOU.php");
         }
         elseif($fila["rol"] === '5') {
-            header("Location: ../VISTAS/RE.php");
+            header("Location: ../VISTARE/RE.php");
         }
     } else {
         echo "<script>alert('Error en las credenciales de inicio de sesión');</script>";

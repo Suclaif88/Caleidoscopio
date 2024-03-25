@@ -24,4 +24,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     echo "No se recibieron datos del formulario.";
 }
-?>

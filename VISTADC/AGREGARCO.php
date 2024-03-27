@@ -143,8 +143,8 @@
        
 <div class="vp">
         <a href="cotizacion.php" class="v">Inicio</a>
-        <a href="../agr_material.html" class="v">Agregar materiales</a>
-        <a href="../agr_proveedor.html" class="v">Agregar proveedores</a>
+        <a href="../AGR_MATERIAL.html" class="v">Agregar materiales</a>
+        <a href="../AGR_PROVEEDOR.html" class="v">Agregar proveedores</a>
         <a href="modificacion.php" class="v">Modificar precios de los materiales</a>
 </div>
 <br>

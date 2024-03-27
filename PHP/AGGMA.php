@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $insertar = "INSERT INTO agregar_materiales (material, unidad, descripcion) VALUES ('$material', '$unidad', '$descripcion')";
 
     if (mysqli_query($conexion, $insertar)) {
-        echo '<script>alert("Material agregado correctamente.");window.location.href = "../agr_material.html";</script>';
+        echo '<script>alert("Material agregado correctamente.");window.location.href = "../AGR_MATERIAL.html";</script>';
     } else {
         echo "Error al agregar el material: " . mysqli_error($conexion);
     }

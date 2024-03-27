@@ -54,6 +54,7 @@
         <li><a href="">Devoluciones</a></li>
         <li><a href="OBRAS.php">Obras</a></li>
         <li><a href="" style="color:white;">Solicitud de compra</a></li>
+        <li><a href="RE.php">Atras</a></li>
     </ul>
     </header>
     

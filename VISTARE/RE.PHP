@@ -27,8 +27,9 @@
     <div class="botones">
         
         <button class="btn div1" onclick="window.location.href='SOLICITUD.php'">Solicitud de compra</button>
-        <button class="btn div5" onclick="window.location.href='#'">devoluciones</button>
-        <button class="btn div3" onclick="window.location.href='OBRAS.php'">Obras</button>
+        <button class="btn div2" onclick="window.location.href='#'">devoluciones</button>
+        <button class="btn div3" onclick="window.location.href='#'">Obras</button>
+        <button class="btn div4" onclick="window.location.href='../PHP/LOGOUT.php'">Inicio</button>
     </div>
     
 </body>

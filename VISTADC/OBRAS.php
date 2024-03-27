@@ -18,6 +18,7 @@
         <li><a href="COMPRA-SIMPLE.php">Compra simple</a></li>
         <li><a href="" style="color:white;">Obras</a></li>
         <li><a href="COTIZACION.php">Cotizaciones</a></li>
+        <li><a href="DC.php">Atras</a></li>
     </ul>
 </div>
 

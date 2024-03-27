@@ -55,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <li><a href="COMPRA-SIMPLE.php">Compra simple</a></li>
         <li><a href="OBRAS.php">Obras</a></li>
         <li><a href="" style="color:white;">Cotizaciones</a></li>
+        <li><a href="DC.php">Atras</a></li>
     </ul>
 </div>
 

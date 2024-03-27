@@ -59,7 +59,7 @@
 <table border="1">
     <tr>
         <th>Nombre</th>
-        <th>Fecha Obra</th>
+        <th>Fecha Pedido</th>
     </tr>
     <?php
 
@@ -69,13 +69,13 @@
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT DISTINCT obra_id, usuario, fecha_pedido FROM pedidos";
+    $sql = "SELECT DISTINCT obra_id, usuario, fecha_pedido FROM pedidos WHERE estado = 0";
     $resultado = $conexion->query($sql);
 
     if ($resultado->num_rows > 0) {
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
-            echo "<td><a href='DETALLESP.php?id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
+            echo "<td><a href='DETALLESP.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
             echo "<td>".$fila['fecha_pedido']."</td>";
             echo "</tr>";
         }

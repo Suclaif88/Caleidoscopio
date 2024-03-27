@@ -5,8 +5,8 @@
     if ($conexion->connect_error) {
         die("Error de conexión: " . $conexion->connect_error);
     }
-    $id = $_GET['id'];
-    $sql = "SELECT * FROM pedidos WHERE id = $id";
+    $obra_id = $_GET['obra_id'];
+    $sql = "SELECT * FROM pedidos WHERE obra_id = $obra_id";
     $resultado = $conexion->query($sql);
     $obra = $resultado->fetch_assoc();
 
@@ -16,7 +16,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle de la Obra</title>
+    <title>Detalle de Solicitud de Materiales</title>
     <link rel="stylesheet" href="../CSS/CSSDO.css">
     <link rel="stylesheet" href="../CSS/responsive.css">
     <link rel="stylesheet" href="../CSS/CSSCO.css">
@@ -43,6 +43,54 @@
         tr:nth-child(even) {
             background-color: #fff;
         }
+
+    .op {
+        margin-top: 20px;
+    }
+    .op button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        margin-right: 10px;
+    }
+    .op button.aceptar {
+    -webkit-border-radius: 28;
+    -moz-border-radius: 28;
+    border-radius: 28px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 20px;
+    background: #4CAF50;
+    padding: 10px 20px 10px 20px;
+    border: solid #000000 4px;
+    text-decoration: none;
+    }
+
+    .op button.aceptar:hover{
+        background: #21a631;
+        text-decoration: none;
+    }
+
+    .op button.rechazar {
+    -webkit-border-radius: 28;
+    -moz-border-radius: 28;
+    border-radius: 28px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 20px;
+    background: #e33d3d;
+    padding: 10px 20px 10px 20px;
+    border: solid #000000 4px;
+    text-decoration: none;
+    }
+
+    .op button.rechazar:hover{
+        background: #a62121;
+        text-decoration: none;
+    }
+    
     </style>
 </head>
 <body>
@@ -87,42 +135,107 @@
                 </li>  
             </ul>
         </nav>
+<br>
+<h2>Detalle de Solicitud de Materiales</h2>
 
-<?php   
 
-    $sql = "SELECT * FROM pedidos WHERE id = $id";
+<?php
+if (isset($_GET['obra_id'])) {
+    $obra_id = $_GET['obra_id'];
+
+    require_once("../PHP/CONN.php");
+
+    if ($conexion->connect_error) {
+        die("Error de conexión: " . $conexion->connect_error);
+    }
+
+    $sql = "SELECT producto, cantidad, unidad
+            FROM pedidos
+            WHERE obra_id = $obra_id";
     $resultado = $conexion->query($sql);
 
     if ($resultado->num_rows > 0) {
-        $obra = $resultado->fetch_assoc();
-        echo "<table>";
-
-        echo "<tr>";
-        echo "<th>Nombre</th>";
-        echo "<th>Cantidad</th>";
-        echo "<th>Unidad</th>";
-        echo "<th>Fecha</th>";
-        echo "<th>Obra</th>";
-        echo "</tr>";
-        
-        echo "<tr>";
-        echo "<td>".$obra['producto']."</td>";
-        echo "<td>".$obra['cantidad']."</td>";
-        echo "<td>".$obra['unidad']."</td>";
-        echo "<td>".$obra['fecha_pedido']."</td>";
-        echo "<td>".$obra['obra_id']."</td>";
-        echo "</tr>";
-        
+        echo "<table border='1'>";
+        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th></tr>";
+        while ($fila = $resultado->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>".$fila['producto']."</td>";
+            echo "<td>".$fila['cantidad']."</td>";
+            echo "<td>".$fila['unidad']."</td>";
+            echo "</tr>";
+        }
         echo "</table>";
-        
     } else {
-        echo "No se encontró la obra.";
+        echo "<br>";
+        echo "No se encontraron detalles de la solicitud de materiales para este id de obra.";
     }
 
     $conexion->close();
-    ?>
+} else {
+    echo "<br>";
+    echo "El parámetro para busqueda no fue proporcionado.";
+}
+
+
+?>
+
+
+
+<div class="op">
+    <button class="aceptar" id="btnAceptar">ACEPTAR</button>
+    <button class="rechazar" id="btnRechazar">RECHAZAR</button>
+</div>
+
+<script>
+    document.getElementById("btnAceptar").addEventListener("click", function() {
+        var obra_id = <?php echo isset($_GET['obra_id']) ? $_GET['obra_id'] : 'null'; ?>;
+        
+        if (obra_id) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "../PHP/ACEPTAR.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert(xhr.responseText);
+                    window.location.href = "PEDIDOS.php";
+                }
+            };
+            xhr.send("accion=aceptar&obra_id=" + obra_id);
+        } else {
+            console.error("No se proporcionó el ID de la obra.");
+        }
+    });
+
+
+
+
+    document.getElementById("btnRechazar").addEventListener("click", function() {
+    var obra_id = <?php echo isset($_GET['obra_id']) ? $_GET['obra_id'] : 'null'; ?>;
+    
+    if (obra_id) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "../PHP/RECHAZAR.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                alert(xhr.responseText);
+                window.location.href = "PEDIDOS.php";
+            }
+        };
+        xhr.send("accion=rechazar&obra_id=" + obra_id);
+    } else {
+        console.error("No se proporcionó el ID de la obra.");
+    }
+});
+
+
+
+
+</script>
+
 
     <br>
-    <a href="PEDIDOS.php" class="btn">Volver a la lista de pedidos</a>
+    <br>
+    <a href="PEDIDOS.php" class="btn">Volver a la lista de solicitudes</a>
 </body>
 </html>

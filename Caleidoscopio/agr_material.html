@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Material</title>
+    <link rel="stylesheet" href="CSS/CSSMP.css">
+    <link rel="stylesheet" href="CSS/CSSCO.css">
+    <link rel="stylesheet" href="CSS/responsive.css">
+</head>
+<body>
+    <header class="cabeza"> 
+        <div class="navbar">
+            <h1>AGREGAR</h1>
+             <ul>
+                <li><a href="VISTADC/AGREGARCO.php">Atras</a></li>
+            </ul>
+            <ul>
+                <li><a href="agr_material.html" style="color:white;">Materiales</a></li>
+                <li><b>/</b></li>
+                <li><a href="agr_proveedor.html">proveedores</a></li>
+            </ul>
+           
+        </div>
+        
+    </header>
+
+    <form action="PHP/AGGMA.php" method="POST">
+        <label for="material">Material:</label>
+        <input type="text" id="material" name="material" required><br>
+        <label for="unidad">Unidad de medida:</label>
+        <input type="text" id="nombre" name="unidad" required><br>
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" name="descripcion" required><br>
+        <input type="submit" class="btn" value="Agregar material" style="width: 100%;"><br>
+    </form>
+</body>
+</html>

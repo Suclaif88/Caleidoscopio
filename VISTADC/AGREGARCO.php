@@ -60,7 +60,7 @@
 
 
 
-    <form action="procesar.php" method="POST">
+    <form action=../PHP/AGGCO.php" method="POST">
         <label for="material">Material:</label>
         <select name="material" id="material">
             <?php
@@ -101,12 +101,6 @@
     <br>
     <br>
 
-<!---->
-
-
-
-
-
         <div id="productos" class="product-container">
             <div class="product-item">
                 <label for="material">Material:</label>
@@ -146,12 +140,7 @@
         </div>
 
 <input type="submit" value="Enviar" class="btn" style="border: 2px solid black;">
-<!---->
-
-
-
-        
-        
+       
 <div class="vp">
         <a href="cotizacion.php" class="v">Inicio</a>
         <a href="../agr_material.html" class="v">Agregar materiales</a>

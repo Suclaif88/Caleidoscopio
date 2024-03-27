@@ -11,9 +11,6 @@
 </head>
 <body>
 
-
-
-
 <div class="navbar">
     <h1 style="cursor:default;">OBRAS</h1>
     <ul>
@@ -27,7 +24,7 @@
 
 
 <div class="cont2">
-    <a href="" class="div1 btn">Agregar nueva obra</a>
+    <a href="../agr_obra.html" class="div1 btn">Agregar nueva obra</a>
 </div>
     
 

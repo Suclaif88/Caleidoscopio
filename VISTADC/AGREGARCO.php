@@ -1,55 +1,103 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Material</title>
-    <link rel="stylesheet" href="../CSS/CSSCO.css">
-    <link rel="stylesheet" href="../CSS/CSS.css">
-    <link rel="stylesheet" href="../CSS/responsive.css">
-    <link rel="icon" type="image/png" href="../IMG/favicon.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agregar Material</title>
+<link rel="stylesheet" href="../CSS/CSSCO.css">
+<link rel="stylesheet" href="../CSS/CSS.css">
+<link rel="stylesheet" href="../CSS/responsive.css">
+<link rel="icon" type="image/png" href="../IMG/favicon.png">
+<style> 
+     form {
+         margin:5vh;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table, th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+<script>
+   function agregarFila() {
+    var table = document.getElementById("tabla-materiales");
+    var row = table.insertRow(-1);
+
+    var colCount = table.rows[0].cells.length;
+    for (var i = 0; i < colCount; i++) {
+        var newCell = row.insertCell(i);
+        if (i == 0) { 
+            newCell.innerHTML = materialesOptions;
+        } else if (i == 4) {
+            newCell.innerHTML = proveedoresOptions;
+        } else if (i == 1) {
+            newCell.innerHTML = "<input type='text' name='descripcion[]'>";
+        } else if (i == 2) {
+            newCell.innerHTML = "<input type='text' name='unidad_medida[]'>";
+        } else {
+            newCell.innerHTML = "<input type='number' name='precio[]' step='0.01'>";
+        }
+    }
+
+    // Actualizar opciones de materiales y proveedores
+    actualizarOpcionesMateriales();
+    actualizarOpcionesProveedores();
+}
+
+function eliminarFila() {
+    var table = document.getElementById("tabla-materiales");
+    if (table.rows.length > 2) {
+        table.deleteRow(-1); // Elimina la última fila, excluyendo la fila de encabezado
+    } else {
+        alert("No se puede eliminar más filas.");
+    }
+}
+
+function actualizarOpcionesMateriales() {
+    var materialesOptions = "<?php
+        require_once "../PHP/CONN.php";
+        $consultaMateriales = "SELECT id, material FROM agregar_materiales";
+        $resultadoMateriales = mysqli_query($conexion, $consultaMateriales);
+        $optionsMateriales = "<option value=''>Seleccione...</option>";
+        while ($filaMaterial = mysqli_fetch_assoc($resultadoMateriales)) {
+            $optionsMateriales .= "<option value='" . $filaMaterial['id'] . "'>" . $filaMaterial['material'] . "</option>";
+        }
+        echo $optionsMateriales;
+    ?>";
+
+    var selectMateriales = document.querySelectorAll("[name='material_id']");
+    selectMateriales.forEach(function(select) {
+        select.innerHTML = materialesOptions;
+    });
+}
+
+function actualizarOpcionesProveedores() {
+    var proveedoresOptions = "<?php
+        $consultaProveedores = "SELECT id, proveedor FROM proveedores";
+        $resultadoProveedores = mysqli_query($conexion, $consultaProveedores);
+        $optionsProveedores = "<option value=''>Seleccione...</option>";
+        while ($filaProveedor = mysqli_fetch_assoc($resultadoProveedores)) {
+            $optionsProveedores .= "<option value='" . $filaProveedor['id'] . "'>" . $filaProveedor['proveedor'] . "</option>";
+        }
+        echo $optionsProveedores;
+    ?>";
+
+    var selectProveedores = document.querySelectorAll("[name='proveedor_id']");
+    selectProveedores.forEach(function(select) {
+        select.innerHTML = proveedoresOptions;
+    });
+}
+
+</script>
 </head>
 <body>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-        }
-
-        form {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-            margin-top: 20px;
-            background-color: #ccc;
-        }
-
-        form label {
-            font-weight: bold;
-        }
-
-        form select, form input[type="text"], form input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            box-sizing: border-box;
-        }
-    </style>
-
-    
 
 <div class="navbar">
     <h1>COTIZACIONES</h1>
@@ -58,149 +106,40 @@
     </ul>
 </div>
 
-
-
-    <form action=../PHP/AGGCO.php" method="POST">
-        <label for="material">Material:</label>
-        <select name="material" id="material">
-            <?php
-            require_once "../PHP/CONN.php";
-
-            $consulta = "SELECT id, material FROM agregar_materiales";
-            $resultado = mysqli_query($conexion, $consulta);
-
-            while ($fila = mysqli_fetch_assoc($resultado)) {
-                echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
-            }
-
-            ?>
-        </select>
-        <label for="descripcion">Descripción:</label>
-        <input type="text" name="descripcion" required>
-        <label for="unidad_medida">Unidad de medida:</label>
-        <input type="text" name="unidad_medida" required>
-        <label for="precio">Precio:</label>
-        <input type="number" name="precio" required>
-        <label for="proveedor">Proveedor:</label>
-        <select name="proveedor" id="proveedor" required>
-            <?php
-
-            $consulta = "SELECT id, proveedor FROM proveedores";
-            $resultado = mysqli_query($conexion, $consulta);
-
-            while ($fila = mysqli_fetch_assoc($resultado)) {
-                echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
-            }
-
-            ?>
-        </select>
-        <div class="form-container">
-            <button type="button" onclick="agregarProducto()" class="btn">Agregar Producto</button>
-        </div>
-    </form>
+<form action="../PHP/AGGCO.php" method="post">
+    <table id="tabla-materiales">
+        <thead>
+            <tr>
+                <th>Material</th>
+                <th>Descripción</th>
+                <th>Unidad de Medida</th>
+                <th>Precio</th>
+                <th>Proveedor</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <select name="material_id">
+                        <?php echo $optionsMateriales; ?>
+                    </select>
+                </td>
+                <td><input type="text" name="descripcion"></td>
+                <td><input type="text" name="unidad_medida"></td>
+                <td><input type="number" name="precio[]" step="0.01"></td>
+                <td>
+                    <select name="proveedor_id">
+                        <?php echo $optionsProveedores; ?>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
     <br>
-    <br>
+    <input type="button" value="Agregar fila" onclick="agregarFila()">
+    <input type="button" value="Eliminar última fila" onclick="eliminarFila()">
+    <input type="submit" value="Enviar">
+</form>
 
-        <div id="productos" class="product-container">
-            <div class="product-item">
-                <label for="material">Material:</label>
-                <select name="material[]" id="material">
-                    <?php
-
-                    $consulta = "SELECT id, material FROM agregar_materiales";
-                    $resultado = mysqli_query($conexion, $consulta);
-
-                    while ($fila = mysqli_fetch_assoc($resultado)) {
-                        echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
-                    }
-
-                    ?>
-                </select>
-                <label for="descripcion">Descripcion:</label>
-                <input type="text" name="descripcion[]">
-                <label for="unidad">Unidad de medida:</label>
-                <input type="text" name="unidades[]">
-                <label for="precio">Precio:</label>
-                <input type="number" name="precio[]">
-                <label for="proveedor">Proveedor:</label>
-                <select name="proveedor[]" id="proveedor">
-                    <?php
-
-                    $consulta = "SELECT id, proveedor FROM proveedores";
-                    $resultado = mysqli_query($conexion, $consulta);
-
-                    while ($fila = mysqli_fetch_assoc($resultado)) {
-                        echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
-                    }
-
-                    ?>
-                </select>
-                <button type="button" onclick="eliminarProducto(this)">Eliminar</button>
-            </div>
-        </div>
-
-<input type="submit" value="Enviar" class="btn" style="border: 2px solid black;">
-       
-<div class="vp">
-        <a href="cotizacion.php" class="v">Inicio</a>
-        <a href="../AGR_MATERIAL.html" class="v">Agregar materiales</a>
-        <a href="../AGR_PROVEEDOR.html" class="v">Agregar proveedores</a>
-        <a href="modificacion.php" class="v">Modificar precios de los materiales</a>
-</div>
-<br>
-<br>
-
-
-
-<!---->
-
-    <script>
-        function agregarProducto() {
-            var contenedor = document.getElementById("productos");
-            var nuevoProducto = document.createElement("div");
-            nuevoProducto.classList.add("product-item");
-            nuevoProducto.innerHTML = `
-                <label for="material">Material:</label>
-                <select name="material[]" id="material">
-                    <?php
-
-                    $consulta = "SELECT id, material FROM agregar_materiales";
-                    $resultado = mysqli_query($conexion, $consulta);
-
-                    while ($fila = mysqli_fetch_assoc($resultado)) {
-                        echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
-                    }
-
-                    ?>
-                </select>
-                <label for="descripcion">Descripcion:</label>
-                <input type="text" name="descripcion[]" required>
-                <label for="unidad">Unidad de medida:</label>
-                <input type="text" name="unidades[]" required>
-                <label for="precio">Precio:</label>
-                <input type="number" name="precio[]" required>
-                <label for="proveedor">Proveedor:</label>
-                <select name="proveedor[]" id="proveedor">
-                    <?php
-
-                    $consulta = "SELECT id, proveedor FROM proveedores";
-                    $resultado = mysqli_query($conexion, $consulta);
-
-                    while ($fila = mysqli_fetch_assoc($resultado)) {
-                        echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
-                    }
-
-                    mysqli_close($conexion);
-                    ?>
-                </select>
-                <button type="button" onclick="eliminarProducto(this)">Eliminar</button>
-            `;
-            contenedor.appendChild(nuevoProducto);
-        }
-
-        function eliminarProducto(elemento) {
-            elemento.parentNode.parentNode.removeChild(elemento.parentNode);
-        }
-    </script>
 </body>
 </html>

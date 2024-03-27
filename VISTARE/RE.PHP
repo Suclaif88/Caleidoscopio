@@ -1,8 +1,8 @@
 <?php
     require_once("../PHP/CONN.php");
-    session_start();//inicie la sesion
+    session_start();
     if(!isset($_SESSION["nombre"])){
-        header("Location:../DC.php");
+        header("Location:../INDEX.html");
         exit();
     }
     $usuario=$_SESSION["nombre"];
@@ -27,8 +27,8 @@
     <div class="botones">
         
         <button class="btn div1" onclick="window.location.href='SOLICITUD.php'">Solicitud de compra</button>
-        <button class="btn div2" onclick="window.location.href='#'">devoluciones</button>
-        <button class="btn div3" onclick="window.location.href='#'">Obras</button>
+        <button class="btn div2" onclick="window.location.href='#'">Devoluciones</button>
+        <button class="btn div3" onclick="window.location.href='OBRASRE.php'">Obras</button>
         <button class="btn div4" onclick="window.location.href='../PHP/LOGOUT.php'">Inicio</button>
     </div>
     

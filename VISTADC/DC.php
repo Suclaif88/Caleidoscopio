@@ -2,7 +2,7 @@
     require_once("../PHP/CONN.php");
     session_start();
     if(!isset($_SESSION["nombre"])){
-        header("Location:../DC.php");
+        header("Location:../INDEX.html");
         exit();
     }
     $usuario=$_SESSION["nombre"];

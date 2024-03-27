@@ -30,7 +30,7 @@
         <button class="btn1 div2" onclick="window.location.href='COMPRA-MATERIALES.php'">Compra de Materiales</button>
         <button class="btn1 div3" onclick="window.location.href='OBRAS.php'">Obras</button>
         <button class="btn1 div4" onclick="window.location.href='COTIZACION.php'">Cotizaciones</button>
-        <button class="btn1 div5" onclick="window.location.href='../PHP/LOGOUT.php'">Inicio</button>
+        <button class="btn1 div5" onclick="window.location.href='../PHP/LOGOUT.php'">Cerrar Sesion</button>
     </div>
 
 

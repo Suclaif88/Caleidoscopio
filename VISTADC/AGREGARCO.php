@@ -25,8 +25,8 @@
         background-color: #f2f2f2;
     }
 </style>
-<script>
-   function agregarFila() {
+<script>   
+function agregarFila(materialesOptions, proveedoresOptions) {
     var table = document.getElementById("tabla-materiales");
     var row = table.insertRow(-1);
 
@@ -45,16 +45,12 @@
             newCell.innerHTML = "<input type='number' name='precio[]' step='0.01'>";
         }
     }
-
-    // Actualizar opciones de materiales y proveedores
-    actualizarOpcionesMateriales();
-    actualizarOpcionesProveedores();
 }
 
 function eliminarFila() {
     var table = document.getElementById("tabla-materiales");
     if (table.rows.length > 2) {
-        table.deleteRow(-1); // Elimina la última fila, excluyendo la fila de encabezado
+        table.deleteRow(-1);
     } else {
         alert("No se puede eliminar más filas.");
     }
@@ -136,7 +132,7 @@ function actualizarOpcionesProveedores() {
         </tbody>
     </table>
     <br>
-    <input type="button" value="Agregar fila" onclick="agregarFila()">
+    <input type="button" value="Agregar fila" onclick="agregarFila('<?php echo $optionsMateriales; ?>', '<?php echo $optionsProveedores; ?>')">
     <input type="button" value="Eliminar última fila" onclick="eliminarFila()">
     <input type="submit" value="Enviar">
 </form>

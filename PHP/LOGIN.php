@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: ../ADMIN/ADMIN.php");
         }
         elseif($USER_ROL === '2') {
-            header("Location: ../GE.html");
+            header("Location: ../VISTAGE/GE.php");
         }
         elseif($USER_ROL === '3') {
             header("Location: ../VISTADC/DC.php");

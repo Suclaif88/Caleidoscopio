@@ -14,7 +14,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DIRECTOR-COMPRAS</title>
-    <link rel="stylesheet" href="../CSS/CSS.css">
+    <link rel="stylesheet" href="../CSS/CSSDC.css">
     <link rel="stylesheet" href="../CSS/responsive.css">
     <link rel="icon" type="image/png" href="../IMG/favicon.png">
 </head>

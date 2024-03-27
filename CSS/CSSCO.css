@@ -305,3 +305,42 @@ input[type="submit"]:hover {
 .cont2{
   margin-top: 20px;
 }
+
+#productos {
+  margin-bottom: 20px;
+}
+
+/* Estilos para cada elemento de producto */
+#productos > div {
+  margin-bottom: 10px;
+}
+
+/* Estilos para las etiquetas */
+#productos label {
+  display: inline-block;
+  width: 80px;
+}
+
+/* Estilos para los campos de entrada */
+#productos input[type="text"],
+#productos input[type="number"] {
+  width: 150px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Estilos para el botón de añadir más productos */
+#add-product-btn {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+}

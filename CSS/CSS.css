@@ -39,7 +39,7 @@
 .div2 { grid-area: 3 / 2 / 4 / 3; }
 .div3 { grid-area: 1 / 4 / 2 / 5; }
 .div4 { grid-area: 3 / 4 / 4 / 5; }
-.div5 { grid-area: 5 / 3 / 5  / 4; }
+.div5 { grid-area: 5 / 5 / 5  / 4; }
 
 .cabeza{
     width: 100%;

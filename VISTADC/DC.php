@@ -26,11 +26,11 @@
     <br>
     <div class="botones">
         
-        <button class="btn div1" onclick="window.location.href='COMPRA-SIMPLE.php'">Compra Simple</button>
-        <button class="btn div2" onclick="window.location.href='COMPRA-MATERIALES.php'">Compra de Materiales</button>
-        <button class="btn div3" onclick="window.location.href='OBRAS.php'">Obras</button>
-        <button class="btn div4" onclick="window.location.href='COTIZACION.php'">Cotizaciones</button>
-        <button class="btn div5" onclick="window.location.href='../PHP/LOGOUT.php'">Inicio</button>
+        <button class="btn1 div1" onclick="window.location.href='COMPRA-SIMPLE.php'">Compra Simple</button>
+        <button class="btn1 div2" onclick="window.location.href='COMPRA-MATERIALES.php'">Compra de Materiales</button>
+        <button class="btn1 div3" onclick="window.location.href='OBRAS.php'">Obras</button>
+        <button class="btn1 div4" onclick="window.location.href='COTIZACION.php'">Cotizaciones</button>
+        <button class="btn1 div5" onclick="window.location.href='../PHP/LOGOUT.php'">Inicio</button>
     </div>
 
 

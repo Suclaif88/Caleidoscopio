@@ -25,7 +25,7 @@
 
 
 <div class="cont2">
-    <a href="../AGR_OBRA.html" class="div1 btn">Agregar nueva obra</a>
+    <a href="../AGG_OBRA.html" class="div1 btn">Agregar nueva obra</a>
 </div>
     
 

@@ -55,16 +55,12 @@
     <header class="navbar">
         <h1>Agregar Cotización</h1>
         <ul>
-        <li><a href="">Devoluciones</a></li>
-        <li><a href="OBRASRE.php">Obras</a></li>
-        <li><a href="" style="color:white;">Solicitud de compra</a></li>
-        <li><a href="RE.php">Atras</a></li>
-    </ul>
+        <li><a href="COTIZACION.php">Atras</a></li>
+        </ul>
     </header>
     
     <form action="../PHP/AGGCO.php" method="post">
-        <!-- Dentro del formulario -->
-<div id="cotizaciones">
+    <div id="cotizaciones">
     <h3>Cotización</h3>
     <div>
         <label for="material">Material:</label>
@@ -97,8 +93,14 @@
     </div>
     </div>
     <button type="button" class="btn1" onclick="agregarCotizacion()">Agregar cotización</button><br><br>
-    <button type="submit" class="btn1">Agregar cotizaciones</button>
+
    </form>
+   <div class="botones">
+        <button type="submit" class="btn1">Agregar cotizaciones</button>
+        <button type="button" class="btn1"><a href="../AGG_MA.html">Agregar material</a></button>   
+        <button type="button" class="btn1"><a href="../AGG_PRO.html">Agregar proveedor</a></button> 
+        <button type="button" class="btn1"><a href="MOD_PRECIO.php">Editar precios</a></button>  
+   </div>
     
     <script>
         function agregarCotizacion() {

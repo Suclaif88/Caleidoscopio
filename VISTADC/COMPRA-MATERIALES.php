@@ -35,7 +35,9 @@
     <tr>
         <th>Nombre</th>
         <th>Fecha Pedido</th>
+        <th>Obra</th>
         <th>Estado</th>
+        
     </tr>
 
 
@@ -62,7 +64,13 @@
 
 
 
-    $sql = "SELECT DISTINCT obra_id, usuario, fecha_pedido, estado FROM pedidos WHERE estado = 1";
+        $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
+        FROM pedidos
+        INNER JOIN obras ON pedidos.obra_id = obras.id
+        WHERE pedidos.estado = 1";
+
+
+
     $resultado = $conexion->query($sql);
 
     if ($resultado->num_rows > 0) {
@@ -70,6 +78,7 @@
             echo "<tr>";
             echo "<td><a href='DETALLESMA.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
             echo "<td>".$fila['fecha_pedido']."</td>";
+            echo "<td>".$fila['nombre_obra']."</td>";
             echo "<td>".$estados[$fila['estado']]."</td>";
             echo "</tr>";
         }
@@ -94,6 +103,7 @@
     <tr>
         <th>Nombre</th>
         <th>Fecha Pedido</th>
+        <th>Obra</th>
         <th>Estado</th>
     </tr>
 
@@ -105,7 +115,10 @@
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT DISTINCT obra_id, usuario, fecha_pedido, estado FROM pedidos WHERE estado = 4";
+    $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
+    FROM pedidos
+    INNER JOIN obras ON pedidos.obra_id = obras.id
+    WHERE pedidos.estado = 4";
     $resultado = $conexion->query($sql);
 
     if ($resultado->num_rows > 0) {
@@ -113,6 +126,7 @@
             echo "<tr>";
             echo "<td><a href='DETALLESMAA.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
             echo "<td>".$fila['fecha_pedido']."</td>";
+            echo "<td>".$fila['nombre_obra']."</td>";
             echo "<td>".$estados[$fila['estado']]."</td>";
             echo "</tr>";
         }
@@ -139,6 +153,7 @@
     <tr>
         <th>Nombre</th>
         <th>Fecha Pedido</th>
+        <th>Obra</th>
         <th>Estado</th>
     </tr>
 
@@ -150,7 +165,10 @@
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT DISTINCT obra_id, usuario, fecha_pedido, estado FROM pedidos WHERE estado = 5";
+    $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
+    FROM pedidos
+    INNER JOIN obras ON pedidos.obra_id = obras.id
+    WHERE pedidos.estado = 5";
     $resultado = $conexion->query($sql);
 
     if ($resultado->num_rows > 0) {
@@ -158,6 +176,7 @@
             echo "<tr>";
             echo "<td><a href='DETALLESMAA.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
             echo "<td>".$fila['fecha_pedido']."</td>";
+            echo "<td>".$fila['nombre_obra']."</td>";
             echo "<td>".$estados[$fila['estado']]."</td>";
             echo "</tr>";
         }

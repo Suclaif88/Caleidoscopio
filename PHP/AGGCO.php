@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $material_id = mysqli_real_escape_string($conexion, $_POST['material_id']);
-    $precio = mysqli_real_escape_string($conexion, $_POST['precio'][0]); // Como precio es un array, accedemos al primer elemento
+    $precio = mysqli_real_escape_string($conexion, $_POST['precio'][0]);
     $proveedor_id = mysqli_real_escape_string($conexion, $_POST['proveedor_id']);
     $unidad_medida = mysqli_real_escape_string($conexion, $_POST['unidad_medida']);
     $descripcion = mysqli_real_escape_string($conexion, $_POST['descripcion']);
@@ -36,4 +36,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     echo "No se recibieron datos del formulario.";
 }
-?>

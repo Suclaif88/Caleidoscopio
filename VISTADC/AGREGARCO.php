@@ -1,141 +1,150 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agregar Material</title>
-<link rel="stylesheet" href="../CSS/CSSCO.css">
-<link rel="stylesheet" href="../CSS/CSS.css">
-<link rel="stylesheet" href="../CSS/responsive.css">
-<link rel="icon" type="image/png" href="../IMG/favicon.png">
-<style> 
-     form {
-         margin:5vh;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    table, th, td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-    }
-    th {
-        background-color: #f2f2f2;
-    }
-</style>
-<script>   
-function agregarFila(materialesOptions, proveedoresOptions) {
-    var table = document.getElementById("tabla-materiales");
-    var row = table.insertRow(-1);
-
-    var colCount = table.rows[0].cells.length;
-    for (var i = 0; i < colCount; i++) {
-        var newCell = row.insertCell(i);
-        if (i == 0) { 
-            newCell.innerHTML = materialesOptions;
-        } else if (i == 4) {
-            newCell.innerHTML = proveedoresOptions;
-        } else if (i == 1) {
-            newCell.innerHTML = "<input type='text' name='descripcion[]'>";
-        } else if (i == 2) {
-            newCell.innerHTML = "<input type='text' name='unidad_medida[]'>";
-        } else {
-            newCell.innerHTML = "<input type='number' name='precio[]' step='0.01'>";
-        }
-    }
-}
-
-function eliminarFila() {
-    var table = document.getElementById("tabla-materiales");
-    if (table.rows.length > 2) {
-        table.deleteRow(-1);
-    } else {
-        alert("No se puede eliminar más filas.");
-    }
-}
-
-function actualizarOpcionesMateriales() {
-    var materialesOptions = "<?php
-        require_once "../PHP/CONN.php";
-        $consultaMateriales = "SELECT id, material FROM agregar_materiales";
-        $resultadoMateriales = mysqli_query($conexion, $consultaMateriales);
-        $optionsMateriales = "<option value=''>Seleccione...</option>";
-        while ($filaMaterial = mysqli_fetch_assoc($resultadoMateriales)) {
-            $optionsMateriales .= "<option value='" . $filaMaterial['id'] . "'>" . $filaMaterial['material'] . "</option>";
-        }
-        echo $optionsMateriales;
-    ?>";
-
-    var selectMateriales = document.querySelectorAll("[name='material_id']");
-    selectMateriales.forEach(function(select) {
-        select.innerHTML = materialesOptions;
-    });
-}
-
-function actualizarOpcionesProveedores() {
-    var proveedoresOptions = "<?php
-        $consultaProveedores = "SELECT id, proveedor FROM proveedores";
-        $resultadoProveedores = mysqli_query($conexion, $consultaProveedores);
-        $optionsProveedores = "<option value=''>Seleccione...</option>";
-        while ($filaProveedor = mysqli_fetch_assoc($resultadoProveedores)) {
-            $optionsProveedores .= "<option value='" . $filaProveedor['id'] . "'>" . $filaProveedor['proveedor'] . "</option>";
-        }
-        echo $optionsProveedores;
-    ?>";
-
-    var selectProveedores = document.querySelectorAll("[name='proveedor_id']");
-    selectProveedores.forEach(function(select) {
-        select.innerHTML = proveedoresOptions;
-    });
-}
-
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Solicitud de Materiales</title>
+    <link rel="stylesheet" href="../CSS/CSSCO.css">
+    <link rel="stylesheet" href="../CSS/CSSDC.css">
+    <link rel="stylesheet" href="../CSS/responsive.css">
+    <link rel="icon" type="image/png" href="../IMG/favicon.png">
 </head>
 <body>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
 
-<div class="navbar">
-    <h1>COTIZACIONES</h1>
-    <ul>
-        <li><a href="COTIZACION.php">Atras</a></li>
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        form{
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+            background-color: #ccc;
+        }
+
+        form label {
+            font-weight: bold;
+        }
+
+        form select, form input[type="text"], form input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+        h3{
+            text-align: center;
+            margin: 2vh;
+        }
+    </style>
+    <header class="navbar">
+        <h1>Agregar Cotización</h1>
+        <ul>
+        <li><a href="">Devoluciones</a></li>
+        <li><a href="OBRASRE.php">Obras</a></li>
+        <li><a href="" style="color:white;">Solicitud de compra</a></li>
+        <li><a href="RE.php">Atras</a></li>
     </ul>
-</div>
+    </header>
+    
+    <form action="../PHP/AGGCO.php" method="post">
+        <!-- Dentro del formulario -->
+<div id="cotizaciones">
+    <h3>Cotización</h3>
+    <div>
+        <label for="material">Material:</label>
+        <select name="material_id[]" required>
+            <?php
+            require_once "../PHP/CONN.php";
+            $consulta = "SELECT id, material FROM agregar_materiales";
+            $resultado = mysqli_query($conexion, $consulta);
+            while ($fila = mysqli_fetch_assoc($resultado)) {
+                echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
+            }
+            ?>
+        </select>
+        <label for="descripcion">Descripción:</label>
+        <input type="text" name="descripcion[]" required>
+        <label for="unidad">Unidad:</label>
+        <input type="text" name="unidad[]" required>
+        <label for="precio">Precio:</label>
+        <input type="number" name="precio[]" required>
+        <label for="proveedor">Proveedor:</label>
+        <select name="proveedor_id[]" required>
+            <?php
+            $consulta = "SELECT id, proveedor FROM proveedores";
+            $resultado = mysqli_query($conexion, $consulta);
+            while ($fila = mysqli_fetch_assoc($resultado)) {
+                echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
+            }
+            ?>
+        </select>
+    </div>
+    </div>
+    <button type="button" class="btn1" onclick="agregarCotizacion()">Agregar cotización</button><br><br>
+    <button type="submit" class="btn1">Agregar cotizaciones</button>
+   </form>
+    
+    <script>
+        function agregarCotizacion() {
+            var contenedor = document.getElementById("cotizaciones");
+            var nuevaCotizacion = document.createElement("div");
+            nuevaCotizacion.innerHTML = `
+                <div>
+                <h3>Cotización</h3><br>
+                <label for="material">Material:</label>
+                <select name="material_id[]" require>
+                    <?php
+                    require_once "../PHP/CONN.php";
+                    $consulta = "SELECT id, material FROM agregar_materiales";
+                    $resultado = mysqli_query($conexion, $consulta);
+                    while ($fila = mysqli_fetch_assoc($resultado)) {
+                        echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
+                    }
+                    ?>
+                </select>
+                <label for="descripcion">Descripción:</label>
+                <input type="text" name="descripcion[]" required>
+                <label for="unidad">Unidad:</label>
+                <input type="text" name="unidad[]" required>
+                <label for="precio">Precio:</label>
+                <input type="number" name="precio[]" required>
+                <label for="proveedor">Proveedor:</label>
+                <select name="proveedor_id[]" require>
+                    <?php
+                    $consulta = "SELECT id, proveedor FROM proveedores";
+                    $resultado = mysqli_query($conexion, $consulta);
+                    while ($fila = mysqli_fetch_assoc($resultado)) {
+                        echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
+                    }
+                    ?>
+                </select>
+                <button type="button" onclick="eliminarCotizacion(this)">Eliminar</button>
+                </div>
+            `;
+            contenedor.appendChild(nuevaCotizacion);
+        }
 
-<form action="../PHP/AGGCO.php" method="post">
-    <table id="tabla-materiales">
-        <thead>
-            <tr>
-                <th>Material</th>
-                <th>Descripción</th>
-                <th>Unidad de Medida</th>
-                <th>Precio</th>
-                <th>Proveedor</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <select name="material_id">
-                        <?php echo $optionsMateriales; ?>
-                    </select>
-                </td>
-                <td><input type="text" name="descripcion"></td>
-                <td><input type="text" name="unidad_medida"></td>
-                <td><input type="number" name="precio[]" step="0.01"></td>
-                <td>
-                    <select name="proveedor_id">
-                        <?php echo $optionsProveedores; ?>
-                    </select>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <br>
-    <input type="button" value="Agregar fila" onclick="agregarFila('<?php echo $optionsMateriales; ?>', '<?php echo $optionsProveedores; ?>')">
-    <input type="button" value="Eliminar última fila" onclick="eliminarFila()">
-    <input type="submit" value="Enviar">
-</form>
-
+        function eliminarCotizacion(elemento) {
+            elemento.parentNode.parentNode.removeChild(elemento.parentNode);
+        }
+    </script>
 </body>
 </html>
+
+

@@ -37,13 +37,30 @@
         <th>Fecha Pedido</th>
         <th>Estado</th>
     </tr>
-    <?php
 
+
+    
+    <?php
+  
     require_once("../PHP/CONN.php");
 
     if ($conexion->connect_error) {
         die("Error de conexión: " . $conexion->connect_error);
     }
+
+
+// ESTADOS DE LOS PEDIDOS
+
+    $estados = array(
+            1 => "Pendiente de Envio",
+            2 => "Rechazado",
+            3 => "Pendiente de Aprovacion",
+            4 => "Aprobado por Gerencia",
+            5 => "Rechazado por Gerencia",
+            
+        );
+
+
 
     $sql = "SELECT DISTINCT obra_id, usuario, fecha_pedido, estado FROM pedidos WHERE estado = 1";
     $resultado = $conexion->query($sql);
@@ -53,11 +70,13 @@
             echo "<tr>";
             echo "<td><a href='DETALLESMA.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
             echo "<td>".$fila['fecha_pedido']."</td>";
-            echo "<td>".$fila['estado']."</td>";
+            echo "<td>".$estados[$fila['estado']]."</td>";
             echo "</tr>";
         }
     } else {
         echo "<tr><td colspan='5'>No se encontraron obras.</td></tr>";
+
+ 
     }?>
 
 
@@ -94,7 +113,52 @@
             echo "<tr>";
             echo "<td><a href='DETALLESMAA.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
             echo "<td>".$fila['fecha_pedido']."</td>";
-            echo "<td>".$fila['estado']."</td>";
+            echo "<td>".$estados[$fila['estado']]."</td>";
+            echo "</tr>";
+        }
+    } else {
+        echo "<tr><td colspan='5'>No se encontraron obras aprobadas por gerente.</td></tr>";
+    }
+
+
+
+
+
+    ?>
+</table>
+
+
+
+
+
+
+<table border="1">
+    <center>
+    <h1>Rechazados por Gerencia</h1>
+    </center>
+    <tr>
+        <th>Nombre</th>
+        <th>Fecha Pedido</th>
+        <th>Estado</th>
+    </tr>
+
+
+
+<?php
+
+ if ($conexion->connect_error) {
+        die("Error de conexión: " . $conexion->connect_error);
+    }
+
+    $sql = "SELECT DISTINCT obra_id, usuario, fecha_pedido, estado FROM pedidos WHERE estado = 5";
+    $resultado = $conexion->query($sql);
+
+    if ($resultado->num_rows > 0) {
+        while ($fila = $resultado->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td><a href='DETALLESMAA.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
+            echo "<td>".$fila['fecha_pedido']."</td>";
+            echo "<td>".$estados[$fila['estado']]."</td>";
             echo "</tr>";
         }
     } else {
@@ -106,21 +170,12 @@
 
 
     $conexion->close();
-
-
-
-
-
-
-
-
-
-
-
-   
-
     ?>
 </table>
+
+
+
+
 </div>
 
 

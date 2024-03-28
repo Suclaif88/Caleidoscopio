@@ -17,7 +17,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle de Solicitud de Materiales</title>
+    <title>Detalle de Solicitud de Materiales A</title>
     <link rel="stylesheet" href="../CSS/CSSDO.css">
     <link rel="stylesheet" href="../CSS/responsive.css">
     <link rel="stylesheet" href="../CSS/CSSCO.css">
@@ -97,16 +97,16 @@
 <body>
 
 
-<div class="navbar">
-    <h1 style="cursor:default;">DETALLES</h1>
-    <ul>
-        <li><a href="" style="color:white;">Compra de materiales</a></li>
-        <li><a href="COMPRA-SIMPLE.php">Compra simple</a></li>
-        <li><a href="OBRAS.php" >Obras</a></li>
-        <li><a href="COTIZACION.php">Cotizaciones</a></li>
-        <li><a href="DC.php">Atras</a></li>
-    </ul>
-</div>
+<header class="navbar">
+    <h1>DEVOLUCIONES</h1>
+        <ul>
+        <li><a href="DEVOLUCIONES.php" style="color:white;">Devoluciones</a></li>
+        <li><a href="OBRASRE.php">Obras</a></li>
+        <li><a href="SOLICITUD.php" >Solicitud de compra</a></li>
+        <li><a href="RE.php">Atras</a></li>
+        </ul>
+</header>
+
 
 
 <br>
@@ -114,6 +114,17 @@
 
 
 <?php
+
+// ESTADOS DE LOS PEDIDOS
+
+$estados = array(
+    1 => "Pendiente de Envio",
+    2 => "Rechazado",
+    3 => "Pendiente de Aprovacion",
+    4 => "Aprobado por Gerencia",
+    
+);
+
 if (isset($_GET['obra_id'])) {
     $obra_id = $_GET['obra_id'];
 
@@ -123,16 +134,16 @@ if (isset($_GET['obra_id'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT producto, cantidad, unidad, precio
+    $sql = "SELECT producto, cantidad, unidad, precio, estado
             FROM pedidos
-            WHERE obra_id = $obra_id AND estado = 1";
+            WHERE obra_id = $obra_id AND estado = 2";
     $resultado = $conexion->query($sql);
 
     $subtotal = 0;
 
     if ($resultado->num_rows > 0) {
         echo "<table border='1'>";
-        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Precio Total</th></tr>";
+        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Precio Total</th><th>Estado</th></tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>".$fila['producto']."</td>";
@@ -142,6 +153,7 @@ if (isset($_GET['obra_id'])) {
             $precio_total = $fila['cantidad'] * $fila['precio'];
             echo "<td>".$precio_total."</td>";
             $subtotal += $precio_total;
+            echo "<td>".$estados[$fila['estado']]."</td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -160,37 +172,8 @@ if (isset($_GET['obra_id'])) {
 ?>
 
 
-
-<div class="op">
-    <button class="aceptar" id="btnEnviarge">ENVIAR A GERENTE</button>
-</div>
-
-<script>
-    document.getElementById("btnEnviarge").addEventListener("click", function() {
-        var obra_id = <?php echo isset($_GET['obra_id']) ? $_GET['obra_id'] : 'null'; ?>;
-        
-        if (obra_id) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "../PHP/ENVIARAGE.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert(xhr.responseText);
-                    window.location.href = "COMPRA-MATERIALES.php";
-                }
-            };
-            xhr.send("accion=aceptar&obra_id=" + obra_id);
-        } else {
-            console.error("No se proporcionó el ID de la obra.");
-        }
-    });
-
-
-</script>
-
-
     <br>
     <br>
-    <a href="COMPRA-MATERIALES.php" class="btn">Volver a la lista de solicitudes</a>
+    <a href="DEVOLUCIONES.php" class="btn">Volver a la lista de solicitudes</a>
 </body>
 </html>

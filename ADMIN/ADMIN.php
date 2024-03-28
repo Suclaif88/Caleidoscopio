@@ -105,9 +105,7 @@ require_once("../PHP/CONN.php");
                 <?php 
                 $result = mysqli_query($conexion, "SELECT * FROM usuarios");
                 while ($row = mysqli_fetch_array($result)): 
-                    // Obtener el valor del campo "rol" de la fila actual
                     $numeroRol = $row['rol'];
-                    // Convertir el número de rol en letras utilizando la función obtenerRol
                     $rolEnLetras = obtenerRol($numeroRol);
                 ?>
                     <tr>

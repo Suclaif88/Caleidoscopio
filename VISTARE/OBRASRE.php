@@ -13,7 +13,7 @@
     <header class="navbar">
         <h1>OBRAS</h1>
         <ul>
-        <li><a href="">Devoluciones</a></li>
+        <li><a href="DEVOLUCIONES.php">Devoluciones</a></li>
         <li><a href="" style="color:white;">Obras</a></li>
         <li><a href="SOLICITUD.php" >Solicitud de compra</a></li>
         <li><a href="RE.php">Atras</a></li>

@@ -51,7 +51,7 @@
     <header class="navbar">
         <h1>Nueva Solicitud de Materiales</h1>
         <ul>
-        <li><a href="">Devoluciones</a></li>
+        <li><a href="DEVOLUCIONES.php">Devoluciones</a></li>
         <li><a href="OBRASRE.php">Obras</a></li>
         <li><a href="" style="color:white;">Solicitud de compra</a></li>
         <li><a href="RE.php">Atras</a></li>
@@ -84,13 +84,21 @@
                 echo "<option value=''>No hay obras disponibles</option>";
             }
 
-            $conexion->close();
             ?>
         </select><br><br>
         <div id="productos">
             <div>
-                <label for="producto">Producto:</label>
-                <input type="text" name="productos[]" required>
+                <label for="producto">Material:</label>
+                <select name="material_id[]" required>
+            <?php
+            $consulta = "SELECT id, material FROM agregar_materiales";
+            $resultado = mysqli_query($conexion, $consulta);
+            while ($fila = mysqli_fetch_assoc($resultado)) {
+                echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
+            }
+            
+            ?>
+                </select>
                 <label for="cantidad">Cantidad:</label>
                 <input type="number" name="cantidades[]" required>
                 <label for="unidad">Unidad:</label>
@@ -109,7 +117,16 @@
             nuevoProducto.innerHTML = `
                 <div>
                     <label for="producto">Producto:</label>
-                    <input type="text" name="productos[]" required>
+                    <select name="material_id[]" required>
+            <?php
+            $consulta = "SELECT id, material FROM agregar_materiales";
+            $resultado = mysqli_query($conexion, $consulta);
+            while ($fila = mysqli_fetch_assoc($resultado)) {
+                echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
+            }
+            $conexion->close();
+            ?>
+                </select>
                     <label for="cantidad">Cantidad:</label>
                     <input type="number" name="cantidades[]" required>
                     <label for="unidad">Unidad:</label>

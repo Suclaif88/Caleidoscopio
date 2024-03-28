@@ -95,11 +95,13 @@
     <button type="button" class="btn1" onclick="agregarCotizacion()">Agregar cotización</button><br><br>
 
    </form>
-   <div class="botones">
-        <button type="submit" class="btn1">Agregar cotizaciones</button>
-        <button type="button" class="btn1"><a href="../AGG_MA.html">Agregar material</a></button>   
-        <button type="button" class="btn1"><a href="../AGG_PRO.html">Agregar proveedor</a></button> 
-        <button type="button" class="btn1"><a href="MOD_PRECIO.php">Editar precios</a></button>  
+   <br>
+   <button type="submit" class="btn2">Agregar cotizaciones</button>
+   <br>
+   <div class="parent">
+        <button type="button" class="btn2 divb1" onclick="window.location.href='../AGG_MA.html'" style="cursor:pointer;">Agregar material</button>
+        <button type="button" class="btn2 divb2" onclick="window.location.href='../AGG_PRO.html'" style="cursor:pointer;">Agregar proveedor</button>
+        <button type="button" class="btn2 divb3" onclick="window.location.href='MOD_PRECIO.php'" style="cursor:pointer;">Editar precios</button>
    </div>
     
     <script>

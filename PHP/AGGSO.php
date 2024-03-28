@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $usuario = $_POST['usuario'];
-    $productos = $_POST['productos'];
+    $productos = $_POST['producto'];
     $cantidades = $_POST['cantidades'];
     $unidades = $_POST['unidades'];
     $obra_id = $_POST['obra'];

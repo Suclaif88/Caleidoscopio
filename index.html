@@ -147,10 +147,10 @@ margin-right: 4px;
       <h3>INGRESO</h3>
 
       <label for="username">IDENTIFICACION</label>
-      <input type="text" placeholder="INGRESE SU IDENTIFICACION" id="id" name="id" required>
+      <input type="text" placeholder="INGRESE SU IDENTIFICACION" id="id" name="id" pattern="[A-Za-z0-9]+" required>
 
       <label for="password">CONTRASENA</label>
-      <input type="password" placeholder="INGRESE SU CONTRASENA" id="pass" name="pass" required>
+      <input type="password" placeholder="INGRESE SU CONTRASENA" id="pass" name="pass" pattern="[A-Za-z0-9]+" required>
       <button type="submit" value="Ingresar">INGRESAR</button>
   </form>
 </body>

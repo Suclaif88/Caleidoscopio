@@ -58,7 +58,7 @@
     </ul>
     </header>
     
-    <form action="procesar_solicitud.php" method="post">
+    <form action="../PHP/AGGSO.php" method="post">
         <label for="usuario">Nombre de Usuario:</label>
         <input type="text" id="usuario" name="usuario" required>
         

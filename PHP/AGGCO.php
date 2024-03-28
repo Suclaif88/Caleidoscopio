@@ -45,4 +45,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo '<script>alert("La cotización se ha agregado correctamente."); window.location.href = "../VISTADC/AGREGARCO.php";</script>';
         
 } 
-?>

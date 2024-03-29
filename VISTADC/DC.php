@@ -20,9 +20,9 @@
 </head>
 <header class="cabeza"><h1>BIENVENIDO, <?php echo $usuario?></h1></header>
 <body>
-    <center>
+    <div class="title">
        <h1>¿En que trabajaremos hoy?</h1>
-    </center>
+    </div>
     <br>
     <div class="botones">
         <button class="btn1 div1" onclick="window.location.href='COMPRA-MATERIALES.php'">Compra de Materiales</button>

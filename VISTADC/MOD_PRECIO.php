@@ -4,9 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Precio de Material</title>
+    <link rel="stylesheet" href="../CSS/CSSMP.css">
+    <link rel="stylesheet" href="../CSS/CSSCO.css">
+    <link rel="stylesheet" href="../CSS/responsive.css">
+    <link rel="icon" type="image/png" href="IMG/favicon.png">
 </head>
 <body>
-    <h2>Modificar Precio de Material</h2>
+    <div class="cabeza">
+        <header class="navbar">
+                <h1>Modificar Precio de Material</h1>
+                <ul>
+                    <li><a href="AGREGARCO.php">Atras</a></li>
+                </ul>
+        </header>
+    </div>
+
     <form action="procesar_modificacion.php" method="post">
         <label for="material_id">Seleccione el material:</label>
         <select name="material_id" id="material_id">
@@ -35,7 +47,7 @@
 
         <label for="nuevo_precio">Nuevo precio:</label>
         <input type="text" name="nuevo_precio" id="nuevo_precio"><br><br>
-        <button type="submit">Modificar Precio</button>
+        <button type="submit" class="btn">Modificar Precio</button>
     </form>
 </body>
 </html>

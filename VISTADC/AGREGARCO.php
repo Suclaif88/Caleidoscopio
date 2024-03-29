@@ -96,7 +96,7 @@
 
    </form>
    <br>
-   <button type="submit" class="btn2">Agregar cotizaciones</button>
+   <button type="submit" class="btn2">Enviar cotizaciones</button>
    <br>
    <div class="parent">
         <button type="button" class="btn2 divb1" onclick="window.location.href='../AGG_MA.html'" style="cursor:pointer;">Agregar material</button>

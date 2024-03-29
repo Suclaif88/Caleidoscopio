@@ -26,7 +26,7 @@
 
         form {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 5vh;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -47,6 +47,12 @@
             border-radius: 3px;
             box-sizing: border-box;
         }
+        h4{
+            text-align: center;
+            text-decoration: none;
+            color: black;
+            margin-top: 4vh:
+        }
     </style>
     <header class="navbar">
         <h1>Nueva Solicitud de Materiales</h1>
@@ -57,13 +63,16 @@
         <li><a href="RE.php">Atras</a></li>
     </ul>
     </header>
+    <div>
+        <h4><a href="FURG.php">Formulario de emergencia</a></h4>
+    </div>
     
     <form action="../PHP/AGGSO.php" method="post">
         <label for="usuario">Nombre de Usuario:</label>
         <input type="text" id="usuario" name="usuario" required>
         
         <label for="obra">Obra:</label>
-        <select id="obra" name="obra" required>
+        <select id="obra" name="obra_id" required>
             <option value="">Seleccione una obra</option>
             <?php
 
@@ -100,9 +109,9 @@
             ?>
                 </select>
                 <label for="cantidad">Cantidad:</label>
-                <input type="number" name="cantidades[]" required>
+                <input type="number" name="cantidad[]" required>
                 <label for="unidad">Unidad:</label>
-                <input type="text" name="unidades[]" required>
+                <input type="text" name="unidad[]" required>
             </div>
         </div>
         <br>

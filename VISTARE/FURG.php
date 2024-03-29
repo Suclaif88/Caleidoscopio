@@ -125,7 +125,7 @@
                 <label for="unidad">Unidad:</label>
                 <input type="text" name="unidades[]" required>
             </div>
-            <button type="button" onclick="eliminarProducto(this)">Eliminar material</button>
+            <button style="background-color: #d6941a; border-radius: 15px;" type="button" onclick="eliminarProducto(this)">Eliminar material</button>
         </div>
         <div id="productos">
             <h3>Material 3</h3>
@@ -147,13 +147,14 @@
                 <label for="unidad">Unidad:</label>
                 <input type="text" name="unidades[]" required>
             </div>
-            <button type="button" onclick="eliminarProducto(this)">Eliminar material</button>
+            <button style="background-color: #d6941a; border-radius: 15px;" type="button" onclick="eliminarProducto(this)">Eliminar material</button>
         </div>
         <br>
-        <div>
-            <button type="submit">Enviar Solicitud</button>
-        </div>
+        
    </form>
+    <div style="margin: 5vh;">
+        <button style="background-color: #d6941a; border-radius: 15px; width: 600px;" type="submit">Enviar Solicitud</button>
+    </div>
     
     <script>
 

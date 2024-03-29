@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nueva Solicitud de Materiales</title>
     <link rel="stylesheet" href="../CSS/CSSCO.css">
-    <link rel="stylesheet" href="../CSS/CSS.css">
+    <link rel="stylesheet" href="../CSS/CSSDC.css">
     <link rel="stylesheet" href="../CSS/responsive.css">
     <link rel="icon" type="image/png" href="../IMG/favicon.png">
 </head>
@@ -115,8 +115,8 @@
             </div>
         </div>
         <br>
-        <button type="button" onclick="agregarProducto()">Agregar Producto</button><br><br>
-        <button type="submit">Enviar Solicitud</button>
+        <button class="btn1 div1" type="button" onclick="agregarProducto()">Agregar Producto</button><br><br>
+        <button class="btn1 div1"type="submit"><em>Enviar Solicitud</em></button>
    </form>
     
     <script>

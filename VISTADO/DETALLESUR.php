@@ -107,7 +107,7 @@
                   
                 </li>
                 <li>
-                    <a href="PUR.php">
+                    <a href="PEUR.php">
                         <i class="fa fa-exclamation-triangle fa-2x"></i>
                         <span class="nav-text">
                             Solicitudes Urgentes
@@ -136,7 +136,7 @@
             </ul>
         </nav>
 <br>
-<h2>Detalle de Solicitud de Materiales</h2>
+<h2>Detalle de Solicitud de Materiales Urgentes</h2>
 
 
 <?php
@@ -151,7 +151,7 @@ if (isset($_GET['obra_id'])) {
 
     $sql = "SELECT producto, cantidad, unidad
             FROM pedidos
-            WHERE obra_id = $obra_id";
+            WHERE obra_id = $obra_id AND estado=6";
     $resultado = $conexion->query($sql);
 
     if ($resultado->num_rows > 0) {
@@ -182,22 +182,22 @@ if (isset($_GET['obra_id'])) {
 
 
 <div class="op">
-    <button class="aceptar" id="btnAceptarGE">ACEPTAR</button>
-    <button class="rechazar" id="btnRechazarGE">RECHAZAR</button>
+    <button class="aceptar" id="btnAceptar">ACEPTAR</button>
+    <button class="rechazar" id="btnRechazar">RECHAZAR</button>
 </div>
 
 <script>
-    document.getElementById("btnAceptarGE").addEventListener("click", function() {
+    document.getElementById("btnAceptar").addEventListener("click", function() {
         var obra_id = <?php echo isset($_GET['obra_id']) ? $_GET['obra_id'] : 'null'; ?>;
         
         if (obra_id) {
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "../PHP/ACEPTARGE.php", true);
+            xhr.open("POST", "../PHP/ACEPTARUR.php", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     alert(xhr.responseText);
-                    window.location.href = "PEDIDOSGE.php";
+                    window.location.href = "PEDIDOS.php";
                 }
             };
             xhr.send("accion=aceptar&obra_id=" + obra_id);
@@ -209,17 +209,17 @@ if (isset($_GET['obra_id'])) {
 
 
 
-    document.getElementById("btnRechazarGE").addEventListener("click", function() {
+    document.getElementById("btnRechazar").addEventListener("click", function() {
     var obra_id = <?php echo isset($_GET['obra_id']) ? $_GET['obra_id'] : 'null'; ?>;
     
     if (obra_id) {
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "../PHP/RECHAZARGE.php", true);
+        xhr.open("POST", "../PHP/RECHAZAR.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 alert(xhr.responseText);
-                window.location.href = "PEDIDOSGE.php";
+                window.location.href = "PEDIDOS.php";
             }
         };
         xhr.send("accion=rechazar&obra_id=" + obra_id);
@@ -236,6 +236,6 @@ if (isset($_GET['obra_id'])) {
 
     <br>
     <br>
-    <a href="PEDIDOSGE.php" class="btn">Volver a la lista de solicitudes</a>
+    <a href="PEDIDOS.php" class="btn">Volver a la lista de solicitudes</a>
 </body>
 </html>

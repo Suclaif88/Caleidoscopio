@@ -58,6 +58,9 @@
             3 => "Pendiente de Aprovacion",
             4 => "Aprobado por Gerencia",
             5 => "Rechazado por Gerencia",
+            7 => "Urgentes",
+            9 => "Aprobado por Gerencia",
+            10 => "Rechazado por Gerencia",
             
         );
 
@@ -182,16 +185,151 @@
     } else {
         echo "<tr><td colspan='5'>No se encontraron obras aprobadas por gerente.</td></tr>";
     }
-
-
-
-
-
-    $conexion->close();
     ?>
 </table>
 
 
+
+
+
+<table border="1">
+    <center>
+    <h1>Urgentes Pendientes</h1>
+    </center>
+    <tr>
+        <th>Nombre</th>
+        <th>Fecha Pedido</th>
+        <th>Obra</th>
+        <th>Estado</th>
+    </tr>
+
+
+
+    <?php
+
+if ($conexion->connect_error) {
+       die("Error de conexión: " . $conexion->connect_error);
+   }
+
+   $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
+   FROM pedidos
+   INNER JOIN obras ON pedidos.obra_id = obras.id
+   WHERE pedidos.estado = 7";
+   $resultado = $conexion->query($sql);
+
+   if ($resultado->num_rows > 0) {
+       while ($fila = $resultado->fetch_assoc()) {
+           echo "<tr>";
+           echo "<td><a href='DETALLESURDC.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
+           echo "<td>".$fila['fecha_pedido']."</td>";
+           echo "<td>".$fila['nombre_obra']."</td>";
+           echo "<td>".$estados[$fila['estado']]."</td>";
+           echo "</tr>";
+       }
+   } else {
+       echo "<tr><td colspan='5'>No se encontraron obras aprobadas por gerente.</td></tr>";
+   }
+
+
+
+
+
+   ?>
+</table>
+
+
+
+
+
+
+<table border="1">
+    <center>
+    <h1>Urgentes Aprobados</h1>
+    </center>
+    <tr>
+        <th>Nombre</th>
+        <th>Fecha Pedido</th>
+        <th>Obra</th>
+        <th>Estado</th>
+    </tr>
+
+
+
+    <?php
+
+if ($conexion->connect_error) {
+       die("Error de conexión: " . $conexion->connect_error);
+   }
+
+   $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
+   FROM pedidos
+   INNER JOIN obras ON pedidos.obra_id = obras.id
+   WHERE pedidos.estado = 9";
+   $resultado = $conexion->query($sql);
+
+   if ($resultado->num_rows > 0) {
+       while ($fila = $resultado->fetch_assoc()) {
+           echo "<tr>";
+           echo "<td><a href='DETALLESURDC.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
+           echo "<td>".$fila['fecha_pedido']."</td>";
+           echo "<td>".$fila['nombre_obra']."</td>";
+           echo "<td>".$estados[$fila['estado']]."</td>";
+           echo "</tr>";
+       }
+   } else {
+       echo "<tr><td colspan='5'>No se encontraron obras aprobadas por gerente.</td></tr>";
+   }
+
+
+
+   ?>
+</table>
+
+<table border="1">
+    <center>
+    <h1>Urgentes Rechazados</h1>
+    </center>
+    <tr>
+        <th>Nombre</th>
+        <th>Fecha Pedido</th>
+        <th>Obra</th>
+        <th>Estado</th>
+    </tr>
+
+
+
+    <?php
+
+if ($conexion->connect_error) {
+       die("Error de conexión: " . $conexion->connect_error);
+   }
+
+   $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
+   FROM pedidos
+   INNER JOIN obras ON pedidos.obra_id = obras.id
+   WHERE pedidos.estado = 10";
+   $resultado = $conexion->query($sql);
+
+   if ($resultado->num_rows > 0) {
+       while ($fila = $resultado->fetch_assoc()) {
+           echo "<tr>";
+           echo "<td><a href='DETALLESURDC.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
+           echo "<td>".$fila['fecha_pedido']."</td>";
+           echo "<td>".$fila['nombre_obra']."</td>";
+           echo "<td>".$estados[$fila['estado']]."</td>";
+           echo "</tr>";
+       }
+   } else {
+       echo "<tr><td colspan='5'>No se encontraron obras aprobadas por gerente.</td></tr>";
+   }
+
+
+
+$conexion->close();
+
+
+   ?>
+</table>
 
 
 </div>

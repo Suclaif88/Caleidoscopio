@@ -11,6 +11,7 @@
     $obra = $resultado->fetch_assoc();
 
     ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -95,46 +96,19 @@
 </head>
 <body>
 
-<nav class="main-menu">
-            <ul>
-                <li>
-                    <a href="PEDIDOS.php">
-                        <i class="fa fa-envelope fa-2x"></i>
-                        <span class="nav-text">
-                           Solicitudes
-                        </span>
-                    </a>
-                  
-                </li>
-                <li>
-                    <a href="PUR.php">
-                        <i class="fa fa-exclamation-triangle fa-2x"></i>
-                        <span class="nav-text">
-                            Solicitudes Urgentes
-                        </span>
-                    </a>
-                </li>
-                <li>
-                   <a href="DOU.php">
-                        <i class="fa fa-user fa-2x"></i>
-                        <span class="nav-text">
-                            Usuario
-                        </span>
-                    </a>
-                </li>
-            </ul>
 
-            <ul class="logout">
-                <li>
-                   <a href="../PHP/LOGOUT.php">
-                         <i class="fa fa-power-off fa-2x"></i>
-                        <span class="nav-text">
-                            Logout
-                        </span>
-                    </a>
-                </li>  
-            </ul>
-        </nav>
+<div class="navbar">
+    <h1 style="cursor:default;">DETALLES</h1>
+    <ul>
+        <li><a href="" style="color:white;">Compra de materiales</a></li>
+        <li><a href="COMPRA-SIMPLE.php">Compra simple</a></li>
+        <li><a href="OBRAS.php" >Obras</a></li>
+        <li><a href="COTIZACION.php">Cotizaciones</a></li>
+        <li><a href="DC.php">Atras</a></li>
+    </ul>
+</div>
+
+
 <br>
 <h2>Detalle de Solicitud de Materiales</h2>
 
@@ -149,22 +123,30 @@ if (isset($_GET['obra_id'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT producto, cantidad, unidad
+    $sql = "SELECT producto, cantidad, unidad, precio
             FROM pedidos
-            WHERE obra_id = $obra_id";
+            WHERE obra_id = $obra_id AND estado = 7";
     $resultado = $conexion->query($sql);
+
+    $subtotal = 0;
 
     if ($resultado->num_rows > 0) {
         echo "<table border='1'>";
-        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th></tr>";
+        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Precio Total</th></tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>".$fila['producto']."</td>";
             echo "<td>".$fila['cantidad']."</td>";
             echo "<td>".$fila['unidad']."</td>";
+            echo "<td>".$fila['precio']."</td>";
+            $precio_total = $fila['cantidad'] * $fila['precio'];
+            echo "<td>".$precio_total."</td>";
+            $subtotal += $precio_total;
             echo "</tr>";
         }
         echo "</table>";
+        echo "<br>";
+        echo "<h1>Subtotal: <span style='float: right;'>$subtotal</span></h1>";
     } else {
         echo "<br>";
         echo "No se encontraron detalles de la solicitud de materiales para este id de obra.";
@@ -173,31 +155,28 @@ if (isset($_GET['obra_id'])) {
     $conexion->close();
 } else {
     echo "<br>";
-    echo "El parámetro para busqueda no fue proporcionado.";
+    echo "El parámetro para búsqueda no fue proporcionado.";
 }
-
-
 ?>
 
 
 
 <div class="op">
-    <button class="aceptar" id="btnAceptarGE">ACEPTAR</button>
-    <button class="rechazar" id="btnRechazarGE">RECHAZAR</button>
+    <button class="aceptar" id="btnEnviarge">ENVIAR A GERENTE</button>
 </div>
 
 <script>
-    document.getElementById("btnAceptarGE").addEventListener("click", function() {
+    document.getElementById("btnEnviarge").addEventListener("click", function() {
         var obra_id = <?php echo isset($_GET['obra_id']) ? $_GET['obra_id'] : 'null'; ?>;
         
         if (obra_id) {
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "../PHP/ACEPTARGE.php", true);
+            xhr.open("POST", "../PHP/ENVIARGEUR.php", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     alert(xhr.responseText);
-                    window.location.href = "PEDIDOSGE.php";
+                    window.location.href = "COMPRA-MATERIALES.php";
                 }
             };
             xhr.send("accion=aceptar&obra_id=" + obra_id);
@@ -207,35 +186,11 @@ if (isset($_GET['obra_id'])) {
     });
 
 
-
-
-    document.getElementById("btnRechazarGE").addEventListener("click", function() {
-    var obra_id = <?php echo isset($_GET['obra_id']) ? $_GET['obra_id'] : 'null'; ?>;
-    
-    if (obra_id) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "../PHP/RECHAZARGE.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                alert(xhr.responseText);
-                window.location.href = "PEDIDOSGE.php";
-            }
-        };
-        xhr.send("accion=rechazar&obra_id=" + obra_id);
-    } else {
-        console.error("No se proporcionó el ID de la obra.");
-    }
-});
-
-
-
-
 </script>
 
 
     <br>
     <br>
-    <a href="PEDIDOSGE.php" class="btn">Volver a la lista de solicitudes</a>
+    <a href="COMPRA-MATERIALES.php" class="btn">Volver a la lista de solicitudes</a>
 </body>
 </html>

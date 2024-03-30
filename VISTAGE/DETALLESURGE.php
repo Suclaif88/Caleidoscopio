@@ -192,7 +192,7 @@ if (isset($_GET['obra_id'])) {
         
         if (obra_id) {
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "../PHP/ACEPTARGE.php", true);
+            xhr.open("POST", "../PHP/ACEPTARURGE.php", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {

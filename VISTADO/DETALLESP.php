@@ -107,7 +107,7 @@
                   
                 </li>
                 <li>
-                    <a href="PEUR">
+                    <a href="PEUR.php">
                         <i class="fa fa-exclamation-triangle fa-2x"></i>
                         <span class="nav-text">
                             Solicitudes Urgentes
@@ -151,7 +151,7 @@ if (isset($_GET['obra_id'])) {
 
     $sql = "SELECT producto, cantidad, unidad
             FROM pedidos
-            WHERE obra_id = $obra_id";
+            WHERE obra_id = $obra_id AND estado=0";
     $resultado = $conexion->query($sql);
 
     if ($resultado->num_rows > 0) {

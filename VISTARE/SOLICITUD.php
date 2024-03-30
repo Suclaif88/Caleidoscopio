@@ -63,8 +63,9 @@
         <li><a href="RE.php">Atras</a></li>
     </ul>
     </header>
+    <br>
     <div>
-        <h4><a href="FURG.php">Formulario de emergencia</a></h4>
+        <h4><button class="btn1" onclick="window.location.href='FURG.php'">Formulario de emergencia</a></h4>
     </div>
     
     <form action="../PHP/AGGSO.php" method="post">

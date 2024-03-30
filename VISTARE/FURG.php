@@ -52,13 +52,13 @@
         }
     </style>
     <header class="navbar">
-        <h1>Solicitud de emergencia</h1>
+        <h1>Solicitud de Emergencia</h1>
         <ul>
             <li><a href="SOLICITUD.php">Atras</a></li>
         </ul>
     </header>
     
-    <form action="../PHP/AGGSO.php" method="post">
+    <form action="../PHP/AGGSOUR.php" method="post">
         <label for="usuario">Nombre de Usuario:</label>
         <input type="text" id="usuario" name="usuario" required>
         
@@ -125,7 +125,7 @@
                 <label for="unidad">Unidad:</label>
                 <input type="text" name="unidades[]" required>
             </div>
-            <button style="background-color: #d6941a; border-radius: 15px;" type="button" onclick="eliminarProducto(this)">Eliminar material</button>
+            <button style="background-color: #d6941a; border-radius: 15px; cursor:pointer;" type="button" onclick="eliminarProducto(this)">Eliminar material</button>
         </div>
         <div id="productos">
             <h3>Material 3</h3>
@@ -147,14 +147,14 @@
                 <label for="unidad">Unidad:</label>
                 <input type="text" name="unidades[]" required>
             </div>
-            <button style="background-color: #d6941a; border-radius: 15px;" type="button" onclick="eliminarProducto(this)">Eliminar material</button>
+            <button style="background-color: #d6941a; border-radius: 15px; cursor:pointer;" type="button" onclick="eliminarProducto(this)">Eliminar material</button>
         </div>
         <br>
-        
+        <div style="margin: 5vh;">
+            <button class="btn" style="background-color: #d6941a; border-radius: 15px; width: 600px; cursor:pointer;" type="submit">Enviar Solicitud</button>
+        </div>   
    </form>
-    <div style="margin: 5vh;">
-        <button style="background-color: #d6941a; border-radius: 15px; width: 600px;" type="submit">Enviar Solicitud</button>
-    </div>
+
     
     <script>
 

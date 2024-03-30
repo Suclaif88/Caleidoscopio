@@ -5,11 +5,10 @@ if(!isset($_SESSION["nombre"])){
     header("Location:../INDEX.html");
     exit();
 }
-$usuario=$_SESSION["nombre"];
 
-if($_SESSION["rol"] !== "1") {
-    header("Location: ../INDEX.html");
-    exit();
+if(strval($_SESSION["rol"]) !== "1") {
+  header("Location: ../INDEX.html");
+  exit();
 }
 
 require_once("../PHP/CONN.php");
@@ -33,8 +32,6 @@ function obtenerRol($numeroRol) {
             return "Desconocido";
     }
 }
-
-require_once("../PHP/CONN.php");
 ?>
 
 
@@ -50,7 +47,7 @@ require_once("../PHP/CONN.php");
     <link rel="icon" type="image/png" href="../IMG/favicon.png">
     <title>ADMIN</title>
 </head>
-<header class="cabeza"><h1>ADMINISTRADOR, <?php echo $usuario; ?></h1></header>
+<header class="cabeza"><h1>ADMINISTRADOR, <?php echo $_SESSION["nombre"]; ?></h1></header>
 <body>
 
 
@@ -123,9 +120,8 @@ require_once("../PHP/CONN.php");
         </table>
     </div>
 
-
-<div class="botones">
-<button class="btn1 div5" onclick="window.location.href='../PHP/LOGOUT.php'">Cerrar Sesion</button>
+<div class="cad">
+ <button class="btn1 bc" onclick="window.location.href='../PHP/LOGOUT.php'">Cerrar Sesion</button>
 </div>
 
 <br>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIRECTOR-OBRAS</title>
+    <title>GERENTE</title>
     <link rel="stylesheet" href="../CSS/CSSDO.css">
     <link rel="stylesheet" href="../CSS/responsive.css">
     <link rel="stylesheet" href="../CSS/CSSCO.css">
@@ -16,7 +16,7 @@
 <nav class="main-menu">
             <ul>
                 <li>
-                    <a href="PEDIDOS.php">
+                    <a href="PEDIDOSGE.php">
                         <i class="fa fa-envelope fa-2x"></i>
                         <span class="nav-text">
                            Solicitudes
@@ -25,7 +25,7 @@
                   
                 </li>
                 <li>
-                    <a href="PEUR.php">
+                    <a href="PUR.php">
                         <i class="fa fa-exclamation-triangle fa-2x"></i>
                         <span class="nav-text">
                             Solicitudes Urgentes
@@ -33,7 +33,7 @@
                     </a>
                 </li>
                 <li>
-                   <a href="DOU.php">
+                   <a href="GE.php">
                         <i class="fa fa-user fa-2x"></i>
                         <span class="nav-text">
                             Usuario
@@ -55,7 +55,7 @@
         </nav>
 
         <div class="container">
-<h1>Solicitudes Entrantes</h1> <br>
+        <h1>Solicitudes Urgentes Entrantes</h1> <br>
 <table border="1">
     <tr>
         <th>Nombre</th>
@@ -69,13 +69,13 @@
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT DISTINCT obra_id, usuario, fecha_pedido FROM pedidos WHERE estado = 0";
+    $sql = "SELECT DISTINCT obra_id, usuario, fecha_pedido FROM pedidos WHERE estado = 8";
     $resultado = $conexion->query($sql);
 
     if ($resultado->num_rows > 0) {
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
-            echo "<td><a href='DETALLESP.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
+            echo "<td><a href='DETALLESURGE.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
             echo "<td>".$fila['fecha_pedido']."</td>";
             echo "</tr>";
         }

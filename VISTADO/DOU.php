@@ -33,7 +33,7 @@
                   
                 </li>
                 <li>
-                    <a href="PEUR">
+                    <a href="PEUR.php">
                         <i class="fa fa-exclamation-triangle fa-2x"></i>
                         <span class="nav-text">
                             Solicitudes Urgentes

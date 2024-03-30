@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($resultado && mysqli_num_rows($resultado) > 0) {
         $fila = mysqli_fetch_assoc($resultado);
+
         $USER_NAME = $fila["nombre"];
         $USER_ROL = $fila["rol"];
         
@@ -37,7 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: ../VISTARE/RE.php");
                 break;
             default:
-                header("Location: ../INDEX.html");
+                echo "<script>alert('Este usuario no tiene un rol asignado.');</script>";
+                echo "<script>window.location.href='../INDEX.html';</script>";
         }
     } else {
         echo "<script>alert('Error en las credenciales de inicio de sesión');</script>";

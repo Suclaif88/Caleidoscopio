@@ -25,7 +25,7 @@
                   
                 </li>
                 <li>
-                    <a href="">
+                    <a href="PUR.php">
                         <i class="fa fa-exclamation-triangle fa-2x"></i>
                         <span class="nav-text">
                             Solicitudes Urgentes
@@ -55,7 +55,7 @@
         </nav>
 
         <div class="container">
-
+        <h1>Solicitudes Entrantes</h1> <br>
 <table border="1">
     <tr>
         <th>Nombre</th>

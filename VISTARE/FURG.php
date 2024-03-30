@@ -121,9 +121,9 @@
             ?>
                 </select>
                 <label for="cantidad">Cantidad:</label>
-                <input type="number" name="cantidades[]" required>
+                <input type="number" name="cantidad[]" required>
                 <label for="unidad">Unidad:</label>
-                <input type="text" name="unidades[]" required>
+                <input type="text" name="unidad[]" required>
             </div>
             <button style="background-color: #d6941a; border-radius: 15px; cursor:pointer;" type="button" onclick="eliminarProducto(this)">Eliminar material</button>
         </div>
@@ -143,9 +143,9 @@
             ?>
                 </select>
                 <label for="cantidad">Cantidad:</label>
-                <input type="number" name="cantidades[]" required>
+                <input type="number" name="cantidad[]" required>
                 <label for="unidad">Unidad:</label>
-                <input type="text" name="unidades[]" required>
+                <input type="text" name="unidad[]" required>
             </div>
             <button style="background-color: #d6941a; border-radius: 15px; cursor:pointer;" type="button" onclick="eliminarProducto(this)">Eliminar material</button>
         </div>

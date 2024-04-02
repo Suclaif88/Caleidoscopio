@@ -63,13 +63,17 @@
 
 // ESTADOS DE LOS PEDIDOS
 
-    $estados = array(
-            1 => "Pendiente de Envio",
-            2 => "Rechazado",
-            3 => "Pendiente de Aprobacion",
-            4 => "Aprobado por Gerencia",
-            
-        );
+$estados = array(
+    1 => "Pendiente de Envio",
+    2 => "Rechazado",
+    3 => "Pendiente de Aprobacion",
+    4 => "Aprobado por Gerencia",
+    5 => "Rechazado por Gerencia",
+    7 => "Urgentes",
+    9 => "Aprobado por Gerencia",
+    10 => "Urgente Rechazado ",
+    
+);
 
 
 
@@ -93,6 +97,48 @@
 
  
     }?>
+
+<table border="1">
+<center>
+    <h1>DEVOLUCION DE SOLICITUDES URGENTES</h1>
+    </center>
+    <tr>
+        <th>Nombre</th>
+        <th>Fecha Pedido</th>
+        <th>Obra</th>
+        <th>Estado</th>
+    </tr>
+
+
+    
+    <?php
+
+    if ($conexion->connect_error) {
+        die("Error de conexión: " . $conexion->connect_error);
+    }
+
+        $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
+        FROM pedidos
+        INNER JOIN obras ON pedidos.obra_id = obras.id
+        WHERE pedidos.estado = 10";
+    $resultado = $conexion->query($sql);
+
+    if ($resultado->num_rows > 0) {
+        while ($fila = $resultado->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td><a href='DEVOLUCIONESUR.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
+            echo "<td>".$fila['fecha_pedido']."</td>";
+            echo "<td>".$fila['nombre_obra']."</td>";
+            echo "<td>".$estados[$fila['estado']]."</td>";
+            echo "</tr>";
+        }
+    } else {
+        echo "<tr><td colspan='5'>No se encontraron obras.</td></tr>";
+
+ 
+    }?>
+
+
 
 </div>
 

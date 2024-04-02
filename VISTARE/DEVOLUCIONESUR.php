@@ -135,7 +135,7 @@ $estados = array(
     5 => "Rechazado por Gerencia",
     7 => "Urgentes",
     9 => "Aprobado por Gerencia",
-    10 => "Rechazado Urgente",
+    10 => "Urgente Rechazado ",
     
 );
 
@@ -150,7 +150,7 @@ if (isset($_GET['obra_id'])) {
 
     $sql = "SELECT producto, cantidad, unidad, precio, estado
             FROM pedidos
-            WHERE obra_id = $obra_id AND estado = 2";
+            WHERE obra_id = $obra_id AND estado = 10";
     $resultado = $conexion->query($sql);
 
     $subtotal = 0;

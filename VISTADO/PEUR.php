@@ -68,13 +68,29 @@
         </nav>
 
         <div class="container">
-        <h1>Solicitudes Urgentes Entrantes</h1> <br>
+        <center><h1>Solicitudes Urgentes Entrantes</h1></center> <br>
 <table border="1">
     <tr>
         <th>Nombre</th>
         <th>Fecha Pedido</th>
+        <th>Obra</th>
+        <th>Estado</th>
     </tr>
     <?php
+
+$estados = array(
+    0 => 'Solicitudes Entrantes',
+    1 => "Pendiente de Envio",
+    2 => "Rechazado",
+    3 => "Pendiente de Aprobacion",
+    4 => "Aprobado por Gerencia",
+    6 => 'Solicitudes Entrantes Urgentes',
+    5 => "Rechazado por Gerencia",
+    7 => "Urgentes",
+    9 => "Aprobado por Gerencia",
+    10 => "Rechazado por Gerencia",
+    
+);
 
     require_once("../PHP/CONN.php");
 
@@ -82,19 +98,32 @@
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT DISTINCT obra_id, usuario, fecha_pedido FROM pedidos WHERE estado = 6";
-    $resultado = $conexion->query($sql);
-
-    if ($resultado->num_rows > 0) {
-        while ($fila = $resultado->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td><a href='DETALLESUR.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
-            echo "<td>".$fila['fecha_pedido']."</td>";
-            echo "</tr>";
-        }
-    } else {
-        echo "<tr><td colspan='5'>No se encontraron obras.</td></tr>";
-    }
+    $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
+    FROM pedidos
+    INNER JOIN obras ON pedidos.obra_id = obras.id
+    WHERE pedidos.estado = 6
+    GROUP BY pedidos.fecha_pedido";
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ $resultado = $conexion->query($sql);
+ 
+ if ($resultado->num_rows > 0) {
+ while ($fila = $resultado->fetch_assoc()) {
+    echo "<tr>";
+    echo "<td><a href='DETALLESUR.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+    echo "<td>".$fila['fecha_pedido']."</td>";
+    echo "<td>".$fila['nombre']."</td>";
+    echo "<td>".$estados[$fila['estado']]."</td>";
+    echo "</tr>";
+ }
+ } else {
+ echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+ }
 
     $conexion->close();
     ?>

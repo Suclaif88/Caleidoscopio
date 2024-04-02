@@ -15,10 +15,12 @@ session_start();
     if ($conexion->connect_error) {
         die("Error de conexión: " . $conexion->connect_error);
     }
-    $obra_id = $_GET['obra_id'];
-    $sql = "SELECT * FROM pedidos WHERE obra_id = $obra_id";
+    
+    $fecha_pedido = $_GET['fecha_pedido'];
+    
+    $sql = "SELECT * FROM pedidos WHERE fecha_pedido = '$fecha_pedido'";
     $resultado = $conexion->query($sql);
-    $obra = $resultado->fetch_assoc();
+    $pedido = $resultado->fetch_assoc();
 
     ?>
 <!DOCTYPE html>
@@ -150,8 +152,8 @@ session_start();
 
 
 <?php
-if (isset($_GET['obra_id'])) {
-    $obra_id = $_GET['obra_id'];
+if (isset($_GET['fecha_pedido'])) {
+    $fecha_pedido = $_GET['fecha_pedido'];
 
     require_once("../PHP/CONN.php");
 
@@ -159,34 +161,40 @@ if (isset($_GET['obra_id'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT producto, cantidad, unidad
+    $sql = "SELECT producto, cantidad, unidad, precio
             FROM pedidos
-            WHERE obra_id = $obra_id AND estado=0";
+            WHERE fecha_pedido = '$fecha_pedido' AND estado = 0";
     $resultado = $conexion->query($sql);
+
+    $subtotal = 0;
 
     if ($resultado->num_rows > 0) {
         echo "<table border='1'>";
-        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th></tr>";
+        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Precio Total</th></tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>".$fila['producto']."</td>";
             echo "<td>".$fila['cantidad']."</td>";
             echo "<td>".$fila['unidad']."</td>";
+            echo "<td>".$fila['precio']."</td>";
+            $precio_total = $fila['cantidad'] * $fila['precio'];
+            echo "<td>".$precio_total."</td>";
+            $subtotal += $precio_total;
             echo "</tr>";
         }
         echo "</table>";
+        echo "<br>";
+        echo "<h1>Subtotal: <span style='float: right;'>$subtotal</span></h1>";
     } else {
         echo "<br>";
-        echo "No se encontraron detalles de la solicitud de materiales para este id de obra.";
+        echo "No se encontraron detalles de la solicitud de materiales para esta fecha de pedido.";
     }
 
     $conexion->close();
 } else {
     echo "<br>";
-    echo "El parámetro para busqueda no fue proporcionado.";
+    echo "El parámetro para búsqueda no fue proporcionado.";
 }
-
-
 ?>
 
 

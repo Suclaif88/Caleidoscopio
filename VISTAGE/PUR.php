@@ -72,10 +72,14 @@
     <tr>
         <th>Nombre</th>
         <th>Fecha Pedido</th>
+        <th>Obra</th>
+        <th>Estado</th>
     </tr>
     <?php
 
 require_once("../PHP/CONN.php");
+
+// ESTADOS DE LOS PEDIDOS
 
 $estados = array(
     1 => "Pendiente de Envio",
@@ -84,10 +88,12 @@ $estados = array(
     4 => "Aprobado por Gerencia",
     5 => "Rechazado por Gerencia",
     7 => "Urgentes",
+    8 => "Pendiente",
     9 => "Aprobado por Gerencia",
     10 => "Rechazado por Gerencia",
     
 );
+
 
 $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
 FROM pedidos
@@ -106,7 +112,7 @@ $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
 while ($fila = $resultado->fetch_assoc()) {
 echo "<tr>";
-echo "<td><a href='DETALLESPGE.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+echo "<td><a href='DETALLESURGE.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
 echo "<td>".$fila['fecha_pedido']."</td>";
 echo "<td>".$fila['nombre']."</td>";
 echo "<td>".$estados[$fila['estado']]."</td>";

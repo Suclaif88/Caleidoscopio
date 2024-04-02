@@ -2,21 +2,21 @@
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    if (isset($_POST['accion']) && $_POST['accion'] === 'aceptar' && isset($_POST['obra_id'])) {
+    if (isset($_POST['accion']) && $_POST['accion'] === 'aceptar' && isset($_POST['fecha_pedido'])) {
 
-        $obra_id = $_POST['obra_id'];
+        $fecha_pedido = $_POST['fecha_pedido'];
 
         require_once("CONN.php");
 
         if ($conexion->connect_error) {
             die("Error de conexión: " . $conexion->connect_error);
         }
-        $sql = "UPDATE pedidos SET estado = 9 WHERE obra_id = $obra_id";
+        $sql = "UPDATE pedidos SET estado = 9 WHERE fecha_pedido = '$fecha_pedido'";
 
         if ($conexion->query($sql) === TRUE) {
-            echo "Se ha aceptado el pedido para el ID de obra $obra_id.";
+            echo "Se ha actualizado el estado del pedido para la fecha de pedido $fecha_pedido";
         } else {
-            echo "Error al asignar el valor estado" . $conexion->error;
+            echo "Error al asignar el valor estado: " . $conexion->error;
         }
         $conexion->close();
     } else {

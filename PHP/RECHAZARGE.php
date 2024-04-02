@@ -1,23 +1,27 @@
 <?php
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['accion']) && $_POST['accion'] == 'rechazar' && isset($_POST['obra_id'])) {
-    $obra_id = $_POST['obra_id'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    require_once("CONN.php");
+    if (isset($_POST['accion']) && $_POST['accion'] === 'rechazar' && isset($_POST['fecha_pedido'])) {
 
-    if ($conexion->connect_error) {
-        die("Error de conexión: " . $conexion->connect_error);
-    }
+        $fecha_pedido = $_POST['fecha_pedido'];
 
-    $sql = "UPDATE pedidos SET estado = 5 WHERE obra_id = $obra_id";
+        require_once("CONN.php");
 
-    if ($conexion->query($sql) === TRUE) {
-        echo "Se ha rechazado el pedido para el ID de obra $obra_id.";
+        if ($conexion->connect_error) {
+            die("Error de conexión: " . $conexion->connect_error);
+        }
+        $sql = "UPDATE pedidos SET estado = 5 WHERE fecha_pedido = '$fecha_pedido'";
+
+        if ($conexion->query($sql) === TRUE) {
+            echo "Se ha actualizado el estado del pedido para la fecha de pedido $fecha_pedido";
+        } else {
+            echo "Error al asignar el valor estado: " . $conexion->error;
+        }
+        $conexion->close();
     } else {
-        echo "Error al rechazar la solicitud: " . $conexion->error;
+        echo "Parámetros de solicitud no válidos.";
     }
-
-    $conexion->close();
 } else {
-    echo "No se proporcionaron todos los parámetros necesarios.";
+    echo "Acceso no autorizado.";
 }

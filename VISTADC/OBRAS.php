@@ -40,7 +40,7 @@ if(strval($_SESSION["rol"]) !== "3") {
 
 
 <div class="cont2">
-    <a href="../AGG_OBRA.html" class="div1 btn">Agregar nueva obra</a>
+    <a href="AGG_OBRA.php" class="div1 btn">Agregar nueva obra</a>
 </div>
     
 

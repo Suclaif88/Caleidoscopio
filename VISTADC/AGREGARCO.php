@@ -113,8 +113,8 @@ if(strval($_SESSION["rol"]) !== "3") {
    <button type="submit" class="btn2">Enviar cotizaciones</button>
    <br>
    <div class="parent">
-        <button type="button" class="btn2 divb1" onclick="window.location.href='../AGG_MA.html'" style="cursor:pointer;">Agregar material</button>
-        <button type="button" class="btn2 divb2" onclick="window.location.href='../AGG_PRO.html'" style="cursor:pointer;">Agregar proveedor</button>
+        <button type="button" class="btn2 divb1" onclick="window.location.href='AGG_MA.php'" style="cursor:pointer;">Agregar material</button>
+        <button type="button" class="btn2 divb2" onclick="window.location.href='AGG_PRO.php'" style="cursor:pointer;">Agregar proveedor</button>
         <button type="button" class="btn2 divb3" onclick="window.location.href='MOD_PRECIO.php'" style="cursor:pointer;">Editar precios</button>
    </div>
     

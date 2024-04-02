@@ -5,6 +5,11 @@
         header("Location:../INDEX.html");
         exit();
     }
+
+    if(strval($_SESSION["rol"]) !== "4") {
+        header("Location: ../INDEX.html");
+        exit();
+    }
     $usuario=$_SESSION["nombre"];
 ?>
 

@@ -1,4 +1,16 @@
-<?php   
+<?php
+
+session_start();
+
+if(!isset($_SESSION["nombre"])){
+    header("Location:../INDEX.html");
+    exit();
+}
+
+if(strval($_SESSION["rol"]) !== "3") {
+  header("Location: ../INDEX.html");
+  exit();
+}
     
     require_once("../PHP/CONN.php");
 

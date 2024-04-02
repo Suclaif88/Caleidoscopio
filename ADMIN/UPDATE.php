@@ -1,4 +1,17 @@
 <?php 
+
+    session_start();
+
+    if(!isset($_SESSION["nombre"])){
+    header("Location:../INDEX.html");
+    exit();
+    }
+
+    if(strval($_SESSION["rol"]) !== "1") {
+  header("Location: ../INDEX.html");
+  exit();
+    }
+
     require_once("../PHP/CONN.php");
      
     $id = $_GET['id'];

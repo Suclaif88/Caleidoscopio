@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($conexion->connect_error) {
             die("Error de conexión: " . $conexion->connect_error);
         }
-        $sql = "UPDATE pedidos SET estado = 2 WHERE fecha_pedido = '$fecha_pedido'";
+        $sql = "UPDATE pedidos SET estado = 10 WHERE fecha_pedido = '$fecha_pedido'";
 
         if ($conexion->query($sql) === TRUE) {
             echo "Se ha actualizado el estado del pedido para la fecha de pedido $fecha_pedido";

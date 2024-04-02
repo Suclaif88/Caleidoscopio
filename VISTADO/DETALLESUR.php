@@ -206,51 +206,43 @@ if (isset($_GET['fecha_pedido'])) {
 
 <script>
     document.getElementById("btnAceptar").addEventListener("click", function() {
-        var obra_id = <?php echo isset($_GET['obra_id']) ? $_GET['obra_id'] : 'null'; ?>;
+        var fecha_pedido = "<?php echo isset($_GET['fecha_pedido']) ? $_GET['fecha_pedido'] : ''; ?>";
         
-        if (obra_id) {
+        if (fecha_pedido) {
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "../PHP/ACEPTARUR.php", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     alert(xhr.responseText);
-                    window.location.href = "PEDIDOS.php";
+                    window.location.href = "PEUR.php";
                 }
             };
-            xhr.send("accion=aceptar&obra_id=" + obra_id);
+            xhr.send("accion=aceptar&fecha_pedido=" + fecha_pedido);
         } else {
-            console.error("No se proporcionó el ID de la obra.");
+            console.error("No se proporcionó la fecha de pedido.");
         }
     });
 
-
-
-
     document.getElementById("btnRechazar").addEventListener("click", function() {
-    var obra_id = <?php echo isset($_GET['obra_id']) ? $_GET['obra_id'] : 'null'; ?>;
-    
-    if (obra_id) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "../PHP/RECHAZAR.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                alert(xhr.responseText);
-                window.location.href = "PEDIDOS.php";
-            }
-        };
-        xhr.send("accion=rechazar&obra_id=" + obra_id);
-    } else {
-        console.error("No se proporcionó el ID de la obra.");
-    }
-});
-
-
-
-
+        var fecha_pedido = "<?php echo isset($_GET['fecha_pedido']) ? $_GET['fecha_pedido'] : ''; ?>";
+        
+        if (fecha_pedido) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "../PHP/RECHAZARUR.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert(xhr.responseText);
+                    window.location.href = "PEUR.php";
+                }
+            };
+            xhr.send("accion=rechazar&fecha_pedido=" + fecha_pedido);
+        } else {
+            console.error("No se proporcionó la fecha de pedido.");
+        }
+    });
 </script>
-
 
     <br>
     <br>

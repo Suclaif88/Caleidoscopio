@@ -162,6 +162,7 @@ table th{
     </select>
     
     <input type="submit" value="ACTUALIZAR">
+    <a href="ADMIN.php">ATRAS</a>
 </form>
 
         </div>

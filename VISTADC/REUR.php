@@ -1,13 +1,15 @@
 <?php
 
 session_start();
+
 if(!isset($_SESSION["nombre"])){
     header("Location:../INDEX.html");
     exit();
 }
-if(strval($_SESSION["rol"]) !== "2") {
-    header("Location: ../INDEX.html");
-    exit();
+
+if(strval($_SESSION["rol"]) !== "3") {
+  header("Location: ../INDEX.html");
+  exit();
 }
     
 require_once("../PHP/CONN.php");
@@ -23,12 +25,13 @@ $resultado = $conexion->query($sql);
 $pedido = $resultado->fetch_assoc();
 
     ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle de Solicitud de Materiales</title>
+    <title>Detalle de Solicitud de Materiales A</title>
     <link rel="stylesheet" href="../CSS/CSSDO.css">
     <link rel="stylesheet" href="../CSS/responsive.css">
     <link rel="stylesheet" href="../CSS/CSSCO.css">
@@ -107,46 +110,19 @@ $pedido = $resultado->fetch_assoc();
 </head>
 <body>
 
-<nav class="main-menu">
-            <ul>
-                <li>
-                    <a href="PEDIDOS.php">
-                        <i class="fa fa-envelope fa-2x"></i>
-                        <span class="nav-text">
-                           Solicitudes
-                        </span>
-                    </a>
-                  
-                </li>
-                <li>
-                    <a href="PUR.php">
-                        <i class="fa fa-exclamation-triangle fa-2x"></i>
-                        <span class="nav-text">
-                            Solicitudes Urgentes
-                        </span>
-                    </a>
-                </li>
-                <li>
-                   <a href="DOU.php">
-                        <i class="fa fa-user fa-2x"></i>
-                        <span class="nav-text">
-                            Usuario
-                        </span>
-                    </a>
-                </li>
-            </ul>
 
-            <ul class="logout">
-                <li>
-                   <a href="../PHP/LOGOUT.php">
-                         <i class="fa fa-power-off fa-2x"></i>
-                        <span class="nav-text">
-                            Logout
-                        </span>
-                    </a>
-                </li>  
-            </ul>
-        </nav>
+<div class="navbar">
+    <h1 style="cursor:default;">DETALLES</h1>
+    <ul>
+        <li><a href="" style="color:white;">Compra de materiales</a></li>
+        <li><a href="COMPRA-SIMPLE.php">Compra simple</a></li>
+        <li><a href="OBRAS.php" >Obras</a></li>
+        <li><a href="COTIZACION.php">Cotizaciones</a></li>
+        <li><a href="DC.php">Atras</a></li>
+    </ul>
+</div>
+
+
 <br>
 <h2>Detalle de Solicitud de Materiales</h2>
 
@@ -163,7 +139,7 @@ if (isset($_GET['fecha_pedido'])) {
 
     $sql = "SELECT producto, cantidad, unidad, precio
             FROM pedidos
-            WHERE fecha_pedido = '$fecha_pedido' AND estado = 3";
+            WHERE fecha_pedido = '$fecha_pedido' AND estado = 10";
     $resultado = $conexion->query($sql);
 
     $subtotal = 0;
@@ -197,63 +173,8 @@ if (isset($_GET['fecha_pedido'])) {
 }
 ?>
 
-
-
-<div class="op">
-    <button class="aceptar" id="btnAceptarGE">ACEPTAR</button>
-    <button class="rechazar" id="btnRechazarGE">RECHAZAR</button>
-</div>
-
-<script>
-    document.getElementById("btnAceptarGE").addEventListener("click", function() {
-        var obra_id = <?php echo isset($_GET['obra_id']) ? $_GET['obra_id'] : 'null'; ?>;
-        
-        if (obra_id) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "../PHP/ACEPTARGE.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert(xhr.responseText);
-                    window.location.href = "PEDIDOSGE.php";
-                }
-            };
-            xhr.send("accion=aceptar&obra_id=" + obra_id);
-        } else {
-            console.error("No se proporcionó el ID de la obra.");
-        }
-    });
-
-
-
-
-    document.getElementById("btnRechazarGE").addEventListener("click", function() {
-    var obra_id = <?php echo isset($_GET['obra_id']) ? $_GET['obra_id'] : 'null'; ?>;
-    
-    if (obra_id) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "../PHP/RECHAZARGE.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                alert(xhr.responseText);
-                window.location.href = "PEDIDOSGE.php";
-            }
-        };
-        xhr.send("accion=rechazar&obra_id=" + obra_id);
-    } else {
-        console.error("No se proporcionó el ID de la obra.");
-    }
-});
-
-
-
-
-</script>
-
-
     <br>
     <br>
-    <a href="PEDIDOSGE.php" class="btn">Volver a la lista de solicitudes</a>
+    <a href="COMPRA-MATERIALES.php" class="btn">Volver a la lista de solicitudes</a>
 </body>
 </html>

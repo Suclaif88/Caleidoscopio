@@ -69,7 +69,7 @@ if(strval($_SESSION["rol"]) !== "3") {
     $estados = array(
             1 => "Pendiente de Envio",
             2 => "Rechazado",
-            3 => "Pendiente de Aprovacion",
+            3 => "Pendiente de Aprobacion",
             4 => "Aprobado por Gerencia",
             5 => "Rechazado por Gerencia",
             7 => "Urgentes",
@@ -80,29 +80,36 @@ if(strval($_SESSION["rol"]) !== "3") {
 
 
 
-        $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
+        $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
         FROM pedidos
         INNER JOIN obras ON pedidos.obra_id = obras.id
-        WHERE pedidos.estado = 1";
+        WHERE pedidos.estado = 1
+        GROUP BY pedidos.fecha_pedido";
 
 
 
-    $resultado = $conexion->query($sql);
 
-    if ($resultado->num_rows > 0) {
-        while ($fila = $resultado->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td><a href='DETALLESMA.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
-            echo "<td>".$fila['fecha_pedido']."</td>";
-            echo "<td>".$fila['nombre_obra']."</td>";
-            echo "<td>".$estados[$fila['estado']]."</td>";
-            echo "</tr>";
-        }
-    } else {
-        echo "<tr><td colspan='5'>No se encontraron obras.</td></tr>";
+
+
+
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+    while ($fila = $resultado->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td><a href='DETALLESMA.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+        echo "<td>".$fila['fecha_pedido']."</td>";
+        echo "<td>".$fila['nombre']."</td>";
+        echo "<td>".$estados[$fila['estado']]."</td>";
+        echo "</tr>";
+    }
+} else {
+    echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+}
+
 
  
-    }?>
+?>
 
 
 
@@ -131,24 +138,32 @@ if(strval($_SESSION["rol"]) !== "3") {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
+    $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
     FROM pedidos
     INNER JOIN obras ON pedidos.obra_id = obras.id
-    WHERE pedidos.estado = 4";
-    $resultado = $conexion->query($sql);
+    WHERE pedidos.estado = 4
+    GROUP BY pedidos.fecha_pedido";
 
-    if ($resultado->num_rows > 0) {
-        while ($fila = $resultado->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td><a href='DETALLESMAA.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
-            echo "<td>".$fila['fecha_pedido']."</td>";
-            echo "<td>".$fila['nombre_obra']."</td>";
-            echo "<td>".$estados[$fila['estado']]."</td>";
-            echo "</tr>";
-        }
-    } else {
-        echo "<tr><td colspan='5'>No se encontraron obras aprobadas por gerente.</td></tr>";
-    }
+
+
+
+
+
+
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+while ($fila = $resultado->fetch_assoc()) {
+    echo "<tr>";
+    echo "<td><a href='DETALLESMAA.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+    echo "<td>".$fila['fecha_pedido']."</td>";
+    echo "<td>".$fila['nombre']."</td>";
+    echo "<td>".$estados[$fila['estado']]."</td>";
+    echo "</tr>";
+}
+} else {
+echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+}
 
 
 
@@ -181,24 +196,33 @@ if(strval($_SESSION["rol"]) !== "3") {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
+    $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
     FROM pedidos
     INNER JOIN obras ON pedidos.obra_id = obras.id
-    WHERE pedidos.estado = 5";
-    $resultado = $conexion->query($sql);
+    WHERE pedidos.estado = 5
+    GROUP BY pedidos.fecha_pedido";
 
-    if ($resultado->num_rows > 0) {
-        while ($fila = $resultado->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td><a href='DETALLESMAA.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
-            echo "<td>".$fila['fecha_pedido']."</td>";
-            echo "<td>".$fila['nombre_obra']."</td>";
-            echo "<td>".$estados[$fila['estado']]."</td>";
-            echo "</tr>";
-        }
-    } else {
-        echo "<tr><td colspan='5'>No se encontraron obras aprobadas por gerente.</td></tr>";
-    }
+
+
+
+
+
+
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+while ($fila = $resultado->fetch_assoc()) {
+    echo "<tr>";
+    echo "<td><a href='RE.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+    echo "<td>".$fila['fecha_pedido']."</td>";
+    echo "<td>".$fila['nombre']."</td>";
+    echo "<td>".$estados[$fila['estado']]."</td>";
+    echo "</tr>";
+}
+} else {
+echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+}
+
     ?>
 </table>
 
@@ -225,24 +249,33 @@ if ($conexion->connect_error) {
        die("Error de conexión: " . $conexion->connect_error);
    }
 
-   $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
+   $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
    FROM pedidos
    INNER JOIN obras ON pedidos.obra_id = obras.id
-   WHERE pedidos.estado = 7";
-   $resultado = $conexion->query($sql);
+   WHERE pedidos.estado = 7
+   GROUP BY pedidos.fecha_pedido";
 
-   if ($resultado->num_rows > 0) {
-       while ($fila = $resultado->fetch_assoc()) {
-           echo "<tr>";
-           echo "<td><a href='DETALLESURDC.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
-           echo "<td>".$fila['fecha_pedido']."</td>";
-           echo "<td>".$fila['nombre_obra']."</td>";
-           echo "<td>".$estados[$fila['estado']]."</td>";
-           echo "</tr>";
-       }
-   } else {
-       echo "<tr><td colspan='5'>No se encontraron obras aprobadas por gerente.</td></tr>";
-   }
+
+
+
+
+
+
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+while ($fila = $resultado->fetch_assoc()) {
+   echo "<tr>";
+   echo "<td><a href='DETALLESURDC.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+   echo "<td>".$fila['fecha_pedido']."</td>";
+   echo "<td>".$fila['nombre']."</td>";
+   echo "<td>".$estados[$fila['estado']]."</td>";
+   echo "</tr>";
+}
+} else {
+echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+}
+
 
 
 
@@ -275,24 +308,33 @@ if ($conexion->connect_error) {
        die("Error de conexión: " . $conexion->connect_error);
    }
 
-   $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
+   $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
    FROM pedidos
    INNER JOIN obras ON pedidos.obra_id = obras.id
-   WHERE pedidos.estado = 9";
-   $resultado = $conexion->query($sql);
+   WHERE pedidos.estado = 9
+   GROUP BY pedidos.fecha_pedido";
 
-   if ($resultado->num_rows > 0) {
-       while ($fila = $resultado->fetch_assoc()) {
-           echo "<tr>";
-           echo "<td><a href='DETALLESURDC.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
-           echo "<td>".$fila['fecha_pedido']."</td>";
-           echo "<td>".$fila['nombre_obra']."</td>";
-           echo "<td>".$estados[$fila['estado']]."</td>";
-           echo "</tr>";
-       }
-   } else {
-       echo "<tr><td colspan='5'>No se encontraron obras aprobadas por gerente.</td></tr>";
-   }
+
+
+
+
+
+
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+while ($fila = $resultado->fetch_assoc()) {
+   echo "<tr>";
+   echo "<td><a href='DETALLESMAA.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+   echo "<td>".$fila['fecha_pedido']."</td>";
+   echo "<td>".$fila['nombre']."</td>";
+   echo "<td>".$estados[$fila['estado']]."</td>";
+   echo "</tr>";
+}
+} else {
+echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+}
+
 
 
 
@@ -318,24 +360,33 @@ if ($conexion->connect_error) {
        die("Error de conexión: " . $conexion->connect_error);
    }
 
-   $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
+   $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
    FROM pedidos
    INNER JOIN obras ON pedidos.obra_id = obras.id
-   WHERE pedidos.estado = 10";
-   $resultado = $conexion->query($sql);
+   WHERE pedidos.estado = 10
+   GROUP BY pedidos.fecha_pedido";
 
-   if ($resultado->num_rows > 0) {
-       while ($fila = $resultado->fetch_assoc()) {
-           echo "<tr>";
-           echo "<td><a href='DETALLESURDC.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
-           echo "<td>".$fila['fecha_pedido']."</td>";
-           echo "<td>".$fila['nombre_obra']."</td>";
-           echo "<td>".$estados[$fila['estado']]."</td>";
-           echo "</tr>";
-       }
-   } else {
-       echo "<tr><td colspan='5'>No se encontraron obras aprobadas por gerente.</td></tr>";
-   }
+
+
+
+
+
+
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+while ($fila = $resultado->fetch_assoc()) {
+   echo "<tr>";
+   echo "<td><a href='REUR.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+   echo "<td>".$fila['fecha_pedido']."</td>";
+   echo "<td>".$fila['nombre']."</td>";
+   echo "<td>".$estados[$fila['estado']]."</td>";
+   echo "</tr>";
+}
+} else {
+echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+}
+
 
 
 

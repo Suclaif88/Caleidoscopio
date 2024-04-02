@@ -75,28 +75,49 @@
     </tr>
     <?php
 
-    require_once("../PHP/CONN.php");
+require_once("../PHP/CONN.php");
 
-    if ($conexion->connect_error) {
-        die("Error de conexión: " . $conexion->connect_error);
-    }
+$estados = array(
+    1 => "Pendiente de Envio",
+    2 => "Rechazado",
+    3 => "Pendiente de Aprobacion",
+    4 => "Aprobado por Gerencia",
+    5 => "Rechazado por Gerencia",
+    7 => "Urgentes",
+    9 => "Aprobado por Gerencia",
+    10 => "Rechazado por Gerencia",
+    
+);
 
-    $sql = "SELECT DISTINCT obra_id, usuario, fecha_pedido FROM pedidos WHERE estado = 8";
-    $resultado = $conexion->query($sql);
+$sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
+FROM pedidos
+INNER JOIN obras ON pedidos.obra_id = obras.id
+WHERE pedidos.estado = 8
+GROUP BY pedidos.fecha_pedido";
 
-    if ($resultado->num_rows > 0) {
-        while ($fila = $resultado->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td><a href='DETALLESURGE.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
-            echo "<td>".$fila['fecha_pedido']."</td>";
-            echo "</tr>";
-        }
-    } else {
-        echo "<tr><td colspan='5'>No se encontraron obras.</td></tr>";
-    }
 
-    $conexion->close();
-    ?>
+
+
+
+
+
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+while ($fila = $resultado->fetch_assoc()) {
+echo "<tr>";
+echo "<td><a href='DETALLESPGE.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+echo "<td>".$fila['fecha_pedido']."</td>";
+echo "<td>".$fila['nombre']."</td>";
+echo "<td>".$estados[$fila['estado']]."</td>";
+echo "</tr>";
+}
+} else {
+echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+}
+
+$conexion->close();
+?>
 </table>
 </div>
 

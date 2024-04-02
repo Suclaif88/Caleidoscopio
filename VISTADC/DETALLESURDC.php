@@ -12,15 +12,17 @@ if(strval($_SESSION["rol"]) !== "3") {
   exit();
 }
     
-    require_once("../PHP/CONN.php");
+require_once("../PHP/CONN.php");
 
-    if ($conexion->connect_error) {
-        die("Error de conexión: " . $conexion->connect_error);
-    }
-    $obra_id = $_GET['obra_id'];
-    $sql = "SELECT * FROM pedidos WHERE obra_id = $obra_id";
-    $resultado = $conexion->query($sql);
-    $obra = $resultado->fetch_assoc();
+if ($conexion->connect_error) {
+    die("Error de conexión: " . $conexion->connect_error);
+}
+
+$fecha_pedido = $_GET['fecha_pedido'];
+
+$sql = "SELECT * FROM pedidos WHERE fecha_pedido = '$fecha_pedido'";
+$resultado = $conexion->query($sql);
+$pedido = $resultado->fetch_assoc();
 
     ?>
 
@@ -126,8 +128,8 @@ if(strval($_SESSION["rol"]) !== "3") {
 
 
 <?php
-if (isset($_GET['obra_id'])) {
-    $obra_id = $_GET['obra_id'];
+if (isset($_GET['fecha_pedido'])) {
+    $fecha_pedido = $_GET['fecha_pedido'];
 
     require_once("../PHP/CONN.php");
 
@@ -137,7 +139,7 @@ if (isset($_GET['obra_id'])) {
 
     $sql = "SELECT producto, cantidad, unidad, precio
             FROM pedidos
-            WHERE obra_id = $obra_id AND estado = 7";
+            WHERE fecha_pedido = '$fecha_pedido' AND estado = 7";
     $resultado = $conexion->query($sql);
 
     $subtotal = 0;
@@ -161,7 +163,7 @@ if (isset($_GET['obra_id'])) {
         echo "<h1>Subtotal: <span style='float: right;'>$subtotal</span></h1>";
     } else {
         echo "<br>";
-        echo "No se encontraron detalles de la solicitud de materiales para este id de obra.";
+        echo "No se encontraron detalles de la solicitud de materiales para esta fecha de pedido.";
     }
 
     $conexion->close();

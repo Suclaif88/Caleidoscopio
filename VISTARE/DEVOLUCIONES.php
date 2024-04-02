@@ -66,7 +66,7 @@
     $estados = array(
             1 => "Pendiente de Envio",
             2 => "Rechazado",
-            3 => "Pendiente de Aprovacion",
+            3 => "Pendiente de Aprobacion",
             4 => "Aprobado por Gerencia",
             
         );

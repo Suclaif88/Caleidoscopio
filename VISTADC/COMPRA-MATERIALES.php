@@ -325,7 +325,7 @@ $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
 while ($fila = $resultado->fetch_assoc()) {
    echo "<tr>";
-   echo "<td><a href='DETALLESMAA.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+   echo "<td><a href='DETALLESAUR.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
    echo "<td>".$fila['fecha_pedido']."</td>";
    echo "<td>".$fila['nombre']."</td>";
    echo "<td>".$estados[$fila['estado']]."</td>";

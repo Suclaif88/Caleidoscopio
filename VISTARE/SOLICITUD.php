@@ -150,9 +150,9 @@
             ?>
                 </select>
                     <label for="cantidad">Cantidad:</label>
-                    <input type="number" name="cantidades[]" required>
+                    <input type="number" name="cantidad[]" required>
                     <label for="unidad">Unidad:</label>
-                    <input type="text" name="unidades[]" required>
+                    <input type="text" name="unidad[]" required>
                     <button type="button" onclick="eliminarProducto(this)">Eliminar</button>
                 </div>
             `;

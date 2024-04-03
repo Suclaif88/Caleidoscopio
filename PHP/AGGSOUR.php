@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     echo "<script>alert('¡Solicitud de materiales enviada con éxito!');</script>";
-    echo "<script>window.location.href = '../VISTARE/SOLICITUD.php';</script>";
+    echo "<script>window.location.href = '../VISTARE/FURG.php';</script>";
 
     $conexion->close();
 }

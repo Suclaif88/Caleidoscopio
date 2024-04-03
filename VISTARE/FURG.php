@@ -162,7 +162,7 @@
         </div>
         <br>
         <div style="margin: 5vh;">
-            <button class="btn" style="background-color: #d6941a; border-radius: 15px; width: 100%; cursor:pointer;    " type="submit">Enviar Solicitud</button>
+            <button class="btn" style="background-color: #d6941a; border-radius: 15px; width: 100%; cursor:pointer;" type="submit">Enviar Solicitud</button>
         </div>   
    </form>
 

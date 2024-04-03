@@ -68,7 +68,7 @@
         </nav>
 
         <div class="container">
-<h1>Solicitudes Entrantes</h1> <br>
+<center><h1>Solicitudes Entrantes</h1></center> <br>
 <table border="1">
     <tr>
         <th>Nombre</th>

@@ -43,12 +43,12 @@ mysqli_stmt_execute($stmt);
                 header(base64_decode('TG9jYXRpb246IC4uL1ZJU1RBUkUvUkUucGhw'));
                 break;
             default:
-                echo base64_decode('PGRpdiBhbGVydCAnRXN0ZSB1c3VhcmlvIG5vIHRvIGltcG9ydGEgcXVpIHBlcmNhZGFkb3MhJzsgPGRpdiB3aW5kb3cuY2xvc2UuYWRkRXN0aW9uKCdodHRwczovLycpOyA+');
-                echo base64_decode('PGRpdiB3aW5kb3cuY2xvc2UuZm9ybWF0KCRfR0VUWydJTlRFUk5BTUUnXSk7IDwvZGl2Pg==');
+                echo base64_decode('PHNjcmlwdD5hbGVydCgnRXN0ZSB1c3VhcmlvIG5vIHRpZW5lIHVuIHJvbCBhc2lnbmFkby4nKTs8L3NjcmlwdD4=');
+                echo base64_decode('PHNjcmlwdD53aW5kb3cubG9jYXRpb24uaHJlZj0nLi4vSU5ERVguaHRtbCc7PC9zY3JpcHQ+');
         }
     } else {
-        echo base64_decode('PGRpdiBhbGVydCAnRXJyb3IgZW4gbGFzIGNyZWRlbmNpYWxlcyBkZSBpbmljaWFkYXMgZGUgaW5pdGlkYWRhJzsgPGRpdiB3aW5kb3cuY2xvc2UuZm9ybWF0KCRfR0VUWydJTlRFUk5BTUUnXSk7IDwvZGl2Pg==');
-        echo base64_decode('PGRpdiB3aW5kb3cuY2xvc2UuZm9ybWF0KCRfR0VUWydJTlRFUk5BTUUnXSk7IDwvZGl2Pg==');
+        echo base64_decode('PHNjcmlwdD5hbGVydCgnRXJyb3IgZW4gbGFzIGNyZWRlbmNpYWxlcyBkZSBpbmljaW8gZGUgc2VzacOzbicpOzwvc2NyaXB0Pg==');
+        echo base64_decode('PHNjcmlwdD53aW5kb3cubG9jYXRpb24uaHJlZj0nLi4vSU5ERVguaHRtbCc7PC9zY3JpcHQ+x');
     }
 }
 /*ARREGLAR LOS MENSAJES DE ERRORES*/

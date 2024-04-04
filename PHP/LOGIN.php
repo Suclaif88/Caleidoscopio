@@ -1,48 +1,54 @@
 <?php
 session_start();
-require_once "CONN.php";
+require_once(base64_decode('Q09OTi5waHA='));
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $ID = $_POST['id'];
-    $PASS = $_POST['pass'];
+if ($_SERVER[base64_decode('UkVRVUVTVF9NRVRIT0Q=')] == base64_decode('UE9TVA==')) {
+    $ID = $_POST[base64_decode('aWQ=')];
+    $PASS = $_POST[base64_decode('cGFzcw==')];
 
-    $consulta = "SELECT * FROM usuarios WHERE identificacion = ? AND contrasena = ?";
+    $consulta = base64_decode('U0VMRUNUICogRlJPTSB1c3VhcmlvcyBXSEVSRSBpZGVudGlmaWNhY2lvbiA9ID8gQU5EIGNvbnRyYXNlbmEgPSA/');
     $stmt = mysqli_prepare($conexion, $consulta);
-    mysqli_stmt_bind_param($stmt, "ss", $ID, $PASS);
-    mysqli_stmt_execute($stmt);
+if (!$stmt) {
+    die("Error al preparar la consulta: " . mysqli_error($conexion));
+}
+
+mysqli_stmt_bind_param($stmt, "ss", $ID, $PASS);
+mysqli_stmt_execute($stmt);
+
     $resultado = mysqli_stmt_get_result($stmt);
 
     if ($resultado && mysqli_num_rows($resultado) > 0) {
         $fila = mysqli_fetch_assoc($resultado);
 
-        $USER_NAME = $fila["nombre"];
-        $USER_ROL = $fila["rol"];
+        $USER_NAME = $fila[base64_decode('bm9tYnJl')];
+        $USER_ROL = $fila[base64_decode('cm9s')];
         
-        $_SESSION["nombre"] = $USER_NAME;
-        $_SESSION["rol"] = $USER_ROL;
+        $_SESSION[base64_decode('bm9tYnJl')] = $USER_NAME;
+        $_SESSION[base64_decode('cm9s')] = $USER_ROL;
 
         switch ($USER_ROL) {
-            case '1':
-                header("Location: ../ADMIN/ADMIN.php");
+            case base64_decode('MQ=='):
+                header(base64_decode('TG9jYXRpb246IC4uL0FETUlOL0FETUlOLnBocA=='));
                 break;
-            case '2':
-                header("Location: ../VISTAGE/GE.php");
+            case base64_decode('Mg=='):
+                header(base64_decode('TG9jYXRpb246IC4uL1ZJU1RBR0UvR0UucGhw'));
                 break;
-            case '3':
-                header("Location: ../VISTADC/DC.php");
+            case base64_decode('Mw=='):
+                header(base64_decode('TG9jYXRpb246IC4uL1ZJU1RBREMvREMucGhw'));
                 break;
-            case '4':
-                header("Location: ../VISTADO/DOU.php");
+            case base64_decode('NA=='):
+                header(base64_decode('TG9jYXRpb246IC4uL1ZJU1RBRE8vRE9VLnBocA=='));
                 break;
-            case '5':
-                header("Location: ../VISTARE/RE.php");
+            case base64_decode('NQ=='):
+                header(base64_decode('TG9jYXRpb246IC4uL1ZJU1RBUkUvUkUucGhw'));
                 break;
             default:
-                echo "<script>alert('Este usuario no tiene un rol asignado.');</script>";
-                echo "<script>window.location.href='../INDEX.html';</script>";
+                echo base64_decode('PGRpdiBhbGVydCAnRXN0ZSB1c3VhcmlvIG5vIHRvIGltcG9ydGEgcXVpIHBlcmNhZGFkb3MhJzsgPGRpdiB3aW5kb3cuY2xvc2UuYWRkRXN0aW9uKCdodHRwczovLycpOyA+');
+                echo base64_decode('PGRpdiB3aW5kb3cuY2xvc2UuZm9ybWF0KCRfR0VUWydJTlRFUk5BTUUnXSk7IDwvZGl2Pg==');
         }
     } else {
-        echo "<script>alert('Error en las credenciales de inicio de sesión');</script>";
-        echo "<script>window.location.href='../INDEX.html';</script>";
+        echo base64_decode('PGRpdiBhbGVydCAnRXJyb3IgZW4gbGFzIGNyZWRlbmNpYWxlcyBkZSBpbmljaWFkYXMgZGUgaW5pdGlkYWRhJzsgPGRpdiB3aW5kb3cuY2xvc2UuZm9ybWF0KCRfR0VUWydJTlRFUk5BTUUnXSk7IDwvZGl2Pg==');
+        echo base64_decode('PGRpdiB3aW5kb3cuY2xvc2UuZm9ybWF0KCRfR0VUWydJTlRFUk5BTUUnXSk7IDwvZGl2Pg==');
     }
 }
+/*ARREGLAR LOS MENSAJES DE ERRORES*/

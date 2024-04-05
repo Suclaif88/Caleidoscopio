@@ -89,19 +89,15 @@
         7 => "Urgentes",
         9 => "Aprobado por Gerencia",
         10 => "Rechazado por Gerencia",
+        11 => "Recibido sin verificacion",
         
     );
 
     $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
     FROM pedidos
     INNER JOIN obras ON pedidos.obra_id = obras.id
-    WHERE pedidos.estado = 3
+    WHERE pedidos.estado IN (3, 11)
     GROUP BY pedidos.fecha_pedido";
- 
- 
- 
- 
- 
  
  
  $resultado = $conexion->query($sql);

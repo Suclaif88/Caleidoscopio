@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-04-2024 a las 05:24:56
+-- Tiempo de generación: 05-04-2024 a las 19:09:34
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -122,21 +122,20 @@ CREATE TABLE `pedidos` (
 --
 
 INSERT INTO `pedidos` (`id`, `obra_id`, `usuario`, `producto`, `precio`, `cantidad`, `unidad`, `fecha_pedido`, `estado`, `historial`) VALUES
-(1, 2, 'ocho', 'cemento', 0, 10, 'bulto', '2024-03-15 20:20:50', 0, 0),
-(2, 2, 'ocho', 'varillas', 0, 25, 'metro', '2024-03-15 20:20:50', 0, 0),
-(3, 1, 'ocho', 'arroz', 1000, 10, 'bulto', '2024-03-15 20:20:50', 0, 0),
-(4, 1, 'ocho', 'lentejas', 500, 10, 'bulto', '2024-03-15 20:20:50', 0, 0),
-(5, 4, 'ocho', 'arroz', 0, 10, 'bulto', '2024-03-15 20:20:50', 0, 0),
-(6, 5, 'ocho', 'chokocrispi', 2000, 10, 'bulto', '2024-03-15 20:20:50', 0, 0),
-(7, 5, 'ocho', 'frutloops', 7000, 10, 'bulto', '2024-03-15 20:20:50', 0, 0),
-(36, 1, 'SOLI1', 'arena', 0, 10, 'bulto', '2024-04-03 03:33:33', 4, 0),
-(39, 4, 'SOLI3', 'Tornillos', 0, 3, 'cajas', '2024-04-03 03:34:28', 2, 0),
+(1, 2, 'ocho', 'cemento', 0, 22, 'bulto', '2024-03-15 20:20:50', 11, 3),
+(2, 2, 'ocho', 'varillas', 0, 25, 'metro', '2024-03-15 20:20:50', 11, 0),
+(3, 1, 'ocho', 'arroz', 1000, 10, 'bulto', '2024-03-15 20:20:50', 11, 0),
+(4, 1, 'ocho', 'lentejas', 500, 10, 'bulto', '2024-03-15 20:20:50', 11, 0),
+(5, 4, 'ocho', 'arroz', 0, 10, 'bulto', '2024-03-15 20:20:50', 11, 0),
+(6, 5, 'ocho', 'chokocrispi', 2000, 10, 'bulto', '2024-03-15 20:20:50', 11, 0),
+(7, 5, 'ocho', 'frutloops', 7000, 10, 'bulto', '2024-03-15 20:20:50', 11, 0),
+(36, 1, 'SOLI1', 'arena', 0, 10, 'bulto', '2024-04-03 03:33:33', 12, 0),
+(39, 4, 'SOLI3', 'Tornillos', 0, 3, 'cajas', '2024-04-03 03:34:28', 0, 0),
 (40, 5, 'UR1', 'Cemento', 0, 55, 'bulto', '2024-04-03 03:34:46', 9, 0),
 (41, 2, 'UR2', 'pintura', 0, 6, 'lata', '2024-04-03 03:37:16', 10, 0),
 (42, 2, 'UR2', 'Cemento', 0, 5, 'bulto', '2024-04-03 03:37:16', 10, 0),
 (43, 2, 'UR3', 'Tornillos', 0, 5, 'cajas', '2024-04-03 03:37:32', 10, 0),
-(44, 1, 'SOLI2', 'Cemento', 0, 10, 'bulto', '2024-04-03 03:42:46', 5, 0),
-(45, 1, 'SOLI2', 'Tornillos', 0, 5, 'cajas', '2024-04-03 03:42:46', 5, 0);
+(45, 1, 'SOLI2', 'Tornillos', 0, 5, 'cajas', '2024-04-03 03:42:46', 4, 0);
 
 -- --------------------------------------------------------
 

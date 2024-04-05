@@ -102,6 +102,24 @@ session_start();
         background: #a62121;
         text-decoration: none;
     }
+
+    .op button.esv {
+    -webkit-border-radius: 28;
+    -moz-border-radius: 28;
+    border-radius: 28px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 20px;
+    background: #ff9736;
+    padding: 10px 20px 10px 20px;
+    border: solid #000000 4px;
+    text-decoration: none;
+    }
+
+    .op button.esv:hover{
+        background: #974006;
+        text-decoration: none;
+    }
     
     </style>
 </head>
@@ -161,7 +179,7 @@ if (isset($_GET['fecha_pedido'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT producto, cantidad, unidad, precio
+    $sql = "SELECT id, producto, cantidad, unidad, precio
             FROM pedidos
             WHERE fecha_pedido = '$fecha_pedido' AND estado = 0";
     $resultado = $conexion->query($sql);
@@ -170,7 +188,7 @@ if (isset($_GET['fecha_pedido'])) {
 
     if ($resultado->num_rows > 0) {
         echo "<table border='1'>";
-        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Precio Total</th></tr>";
+        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Precio Total</th><th>Editar Cantidad</th></tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>".$fila['producto']."</td>";
@@ -180,6 +198,7 @@ if (isset($_GET['fecha_pedido'])) {
             $precio_total = $fila['cantidad'] * $fila['precio'];
             echo "<td>".$precio_total."</td>";
             $subtotal += $precio_total;
+            echo "<td><button class='editar fa fa-pencil-square-o fa-2x' data-id='".$fila['id']."'style='background-color:#d6941a; cursor:pointer;'></button></td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -201,8 +220,12 @@ if (isset($_GET['fecha_pedido'])) {
 
 <div class="op">
     <button class="aceptar" id="btnAceptar">ACEPTAR</button>
-    <button class="rechazar" id="btnRechazar">RECHAZAR</button>
+    <button class="rechazar" id="btnRechazar">RECHAZAR</button>    
 </div>
+<div class="op">
+<button class="esv" id="btnEnviadoSinVerificacion">ENVIAR SIN VERIFICACION</button>
+</div>
+
 
 <script>
     document.getElementById("btnAceptar").addEventListener("click", function() {
@@ -242,6 +265,64 @@ if (isset($_GET['fecha_pedido'])) {
             console.error("No se proporcionó la fecha de pedido.");
         }
     });
+
+
+
+    document.getElementById("btnEnviadoSinVerificacion").addEventListener("click", function() {
+    if (confirm("¿Está seguro de que desea enviar sin verificacion?")) {
+        var fecha_pedido = "<?php echo isset($_GET['fecha_pedido']) ? $_GET['fecha_pedido'] : ''; ?>";
+        if (fecha_pedido) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "../PHP/ENVIADO_SIN_VERIFICACION.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert(xhr.responseText);
+                    window.location.href = "PEDIDOS.php";
+                }
+            };
+            xhr.send("accion=enviado_sin_verificacion&fecha_pedido=" + fecha_pedido);
+        } else {
+            console.error("No se proporcionó la fecha de pedido.");
+        }
+    }
+});
+
+
+
+
+
+
+
+    document.querySelectorAll('.editar').forEach(button => {
+    button.addEventListener('click', function() {
+        const pedidoId = this.dataset.id;
+        const nuevaCantidad = prompt("Introduce la nueva cantidad:");
+
+        if (nuevaCantidad !== null && nuevaCantidad !== '') {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "../PHP/EDITAR_CANTIDAD.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    alert(response.message);
+                    if (response.success) {
+                        location.reload();
+                    }
+                }
+            };
+            xhr.send("pedido_id=" + pedidoId + "&nueva_cantidad=" + nuevaCantidad);
+        }
+    });
+});
+
+
+
+
+
+
+
 </script>
 
 

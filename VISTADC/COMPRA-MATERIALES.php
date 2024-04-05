@@ -75,7 +75,7 @@ if(strval($_SESSION["rol"]) !== "3") {
             7 => "Urgentes",
             9 => "Aprobado por Gerencia",
             10 => "Rechazado por Gerencia",
-            
+            12 => "Aprobado por Gerencia sin verificar",
         );
 
 
@@ -141,7 +141,7 @@ if ($resultado->num_rows > 0) {
     $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
     FROM pedidos
     INNER JOIN obras ON pedidos.obra_id = obras.id
-    WHERE pedidos.estado = 4
+    WHERE pedidos.estado IN (4, 12)
     GROUP BY pedidos.fecha_pedido";
 
 
@@ -395,12 +395,6 @@ $conexion->close();
 
    ?>
 </table>
-
-
 </div>
-
-
-
-
 </body>
 </html>

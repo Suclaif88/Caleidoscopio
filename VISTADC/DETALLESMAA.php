@@ -139,7 +139,7 @@ if (isset($_GET['fecha_pedido'])) {
 
     $sql = "SELECT producto, cantidad, unidad, precio
             FROM pedidos
-            WHERE fecha_pedido = '$fecha_pedido' AND estado = 4";
+            WHERE fecha_pedido = '$fecha_pedido' AND (estado = 4 OR estado = 12)";
     $resultado = $conexion->query($sql);
 
     $subtotal = 0;

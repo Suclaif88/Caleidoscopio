@@ -433,7 +433,7 @@
                             `input[name="unidad[]"][data-material="${materialName}"]`
                         );
                         const materialInput = form.querySelector(
-                            `span[name="material_id[]"][data-material="${materialName}"]`
+                            `input[name="material_id[]"][data-material="${materialName}"]`
                         );
                         const inputMaterial = form.querySelector(
                             `input[name="material_nombre[]"][data-material="${materialName}"]`

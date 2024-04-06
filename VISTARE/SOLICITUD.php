@@ -365,7 +365,7 @@
 
         const inputMaterial = document.createElement("input");
         inputMaterial.setAttribute("type", "hidden");
-        inputMaterial.setAttribute("name", "material[]");
+        inputMaterial.setAttribute("name", "material_nombre[]");
         inputMaterial.setAttribute("value", materialName);
         inputMaterial.setAttribute("data-material", materialName); // Añadir atributo data-material
         materialDiv.appendChild(inputMaterial);
@@ -403,7 +403,7 @@
             checked.forEach((item) => {
                 const materialName = item.querySelector(".item-text").textContent;
                 const isMaterialSelected = form.querySelector(
-                    `input[name="material[]"][value="${materialName}"]`
+                    `input[name="material_nombre[]"][value="${materialName}"]`
                 );
 
                 // Verificar si el material ya está seleccionado
@@ -416,7 +416,7 @@
                 if (!item.classList.contains("checked")) {
                     const materialName = item.querySelector(".item-text").textContent;
                     const isMaterialSelected = form.querySelector(
-                        `input[name="material[]"][value="${materialName}"]`
+                        `input[name="material_nombre[]"][value="${materialName}"]`
                     );
 
                     if (isMaterialSelected) {
@@ -435,8 +435,8 @@
                         const materialInput = form.querySelector(
                             `span[name="material_id[]"][data-material="${materialName}"]`
                         );
-                        const materialInputId = form.querySelector(
-                            `input[name="material_id[]"][data-material="${materialName}"]`
+                        const inputMaterial = form.querySelector(
+                            `input[name="material_nombre[]"][data-material="${materialName}"]`
                         );
 
                         if (labelCantidad) labelCantidad.remove();
@@ -444,10 +444,10 @@
                         if (labelUnidad) labelUnidad.remove();
                         if (inputUnidad) inputUnidad.remove();
                         if (materialInput) materialInput.remove();
-                        if (materialInputId) materialInputId.remove();
+                        if (inputMaterial) inputMaterial.remove();
 
                         form.querySelector(
-                            `input[name="material[]"][value="${materialName}"]`
+                            `input[name="material_nombre[]"][value="${materialName}"]`
                         ).remove();
                     }
                 }

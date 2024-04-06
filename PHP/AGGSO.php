@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $material_ids = $_POST['material_id'];
     $cantidades = $_POST['cantidad'];
     $unidades = $_POST['unidad'];
+    $material_nombres = $_POST['material_nombre'];
 
     for ($i = 0; $i < count($material_ids); $i++) {
         $usuario = $usuario;
@@ -19,18 +20,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $material_id = $material_ids[$i];
         $cantidad = $cantidades[$i];
         $unidad = $unidades[$i];
+        $material_nombre = $material_nombres[$i];
 
         $usuario = $conexion->real_escape_string($usuario);
         $obra_id= intval($obra_id);
         $cantidad = intval($cantidad);
         $unidad = $conexion->real_escape_string($unidad);
+        $material_nombre = $conexion->real_escape_string($material_nombre);
 
-        $consulta_material = "SELECT material FROM agregar_materiales WHERE id = '$material_id'";
-        $resultado_material = mysqli_query($conexion, $consulta_material);
-        $fila_material = mysqli_fetch_assoc($resultado_material);
-        $material = $fila_material['material'];
 
-        $sql = "INSERT INTO pedidos (usuario, obra_id, producto, cantidad, unidad) VALUES ('$usuario', '$obra_id', '$material', '$cantidad', '$unidad')";
+        $sql = "INSERT INTO pedidos (usuario, obra_id, producto, cantidad, unidad) VALUES ('$usuario', '$obra_id', '$material_nombre', '$cantidad', '$unidad')";
         
         if ($conexion->query($sql) !== TRUE) {
             echo "Error al enviar la solicitud de materiales: " . $conexion->error;

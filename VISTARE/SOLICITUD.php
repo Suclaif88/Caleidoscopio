@@ -297,7 +297,7 @@
                       </li>';
             }
         } else {
-            echo "0 resultados";
+            echo "Sin resultados";
         }
         $conexion->close();
         ?>
@@ -324,7 +324,6 @@
         materialFields = document.querySelector(".material-fields");
 
     function createFieldsForMaterial(materialName) {
-        // Crear un div para agrupar los inputs relacionados con este material
         const materialDiv = document.createElement("div");
         materialFields.appendChild(materialDiv);
 
@@ -334,12 +333,12 @@
         materialInput.setAttribute("value",materialName,);
         materialInput.setAttribute("name", "material_id[]");
         materialInput.setAttribute("readonly", "");
-        materialInput.setAttribute("data-material", materialName); // Añadir atributo data-material
+        materialInput.setAttribute("data-material", materialName);
         materialDiv.appendChild(materialInput);
 
         const labelCantidad = document.createElement("label");
         labelCantidad.setAttribute("for", "cantidad");
-        labelCantidad.setAttribute("data-material", materialName); // Añadir atributo data-material
+        labelCantidad.setAttribute("data-material", materialName);
         labelCantidad.textContent = `Cantidad:`;
         materialDiv.appendChild(labelCantidad);
 
@@ -347,12 +346,12 @@
         inputCantidad.setAttribute("type", "number");
         inputCantidad.setAttribute("name", "cantidad[]");
         inputCantidad.setAttribute("required", "");
-        inputCantidad.setAttribute("data-material", materialName); // Añadir atributo data-material
+        inputCantidad.setAttribute("data-material", materialName);
         materialDiv.appendChild(inputCantidad);
 
         const labelUnidad = document.createElement("label");
         labelUnidad.setAttribute("for", "unidad");
-        labelUnidad.setAttribute("data-material", materialName); // Añadir atributo data-material
+        labelUnidad.setAttribute("data-material", materialName);
         labelUnidad.textContent = `Unidad:`;
         materialDiv.appendChild(labelUnidad);
 
@@ -360,14 +359,14 @@
         inputUnidad.setAttribute("type", "text");
         inputUnidad.setAttribute("name", "unidad[]");
         inputUnidad.setAttribute("required", "");
-        inputUnidad.setAttribute("data-material", materialName); // Añadir atributo data-material
+        inputUnidad.setAttribute("data-material", materialName);
         materialDiv.appendChild(inputUnidad);
 
         const inputMaterial = document.createElement("input");
         inputMaterial.setAttribute("type", "hidden");
         inputMaterial.setAttribute("name", "material_nombre[]");
         inputMaterial.setAttribute("value", materialName);
-        inputMaterial.setAttribute("data-material", materialName); // Añadir atributo data-material
+        inputMaterial.setAttribute("data-material", materialName);
         materialDiv.appendChild(inputMaterial);
     }
 
@@ -375,9 +374,8 @@
         selectBtn.classList.toggle("open");
         searchContainer.classList.toggle("open");
 
-        // Desplazar las opciones hacia arriba al abrir el contenedor
         if (selectBtn.classList.contains("open")) {
-            listItems.scrollTop = 0; // Scroll al principio
+            listItems.scrollTop = 0; 
         }
     });
 
@@ -406,7 +404,6 @@
                     `input[name="material_nombre[]"][value="${materialName}"]`
                 );
 
-                // Verificar si el material ya está seleccionado
                 if (!isMaterialSelected) {
                     createFieldsForMaterial(materialName);
                 }
@@ -470,7 +467,6 @@
         });
     });
 
-    // Agregar clase 'scrollable' si hay más de 4 materiales
     if (listItems.children.length > 3) {
         listItems.classList.add("scrollable");
     }

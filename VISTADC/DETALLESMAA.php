@@ -24,7 +24,7 @@ $sql = "SELECT * FROM pedidos WHERE fecha_pedido = '$fecha_pedido'";
 $resultado = $conexion->query($sql);
 $pedido = $resultado->fetch_assoc();
 
-    ?>
+?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -128,6 +128,12 @@ $pedido = $resultado->fetch_assoc();
 
 
 <?php
+
+$estados = array(
+    12 => "Aprobado por Gerencia sin verificar",
+    13 => "Aprobado por Gerencia Verificado",
+);
+
 if (isset($_GET['fecha_pedido'])) {
     $fecha_pedido = $_GET['fecha_pedido'];
 
@@ -137,12 +143,13 @@ if (isset($_GET['fecha_pedido'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT producto, cantidad, unidad, precio
+    $sql = "SELECT producto, cantidad, unidad, precio, historial, estado
             FROM pedidos
-            WHERE fecha_pedido = '$fecha_pedido' AND (estado = 4 OR estado = 12)";
+            WHERE fecha_pedido = '$fecha_pedido' AND (estado = 4 OR estado = 12 OR estado = 13)";
     $resultado = $conexion->query($sql);
 
     $subtotal = 0;
+    $estadoMostrado = false;
 
     if ($resultado->num_rows > 0) {
         echo "<table border='1'>";
@@ -150,17 +157,28 @@ if (isset($_GET['fecha_pedido'])) {
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>".$fila['producto']."</td>";
-            echo "<td>".$fila['cantidad']."</td>";
+            echo "<td style='position: relative;'>".$fila['cantidad'];
+            if ($fila['historial'] == 3) {
+                echo "<span class='editado fa fa-exclamation-circle' title='Editado' style='position: absolute; top: 5px; right: -10px;'></span>";
+            }
+            echo "</td>";
             echo "<td>".$fila['unidad']."</td>";
             echo "<td>".$fila['precio']."</td>";
             $precio_total = $fila['cantidad'] * $fila['precio'];
             echo "<td>".$precio_total."</td>";
             $subtotal += $precio_total;
             echo "</tr>";
+            if ($fila['estado'] == 12 && !$estadoMostrado) {
+                $estadoMostrado = true;
+            }
         }
         echo "</table>";
         echo "<br>";
         echo "<h1>Subtotal: <span style='float: right;'>$subtotal</span></h1>";
+        
+        if ($estadoMostrado) {
+            echo "<h1 style='margin-top: 20px;'>".$estados[12]." <span style='color: red;'>!</span></h1>";
+        }
     } else {
         echo "<br>";
         echo "No se encontraron detalles de la solicitud de materiales para esta fecha de pedido.";
@@ -172,6 +190,7 @@ if (isset($_GET['fecha_pedido'])) {
     echo "El parámetro para búsqueda no fue proporcionado.";
 }
 ?>
+
 
     <br>
     <br>

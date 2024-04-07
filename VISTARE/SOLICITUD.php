@@ -234,8 +234,8 @@
     
     <form action="../PHP/AGGSO.php" method="post" class="solicitud">
         <label for="usuario">Nombre de Usuario:</label>
-        <input type="text" id="usuario" name="usuario" required>
-        
+        <input type="hidden" name="usuario" value="<?php echo $_SESSION["nombre"]; ?>">
+        <h1 style="text-align: center;"><?php echo $_SESSION["nombre"]; ?></h1>
         <label for="obra">Obra:</label>
         <select id="obra" name="obra_id" required>
             <option value="">Seleccione una obra</option>

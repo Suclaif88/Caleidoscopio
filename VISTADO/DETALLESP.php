@@ -179,7 +179,7 @@ if (isset($_GET['fecha_pedido'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT id, producto, cantidad, unidad, precio
+    $sql = "SELECT id, producto, cantidad, unidad, precio, historial
             FROM pedidos
             WHERE fecha_pedido = '$fecha_pedido' AND estado = 0";
     $resultado = $conexion->query($sql);
@@ -192,13 +192,17 @@ if (isset($_GET['fecha_pedido'])) {
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>".$fila['producto']."</td>";
-            echo "<td>".$fila['cantidad']."</td>";
+            echo "<td style='position: relative;'>".$fila['cantidad'];
+            if ($fila['historial'] == 3) {
+                echo "<span class='editado fa fa-exclamation-circle' title='Editado' style='position: absolute; top: 15px; right: -10px;'></span>";
+            }
+            echo "</td>";
             echo "<td>".$fila['unidad']."</td>";
             echo "<td>".$fila['precio']."</td>";
             $precio_total = $fila['cantidad'] * $fila['precio'];
             echo "<td>".$precio_total."</td>";
             $subtotal += $precio_total;
-            echo "<td><button class='editar fa fa-pencil-square-o fa-2x' data-id='".$fila['id']."'style='background-color:#d6941a; cursor:pointer;'></button></td>";
+            echo "<td><button class='editar fa fa-pencil-square-o fa-2x' data-id='".$fila['id']."' style='background-color:#d6941a; cursor:pointer;'></button></td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -215,6 +219,10 @@ if (isset($_GET['fecha_pedido'])) {
     echo "El parámetro para búsqueda no fue proporcionado.";
 }
 ?>
+
+
+
+
 
 
 

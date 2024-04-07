@@ -137,7 +137,7 @@ if (isset($_GET['fecha_pedido'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT producto, cantidad, unidad, precio
+    $sql = "SELECT producto, cantidad, unidad, precio, historial
             FROM pedidos
             WHERE fecha_pedido = '$fecha_pedido' AND estado = 1";
     $resultado = $conexion->query($sql);
@@ -150,7 +150,11 @@ if (isset($_GET['fecha_pedido'])) {
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>".$fila['producto']."</td>";
-            echo "<td>".$fila['cantidad']."</td>";
+            echo "<td style='position: relative;'>".$fila['cantidad'];
+            if ($fila['historial'] == 3) {
+                echo "<span class='editado fa fa-exclamation-circle' title='Editado' style='position: absolute; top: 5px; right: -10px;'></span>";
+            }
+            echo "</td>";
             echo "<td>".$fila['unidad']."</td>";
             echo "<td>".$fila['precio']."</td>";
             $precio_total = $fila['cantidad'] * $fila['precio'];

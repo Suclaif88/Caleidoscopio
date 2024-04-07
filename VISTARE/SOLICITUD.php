@@ -38,7 +38,7 @@
         }
 
         form {
-            max-width: 600px;
+            width: 650px;
             margin: 5vh;
             padding: 20px;
             border: 1px solid #ccc;
@@ -166,23 +166,32 @@
             overflow-y: auto;
         }
 
-  
         .search-container.open {
             display: block;
+            margin: auto;
+            height: 50px;
+            border: none;
         }
   
         .search-input {
-            width: 100%;
+            width: 400px !important;
             margin-bottom: 10px;
-            border: none;
             border-radius: 10px;
             position: relative;
             left: -16px;
+            top: 10px;
+            padding: 10px;
         }
+
+        .item.hidden {
+            display: none;
+        }
+
 
 
         .material-fields {
             margin-top: 20px;
+            width: 80%;
         }
   
         .material-fields div {
@@ -196,6 +205,9 @@
         .material-fields label {
             margin-right: 10px;
             width: 100px;
+            position: relative;
+            left: -90px;
+            top: -5px;
         }
   
         .material-fields input[type="number"],
@@ -204,6 +216,8 @@
             border-radius: 4px;
             box-sizing: border-box;
             width: auto;
+            position: relative;
+            left: -95px;
         }
 
         input[readonly] {
@@ -212,8 +226,10 @@
             color: #333;
             border: none;
             font-size: 20px;
-            width: 100%;
             color: #000;
+            position: relative;
+
+            top: -5px;
 
         }
 
@@ -233,10 +249,8 @@
     </div>
     
     <form action="../PHP/AGGSO.php" method="post" class="solicitud">
-        <label for="usuario">Nombre de Usuario:</label>
         <input type="hidden" name="usuario" value="<?php echo $_SESSION["nombre"]; ?>">
-        <h1 style="text-align: center;"><?php echo $_SESSION["nombre"]; ?></h1>
-        <label for="obra">Obra:</label>
+        <h1 style="text-align: center;"><?php echo $_SESSION["nombre"]; ?></h1><br><br>
         <select id="obra" name="obra_id" required>
             <option value="">Seleccione una obra</option>
             <?php
@@ -262,7 +276,6 @@
         </select><br><br>
         <div id="productos">
             <div>
-                <label for="producto">Materiales:</label>
     <div class="select-btn">
 
         <span class="btn-text">Seleccione Materiales</span>
@@ -309,7 +322,6 @@
 
         </div>
     </div>
-        <br>
         <button class="btn1 div1"type="submit"><em>Enviar Solicitud</em></button>
    </form>
     
@@ -323,52 +335,54 @@
         form = document.querySelector(".solicitud"),
         materialFields = document.querySelector(".material-fields");
 
-    function createFieldsForMaterial(materialName) {
-        const materialDiv = document.createElement("div");
-        materialFields.appendChild(materialDiv);
-
-        
-        const materialInput = document.createElement("input");
-        materialInput.textContent = materialName;
-        materialInput.setAttribute("value",materialName,);
-        materialInput.setAttribute("name", "material_id[]");
-        materialInput.setAttribute("readonly", "");
-        materialInput.setAttribute("data-material", materialName);
-        materialDiv.appendChild(materialInput);
-
-        const labelCantidad = document.createElement("label");
-        labelCantidad.setAttribute("for", "cantidad");
-        labelCantidad.setAttribute("data-material", materialName);
-        labelCantidad.textContent = `Cantidad:`;
-        materialDiv.appendChild(labelCantidad);
-
-        const inputCantidad = document.createElement("input");
-        inputCantidad.setAttribute("type", "number");
-        inputCantidad.setAttribute("name", "cantidad[]");
-        inputCantidad.setAttribute("required", "");
-        inputCantidad.setAttribute("data-material", materialName);
-        materialDiv.appendChild(inputCantidad);
-
-        const labelUnidad = document.createElement("label");
-        labelUnidad.setAttribute("for", "unidad");
-        labelUnidad.setAttribute("data-material", materialName);
-        labelUnidad.textContent = `Unidad:`;
-        materialDiv.appendChild(labelUnidad);
-
-        const inputUnidad = document.createElement("input");
-        inputUnidad.setAttribute("type", "text");
-        inputUnidad.setAttribute("name", "unidad[]");
-        inputUnidad.setAttribute("required", "");
-        inputUnidad.setAttribute("data-material", materialName);
-        materialDiv.appendChild(inputUnidad);
-
-        const inputMaterial = document.createElement("input");
-        inputMaterial.setAttribute("type", "hidden");
-        inputMaterial.setAttribute("name", "material_nombre[]");
-        inputMaterial.setAttribute("value", materialName);
-        inputMaterial.setAttribute("data-material", materialName);
-        materialDiv.appendChild(inputMaterial);
+        function createFieldsForMaterial(materialName) {
+    // Verificar si ya existe un campo para este material
+    const existingMaterialInput = document.querySelector(`input[name="material_nombre[]"][value="${materialName}"]`);
+    if (existingMaterialInput) {
+        // Si ya existe, no hacer nada
+        return;
     }
+
+    const materialDiv = document.createElement("div");
+    materialFields.appendChild(materialDiv);
+
+    const materialInput = document.createElement("input");
+    materialInput.setAttribute("value", materialName);
+    materialInput.setAttribute("name", "material_id[]");
+    materialInput.setAttribute("readonly", "");
+    materialDiv.appendChild(materialInput);
+
+    const labelCantidad = document.createElement("label");
+    labelCantidad.setAttribute("for", "cantidad");
+    labelCantidad.textContent = `Cantidad:`;
+    materialDiv.appendChild(labelCantidad);
+
+    const inputCantidad = document.createElement("input");
+    inputCantidad.setAttribute("type", "number");
+    inputCantidad.setAttribute("name", "cantidad[]");
+    inputCantidad.setAttribute("required", "");
+    materialDiv.appendChild(inputCantidad);
+
+    const labelUnidad = document.createElement("label");
+    labelUnidad.setAttribute("for", "unidad");
+    labelUnidad.textContent = `Unidad:`;
+    materialDiv.appendChild(labelUnidad);
+
+    const inputUnidad = document.createElement("input");
+    inputUnidad.setAttribute("type", "text");
+    inputUnidad.setAttribute("name", "unidad[]");
+    inputUnidad.setAttribute("required", "");
+    materialDiv.appendChild(inputUnidad);
+
+    const inputMaterial = document.createElement("input");
+    inputMaterial.setAttribute("type", "hidden");
+    inputMaterial.setAttribute("name", "material_nombre[]");
+    inputMaterial.setAttribute("value", materialName);
+    materialDiv.appendChild(inputMaterial);
+}
+
+
+
 
     selectBtn.addEventListener("click", () => {
         selectBtn.classList.toggle("open");
@@ -380,92 +394,57 @@
     });
 
     items.forEach((item) => {
-        item.addEventListener("click", () => {
-            item.classList.toggle("checked");
+    item.addEventListener("click", () => {
+        item.classList.toggle("checked");
 
-            let checked = document.querySelectorAll(".checked"),
-                btnText = document.querySelector(".btn-text");
+        let checked = document.querySelectorAll(".checked"),
+            btnText = document.querySelector(".btn-text");
 
-            if (checked && checked.length > 0) {
-                if (checked.length > 4) {
-                    btnText.innerText = `${checked.length} Seleccionados`;
-                } else {
-                    btnText.innerText = `${checked.length} Seleccionados: ${Array.from(checked)
-                        .map((item) => item.querySelector(".item-text").textContent)
-                        .join(", ")}`;
-                }
+        if (checked && checked.length > 0) {
+            if (checked.length > 6 ) {
+                btnText.innerText = `${checked.length} Seleccionados`;
             } else {
-                btnText.innerText = "Seleccionar Material";
+                btnText.innerText = `${checked.length} Seleccionados: ${Array.from(checked)
+                    .map((item) => item.querySelector(".item-text").textContent)
+                    .join(", ")}`;
             }
+        } else {
+            btnText.innerText = "Seleccionar Material";
+        }
 
-            checked.forEach((item) => {
-                const materialName = item.querySelector(".item-text").textContent;
-                const isMaterialSelected = form.querySelector(
-                    `input[name="material_nombre[]"][value="${materialName}"]`
-                );
+        const checkedMaterials = Array.from(checked).map((item) => item.querySelector(".item-text").textContent);
 
-                if (!isMaterialSelected) {
-                    createFieldsForMaterial(materialName);
-                }
-            });
-
-            items.forEach((item) => {
-                if (!item.classList.contains("checked")) {
-                    const materialName = item.querySelector(".item-text").textContent;
-                    const isMaterialSelected = form.querySelector(
-                        `input[name="material_nombre[]"][value="${materialName}"]`
-                    );
-
-                    if (isMaterialSelected) {
-                        const labelCantidad = form.querySelector(
-                            `label[for="cantidad"][data-material="${materialName}"]`
-                        );
-                        const inputCantidad = form.querySelector(
-                            `input[name="cantidad[]"][data-material="${materialName}"]`
-                        );
-                        const labelUnidad = form.querySelector(
-                            `label[for="unidad"][data-material="${materialName}"]`
-                        );
-                        const inputUnidad = form.querySelector(
-                            `input[name="unidad[]"][data-material="${materialName}"]`
-                        );
-                        const materialInput = form.querySelector(
-                            `input[name="material_id[]"][data-material="${materialName}"]`
-                        );
-                        const inputMaterial = form.querySelector(
-                            `input[name="material_nombre[]"][data-material="${materialName}"]`
-                        );
-
-                        if (labelCantidad) labelCantidad.remove();
-                        if (inputCantidad) inputCantidad.remove();
-                        if (labelUnidad) labelUnidad.remove();
-                        if (inputUnidad) inputUnidad.remove();
-                        if (materialInput) materialInput.remove();
-                        if (inputMaterial) inputMaterial.remove();
-
-                        form.querySelector(
-                            `input[name="material_nombre[]"][value="${materialName}"]`
-                        ).remove();
-                    }
-                }
-            });
+        // Crear nuevos campos solo para el material seleccionado
+        checkedMaterials.forEach((materialName) => {
+            createFieldsForMaterial(materialName);
         });
-    });
 
-    searchInput.addEventListener("input", () => {
-        const searchValue = searchInput.value.toLowerCase();
-
-        items.forEach((item) => {
-            const text = item.querySelector(".item-text").textContent.toLowerCase();
-            const id = item.getAttribute("data-id");
-
-            if (text.includes(searchValue) || id.includes(searchValue)) {
-                item.style.display = "block";
-            } else {
-                item.style.display = "none";
+        // Eliminar campos que ya no están seleccionados
+        const materialDivs = document.querySelectorAll(".material-fields > div");
+        materialDivs.forEach((materialDiv) => {
+            const materialName = materialDiv.querySelector("input[name='material_id[]']").value;
+            if (!checkedMaterials.includes(materialName)) {
+                materialDiv.remove();
             }
         });
     });
+});
+
+searchInput.addEventListener("input", () => {
+    const searchValue = searchInput.value.toLowerCase();
+
+    items.forEach((item) => {
+        const text = item.querySelector(".item-text").textContent.toLowerCase();
+        const id = item.getAttribute("data-id");
+
+        if (text.includes(searchValue) || id.includes(searchValue)) {
+            item.classList.remove("hidden");
+        } else {
+            item.classList.add("hidden");
+        }
+    });
+});
+
 
     if (listItems.children.length > 3) {
         listItems.classList.add("scrollable");

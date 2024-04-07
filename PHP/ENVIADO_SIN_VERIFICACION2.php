@@ -16,7 +16,7 @@ if(isset($_POST['fecha_pedido'])) {
         if ($estado_actual == 11) {
             $nuevo_estado = 12;
         } else {
-            $nuevo_estado = 13;
+             $nuevo_estado = 13;
         }
 
         $sql_actualizar_estado = "UPDATE pedidos SET estado = $nuevo_estado WHERE fecha_pedido = '$fecha_pedido'";

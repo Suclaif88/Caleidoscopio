@@ -40,6 +40,46 @@ function obtenerRol($numeroRol) {
     <link rel="icon" type="image/png" href="../IMG/favicon.png">
     <title>ADMIN</title>
 </head>
+<script>
+var ctrlPresionada = false;
+var shiftPresionada = false;
+
+function verificarCombinacion(event) {
+    if (ctrlPresionada && shiftPresionada && event.key === 's') {
+        var confirmacion = confirm("¿Estás seguro que deseas proceder?");
+        if (confirmacion) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "../PHP/K2R24SA.php?confirmacion=true", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert(xhr.responseText);
+                    location.reload();
+                }
+            };
+            xhr.send();
+        }
+    }
+}
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Control") {
+        ctrlPresionada = true;
+    } else if (event.key === "Shift") {
+        shiftPresionada = true;
+    }
+    verificarCombinacion(event);
+});
+
+document.addEventListener("keyup", function(event) {
+    if (event.key === "Control") {
+        ctrlPresionada = false;
+    } else if (event.key === "Shift") {
+        shiftPresionada = false;
+    }
+});
+
+</script>
+
+
 <body>
 
 <div class="users-table">

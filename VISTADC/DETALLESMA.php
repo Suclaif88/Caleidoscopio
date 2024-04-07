@@ -164,7 +164,7 @@ if (isset($_GET['fecha_pedido'])) {
         }
         echo "</table>";
         echo "<br>";
-        echo "<h1>Subtotal: <span style='float: right;'>$subtotal</span></h1>";
+        echo "<h1>Subtotal: <span style='float: right;'>" . number_format($subtotal, 2, '.', ',') . "</span></h1>";
     } else {
         echo "<br>";
         echo "No se encontraron detalles de la solicitud de materiales para esta fecha de pedido.";

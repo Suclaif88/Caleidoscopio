@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $insertar = "INSERT INTO proveedores (proveedor, nit, correo, telefono) VALUES ('$proveedor', '$nit', '$correo', '$telefono')";
 
     if (mysqli_query($conexion, $insertar)) {
-        echo '<script>alert("Proveedor agregado correctamente.");window.location.href = "agr_proveedor.html";</script>';
+        echo '<script>alert("Proveedor agregado correctamente.");window.location.href = "AGG_PRO.php";</script>';
     } else {
         echo "Error al agregar el proveedor: " . mysqli_error($conexion);
     }

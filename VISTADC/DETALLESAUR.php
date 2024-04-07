@@ -174,7 +174,7 @@ if (isset($_GET['fecha_pedido'])) {
         }
         echo "</table>";
         echo "<br>";
-        echo "<h1>Subtotal: <span style='float: right;'>$subtotal</span></h1>";
+        echo "<h1>Subtotal: <span style='float: right;'>" . number_format($subtotal, 2, '.', ',') . "</span></h1>";
         
         if ($estadoMostrado) {
             echo "<h1 style='margin-top: 20px;'>".$estados[15]." <span style='color: red;'>!</span></h1>";

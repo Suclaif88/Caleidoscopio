@@ -47,13 +47,10 @@ function obtenerRol($numeroRol) {
     <link rel="icon" type="image/png" href="../IMG/favicon.png">
     <title>ADMIN</title>
 </head>
-<header class="cabeza"><h1>ADMINISTRADOR, <?php echo $_SESSION["nombre"]; ?></h1></header>
+<header class="cabeza">
+    <h1>ADMINISTRADOR, <?php echo $_SESSION["nombre"]; ?></h1>
+</header>
 <body>
-
-
-
-
-
 
 <div class="users-form">
     <h1>Crear usuario</h1>
@@ -123,7 +120,6 @@ function obtenerRol($numeroRol) {
  <button class="btn1 bc" onclick="window.location.href='../ADMIN/PEDIDOSAD.php'">PEDIDOS</button>
  <button class="btn1 bc2" onclick="window.location.href='../PHP/LOGOUT.php'">Cerrar Sesion</button>
 </div>
-
 <br>
 
 <footer class="footer">

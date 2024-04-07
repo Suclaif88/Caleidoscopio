@@ -43,6 +43,7 @@ function obtenerRol($numeroRol) {
 <body>
 
 <div class="users-table">
+    <br>
         <h1>PEDIDOS</h1>
         <br>
         <table>

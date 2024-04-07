@@ -24,6 +24,41 @@ if(strval($_SESSION["rol"]) !== "1") {
     <title>ADMIN</title>
 </head>
 <body>
+
+<style>
+        .checkbox-select {
+            display: inline-block;
+            position: relative;
+        }
+
+        .checkbox-select select {
+            display: none;
+        }
+
+        .checkbox-select .options {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 5px;
+            overflow-y: auto;
+            max-height: 150px;
+            width: 100%;
+        }
+
+        .checkbox-select label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .checkbox-select .selected-option {
+            cursor: pointer;
+            padding: 5px;
+            border: 1px solid #ccc;
+            width: 100%;
+        }
+    </style>
+
 <div class="users-form">
     <h1>Crear pedido</h1>
     <form action="../PHP/INSERTAR_PEDIDO.php" method="POST">
@@ -50,11 +85,15 @@ if(strval($_SESSION["rol"]) !== "1") {
 
             ?>
         </select>
-        <input type="text" name="usuario" placeholder="Usuario" required>
-        <select id="material" name="material" required>
-        <option value="">Seleccione un material</option>
-            <?php
 
+
+        <input type="text" name="usuario" placeholder="Usuario" required>
+
+
+        <div class="checkbox-select">
+        <div class="selected-option" onclick="toggleOptions()">Seleccione Materiales</div>
+        <div class="options">
+            <?php
             require_once("../PHP/CONN.php");
 
             if ($conexion->connect_error) {
@@ -66,14 +105,27 @@ if(strval($_SESSION["rol"]) !== "1") {
 
             if ($resultado->num_rows > 0) {
                 while ($fila = $resultado->fetch_assoc()) {
-                    echo "<option value='".$fila['id']."'>".$fila['material']."</option>";
+                    echo '<label><input type="checkbox" name="materiales[]" value="'.$fila['id'].'">'.$fila['material'].'</label>';
                 }
             } else {
-                echo "<option value=''>No hay obras disponibles</option>";
+                echo "<p>No hay materiales disponibles</p>";
             }
-
             ?>
-        </select>
+        </div>
+        </div>
+
+    <script>
+        function toggleOptions() {
+            var options = document.querySelector('.checkbox-select .options');
+            options.style.display = options.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+
+
+
+
+
+
         <input type="text" name="precio" placeholder="Precio" required>
         <input type="text" name="cantidad" placeholder="Cantidad" required>
         <input type="text" name="unidad" placeholder="Unidad" required>

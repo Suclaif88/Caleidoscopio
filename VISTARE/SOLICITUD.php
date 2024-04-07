@@ -162,7 +162,7 @@
         }
 
         .list-items.scrollable {
-            max-height: 200px; /* ajusta según sea necesario */
+            max-height: 200px;
             overflow-y: auto;
         }
 
@@ -336,10 +336,8 @@
         materialFields = document.querySelector(".material-fields");
 
         function createFieldsForMaterial(materialName) {
-    // Verificar si ya existe un campo para este material
     const existingMaterialInput = document.querySelector(`input[name="material_nombre[]"][value="${materialName}"]`);
     if (existingMaterialInput) {
-        // Si ya existe, no hacer nada
         return;
     }
 
@@ -414,12 +412,10 @@
 
         const checkedMaterials = Array.from(checked).map((item) => item.querySelector(".item-text").textContent);
 
-        // Crear nuevos campos solo para el material seleccionado
         checkedMaterials.forEach((materialName) => {
             createFieldsForMaterial(materialName);
         });
 
-        // Eliminar campos que ya no están seleccionados
         const materialDivs = document.querySelectorAll(".material-fields > div");
         materialDivs.forEach((materialDiv) => {
             const materialName = materialDiv.querySelector("input[name='material_id[]']").value;

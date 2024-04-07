@@ -119,9 +119,9 @@ function obtenerRol($numeroRol) {
             </tbody>
         </table>
     </div>
-
 <div class="cad">
- <button class="btn1 bc" onclick="window.location.href='../PHP/LOGOUT.php'">Cerrar Sesion</button>
+ <button class="btn1 bc" onclick="window.location.href='../ADMIN/PEDIDOSAD.php'">PEDIDOS</button>
+ <button class="btn1 bc2" onclick="window.location.href='../PHP/LOGOUT.php'">Cerrar Sesion</button>
 </div>
 
 <br>

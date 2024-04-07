@@ -66,13 +66,21 @@
   text-align: center;
 }
 
-.cad{
-  display: grid;
-grid-template-columns: repeat(3, 1fr);
-grid-template-rows: repeat(5, 1fr);
-grid-column-gap: 0px;
-grid-row-gap: 0px;
 
+
+
+.cad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
 }
 
-.bc  { grid-area: 3 / 2 / 4 / 3; }
+.bc {
+  grid-area: 2 / 2 / 2 / 3 ;
+}
+
+.bc2 {
+  grid-area: 4 / 2 / 4 / 3;
+}

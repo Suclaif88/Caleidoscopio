@@ -74,7 +74,7 @@ if(strval($_SESSION["rol"]) !== "3") {
             5 => "Rechazado por Gerencia",
             7 => "Urgentes",
             9 => "Aprobado por Gerencia",
-            10 => "Rechazado por Gerencia",
+            10 => "Rechazado Urgente",
             12 => "Aprobado por Gerencia sin verificar",
             13 => "Aprobado por Gerencia Verificado",
             14 => "Aprobado por Gerencia Verificado Urgente",
@@ -182,7 +182,7 @@ echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
 
 <table border="1">
     <center>
-    <h1>Rechazados por Gerencia</h1>
+    <h1>Rechazados</h1>
     </center>
     <tr>
         <th>Nombre</th>
@@ -202,7 +202,7 @@ echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
     $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
     FROM pedidos
     INNER JOIN obras ON pedidos.obra_id = obras.id
-    WHERE pedidos.estado = 5
+    WHERE pedidos.estado IN (2, 5)
     GROUP BY pedidos.fecha_pedido";
 
 
@@ -314,7 +314,7 @@ if ($conexion->connect_error) {
    $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
    FROM pedidos
    INNER JOIN obras ON pedidos.obra_id = obras.id
-   WHERE pedidos.estado IN (9, 14, 15)
+   WHERE pedidos.estado IN (9, 15)
    GROUP BY pedidos.fecha_pedido";
 
 

@@ -88,12 +88,18 @@ table th{
     text-align: center;
     font-weight: bold;
 }
+.users-table--edit:hover{
+    cursor: pointer;
+}
 .users-table--delete{
     background: #b11e1e;
     padding: 6px;
     color: #fff;
     text-align: center;
     font-weight: bold;
+}
+.users-table--delete:hover{
+    cursor: pointer;
 }
 
 .b3 {
@@ -125,4 +131,7 @@ table th{
     color: #fff;
     padding: 20px;
     text-align: center;
-  }
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

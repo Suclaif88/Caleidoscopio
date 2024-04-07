@@ -70,9 +70,8 @@
     </header>
     
     <form action="../PHP/AGGSOUR.php" method="post">
-        <label for="usuario">Nombre de Usuario:</label>
         <input type="hidden" name="usuario" value="<?php echo $_SESSION["nombre"]; ?>">
-        <h1 style="text-align: center;"><?php echo $_SESSION["nombre"]; ?></h1>
+        <h1 style="text-align: center;">USUARIO: <?php echo $_SESSION["nombre"]; ?></h1>
         
         <label for="obra">Obra:</label>
         <select id="obra" name="obra_id" required>

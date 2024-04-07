@@ -250,7 +250,7 @@
     
     <form action="../PHP/AGGSO.php" method="post" class="solicitud">
         <input type="hidden" name="usuario" value="<?php echo $_SESSION["nombre"]; ?>">
-        <h1 style="text-align: center;"><?php echo $_SESSION["nombre"]; ?></h1><br><br>
+        <h1 style="text-align: center;">USUARIO: <?php echo $_SESSION["nombre"]; ?></h1><br><br>
         <select id="obra" name="obra_id" required>
             <option value="">Seleccione una obra</option>
             <?php

@@ -128,6 +128,12 @@ $pedido = $resultado->fetch_assoc();
 
 
 <?php
+
+$estados = array(
+    14 => "Aprobado por Gerencia Verificado Urgente",
+    15 => "Aprobado por Gerencia sin verificar Urgente",
+);
+
 if (isset($_GET['fecha_pedido'])) {
     $fecha_pedido = $_GET['fecha_pedido'];
 
@@ -137,12 +143,13 @@ if (isset($_GET['fecha_pedido'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT producto, cantidad, unidad, precio, historial
+    $sql = "SELECT producto, cantidad, unidad, precio, historial, estado
             FROM pedidos
-            WHERE fecha_pedido = '$fecha_pedido' AND estado = 9";
+            WHERE fecha_pedido = '$fecha_pedido' AND (estado = 9 OR estado = 14 OR estado = 15)";
     $resultado = $conexion->query($sql);
 
     $subtotal = 0;
+    $estadoMostrado = false;
 
     if ($resultado->num_rows > 0) {
         echo "<table border='1'>";
@@ -152,7 +159,7 @@ if (isset($_GET['fecha_pedido'])) {
             echo "<td>".$fila['producto']."</td>";
             echo "<td style='position: relative;'>".$fila['cantidad'];
             if ($fila['historial'] == 3) {
-                echo "<span class='editado fa fa-exclamation-circle' title='Editado' style='position: absolute; top: 15px; right: -10px;'></span>";
+                echo "<span class='editado fa fa-exclamation-circle' title='Editado' style='position: absolute; top: 5px; right: -10px;'></span>";
             }
             echo "</td>";
             echo "<td>".$fila['unidad']."</td>";
@@ -161,10 +168,17 @@ if (isset($_GET['fecha_pedido'])) {
             echo "<td>".$precio_total."</td>";
             $subtotal += $precio_total;
             echo "</tr>";
+            if ($fila['estado'] == 15 && !$estadoMostrado) {
+                $estadoMostrado = true;
+            }
         }
         echo "</table>";
         echo "<br>";
         echo "<h1>Subtotal: <span style='float: right;'>$subtotal</span></h1>";
+        
+        if ($estadoMostrado) {
+            echo "<h1 style='margin-top: 20px;'>".$estados[15]." <span style='color: red;'>!</span></h1>";
+        }
     } else {
         echo "<br>";
         echo "No se encontraron detalles de la solicitud de materiales para esta fecha de pedido.";

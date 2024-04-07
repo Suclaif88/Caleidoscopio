@@ -67,7 +67,7 @@
         </nav>
 
         <div class="container">
-        <h1>Solicitudes Urgentes Entrantes</h1> <br>
+            <center><h1>Solicitudes Urgentes Entrantes</h1></center> <br>
 <table border="1">
     <tr>
         <th>Nombre</th>
@@ -88,9 +88,12 @@ $estados = array(
     4 => "Aprobado por Gerencia",
     5 => "Rechazado por Gerencia",
     7 => "Urgentes",
-    8 => "Pendiente",
     9 => "Aprobado por Gerencia",
     10 => "Rechazado por Gerencia",
+    11 => "Recibido sin verificacion",
+    12 => "Aprobado por Gerencia sin verificar",
+    13 => "Aprobado por Gerencia Verificado",
+    14 => "Enviado Urgente sin verificacion",
     
 );
 
@@ -98,7 +101,7 @@ $estados = array(
 $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
 FROM pedidos
 INNER JOIN obras ON pedidos.obra_id = obras.id
-WHERE pedidos.estado = 8
+WHERE pedidos.estado IN (8, 14)
 GROUP BY pedidos.fecha_pedido";
 
 

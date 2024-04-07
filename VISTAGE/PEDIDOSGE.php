@@ -90,6 +90,9 @@
         9 => "Aprobado por Gerencia",
         10 => "Rechazado por Gerencia",
         11 => "Recibido sin verificacion",
+        12 => "Aprobado por Gerencia sin verificar",
+        13 => "Aprobado por Gerencia Verificado",
+        14 => "Enviado Urgente sin verificacion",
         
     );
 

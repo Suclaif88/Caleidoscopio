@@ -102,6 +102,24 @@ session_start();
         background: #a62121;
         text-decoration: none;
     }
+
+    .op button.esv {
+    -webkit-border-radius: 28;
+    -moz-border-radius: 28;
+    border-radius: 28px;
+    font-family: Arial;
+    color: #ffffff;
+    font-size: 20px;
+    background: #ff9736;
+    padding: 10px 20px 10px 20px;
+    border: solid #000000 4px;
+    text-decoration: none;
+    }
+
+    .op button.esv:hover{
+        background: #974006;
+        text-decoration: none;
+    }
     
     </style>
 </head>
@@ -208,6 +226,9 @@ if (isset($_GET['fecha_pedido'])) {
     <button class="aceptar" id="btnAceptar">ACEPTAR</button>
     <button class="rechazar" id="btnRechazar">RECHAZAR</button>
 </div>
+<div class="op">
+<button class="esv" id="btnEnviadoSinVerificacion">ENVIAR SIN VERIFICACION</button>
+</div>
 
 <script>
     document.getElementById("btnAceptar").addEventListener("click", function() {
@@ -247,6 +268,26 @@ if (isset($_GET['fecha_pedido'])) {
             console.error("No se proporcionó la fecha de pedido.");
         }
     });
+
+    document.getElementById("btnEnviadoSinVerificacion").addEventListener("click", function() {
+    if (confirm("¿Está seguro de que desea enviar sin verificacion?")) {
+        var fecha_pedido = "<?php echo isset($_GET['fecha_pedido']) ? $_GET['fecha_pedido'] : ''; ?>";
+        if (fecha_pedido) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "../PHP/ENVIADO_SIN_VERIFICACION3.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert(xhr.responseText);
+                    window.location.href = "PEUR.php";
+                }
+            };
+            xhr.send("accion=enviado_sin_verificacion&fecha_pedido=" + fecha_pedido);
+        } else {
+            console.error("No se proporcionó la fecha de pedido.");
+        }
+    }
+});
 
 
 

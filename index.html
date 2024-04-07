@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="IMG/favicon.png">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet"> 
 </head>
 <style>
 *:before,
@@ -115,43 +115,65 @@ button{
 button:hover{
     background-color: #D9981E;
 }
-.social{
-margin-top: 30px;
-display: flex;
-}
-.social div{
-background: red;
-width: 150px;
-border-radius: 3px;
-padding: 5px 10px 10px 5px;
-background-color: rgba(255,255,255,0.27);
-color: #eaf0fb;
-text-align: center;
-}
-.social div:hover{
-background-color: rgba(255,255,255,0.47);
-}
-.social .fb{
-margin-left: 25px;
-}
-.social i{
-margin-right: 4px;
-}
+
+        #loader {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          z-index: 9999;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+      #loader img {
+          width: 50px;
+          height: 50px;
+      }
+      #loader p {
+          margin-top: 10px;
+          font-size: 18px;
+          color: #ffffff;
+      }
 </style>
 <body>
   <div class="background">
-      <div class="shape"></div>
-      <div class="shape"></div>
+    <div class="shape"></div>
+    <div class="shape"></div>
   </div>
-  <form action="PHP/LOGIN.php" method="post">
-      <h3>INGRESO</h3>
-
-      <label for="username">IDENTIFICACION</label>
-      <input type="text" placeholder="INGRESE SU IDENTIFICACION" id="id" name="id" pattern="[A-Za-z0-9]+" required>
-
-      <label for="password">CONTRASENA</label>
-      <input type="password" placeholder="INGRESE SU CONTRASENA" id="pass" name="pass" pattern="[A-Za-z0-9]+" required>
-      <button type="submit" value="Ingresar">INGRESAR</button>
+  <form id="loginForm" action="PHP/LOGIN.php" method="post">
+    <h3>INGRESO</h3>
+    <label for="username">IDENTIFICACION</label>
+    <input type="text" placeholder="INGRESE SU IDENTIFICACION" id="id" name="id" pattern="[A-Za-z0-9]+" required>
+    <label for="password">CONTRASENA</label>
+    <input type="password" placeholder="INGRESE SU CONTRASENA" id="pass" name="pass" pattern="[A-Za-z0-9]+" required>
+    <button type="submit" value="Ingresar">INGRESAR</button>
   </form>
+
+
+  <div id="loader" style="display: none;">
+    <img src="IMG/loader.gif" alt="Cargando...">
+    <p>Cargando...</p>
+  </div>
+
+<script>
+  function mostrarLoader() {
+  document.getElementById("loader").style.display = "flex";
+  setTimeout(function() {
+    document.getElementById("loginForm").submit();
+  }, 1000);
+}
+
+document.getElementById("loginForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  mostrarLoader();
+});
+</script>
+
+
 </body>
+
 </html>

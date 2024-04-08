@@ -60,8 +60,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="../CSS/CSS.css">
     <link rel="stylesheet" href="../CSS/responsive.css">
     <link rel="icon" type="image/png" href="../IMG/favicon.png">
-</head>
+    <!-- Agrega jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Agrega Select2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
+</head>
 <body>
 
 <div class="navbar">
@@ -70,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <li><a href="COMPRA-MATERIALES.php">Compra de materiales</a></li>
         <li><a href="OBRAS.php">Obras</a></li>
         <li><a href="" style="color:white;">Cotizaciones</a></li>
-        <li><a href="DC.php">inicio</a></li>
+        <li><a href="DC.php">Inicio</a></li>
     </ul>
 </div>
 
@@ -97,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 400px;
+        height: 100px;
         margin-bottom: 20px;
     }
 
@@ -119,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     select,
     input[type="number"],
     input[type="text"] {
-        width: calc(100% - 24px);
+        width: calc(100% - 0px);
         padding: 10px;
         margin-bottom: 15px;
         border: 1px solid #ccc;
@@ -144,68 +149,84 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 <div id="formulario-container">
-<form action="../PHP/AGGMA.php" method="post">
-    <?php
-    require_once("../PHP/CONN.php");
 
-    $sql = "SELECT `id`, `producto`, `descripcion`, `unidad`, `precio`, `proveedor` FROM `cotizaciones`";
-
-    $result = $conexion->query($sql);
-
-    echo "<label for='cotizacion'>Seleccionar Cotización:</label>";
-    echo "<select name='cotizacion' id='cotizacion' required>";
-    echo "<option value=''>Selecciona una cotización...</option>"; 
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            echo "<option value='" . $row['id'] . "'>" . $row['producto'] . " - " . $row['proveedor'] . "</option>";
-        }
-    } else {
-        echo "<option value='' disabled>No se encontraron cotizaciones</option>";
-    }
-    echo "</select><br>";
-
-    ?>
-
-    <label for="cantidad">Cantidad:</label>
-    <input type="number" name="cantidad" id="cantidad" required><br>
-
-    <label for="unidad">Unidad:</label>
-    <input type="text" name="unidad" id="unidad"><br>
-
-    <label for="selectObra">Selecciona una obra:</label>
-    <select name="selectObra" id="selectObra" required>
-        <option value="">Selecciona una obra...</option>
+<form action="" method="post" class="solicitud">
+    <input type="hidden" name="usuario" value="<?php echo $_SESSION["nombre"]; ?>">
+    <h1 style="text-align: center;">USUARIO: <?php echo $_SESSION["nombre"]; ?></h1><br><br>
+    <select id="obra" name="obra_id" required>
+        <option value="">Seleccione una Obra</option>
         <?php
         require_once("../PHP/CONN.php");
-
         if ($conexion->connect_error) {
             die("Error de conexión: " . $conexion->connect_error);
         }
-
-        $sql = "SELECT DISTINCT pedidos.obra_id, obras.nombre, pedidos.estado
-                FROM pedidos 
-                LEFT JOIN obras ON pedidos.obra_id = obras.id
-                WHERE pedidos.estado = '1'";
+        $sql = "SELECT id, nombre FROM obras";
         $resultado = $conexion->query($sql);
-
         if ($resultado->num_rows > 0) {
             while ($fila = $resultado->fetch_assoc()) {
-                echo "<option value='" . $fila['obra_id'] . "'>" . $fila['nombre'] . "</option>";
+                echo "<option value='".$fila['id']."'>".$fila['nombre']."</option>";
             }
         } else {
-            echo "<option value=''>No se encontraron obras.</option>";
+            echo "<option value=''>No hay obras disponibles</option>";
+        }
+        ?>
+    </select><br><br>
+    <select id="proveedor" name="proveedor" required>
+        <option value="">Seleccione un Proveedor</option>
+        <?php
+        require_once("../PHP/CONN.php");
+        if ($conexion->connect_error) {
+            die("Error de conexión: " . $conexion->connect_error);
+        }
+        $sql = "SELECT id, proveedor FROM proveedores";
+        $resultado = $conexion->query($sql);
+        if ($resultado->num_rows > 0) {
+            while ($fila = $resultado->fetch_assoc()) {
+                echo "<option value='".$fila['id']."'>".$fila['proveedor']."</option>";
+            }
+        } else {
+            echo "<option value=''>No hay proveedores disponibles</option>";
+        }
+        ?>
+    </select><br><br>
+    <select id="materiales" name="materiales[]" multiple="multiple" style="width: 100%;">
+        <option value="">Seleccione Materiales</option>
+    </select><br><br>
+    <script>
+    $(document).ready(function() {
+        $('#materiales').select2({
+            placeholder: 'Seleccione Materiales',
+            allowClear: true
+        });
+
+        function cargarMateriales(proveedorId) {
+            $.ajax({
+                url: '../PHP/CARGAR_MATERIALES.php',
+                type: 'POST',
+                data: { proveedor_id: proveedorId },
+                dataType: 'html',
+                success: function(response) {
+                    $('#materiales').html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
         }
 
-        $conexion->close();
-        ?>
-    </select>
+        $('#proveedor').change(function() {
+            var proveedorId = $(this).val();
+            cargarMateriales(proveedorId);
+        });
+    });
+</script>
+
     <input type="submit" value="ENVIAR" class="btn2">
 </form>
 
 
+
 </div>
-
-
 
 </body>
 </html>

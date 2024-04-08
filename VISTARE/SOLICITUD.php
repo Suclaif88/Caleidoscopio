@@ -38,7 +38,7 @@
         }
 
         form {
-            width: 650px;
+            width: 50%;
             margin: 5vh;
             padding: 20px;
             border: 1px solid #ccc;
@@ -191,7 +191,7 @@
 
         .material-fields {
             margin-top: 20px;
-            width: 80%;
+            width: auto;
         }
   
         .material-fields div {
@@ -215,7 +215,7 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
-            width: auto;
+            width: 150px;
             position: relative;
             left: -95px;
         }
@@ -232,6 +232,124 @@
             top: -5px;
 
         }
+
+        #materiales{
+            width: 100%;
+        }
+        
+    @media only screen and (max-width: 1400px) {
+    form {
+        width: 50%;
+        margin: 5vh auto;
+    }
+    .material-fields label {
+            margin-right: 10px;
+            width: 100px;
+            position: relative;
+            left: -85px;
+            top: -5px;
+        }
+  
+        .material-fields input[type="number"],
+        .material-fields input[type="text"] {
+            width: 100px;
+            position: relative;
+            left: -90px;
+        }
+
+
+}
+
+@media only screen and (max-width: 1018px) {
+    form {
+        width: 60%;
+        margin: 5vh auto;
+    }
+
+}
+
+@media only screen and (max-width: 840px) {
+    form {
+        width: 70%;
+        margin: 5vh auto;
+    }
+
+}
+
+@media only screen and (max-width: 720px) {
+    form {
+        width: 80%;
+        margin: 5vh auto;
+    }
+
+}
+
+@media only screen and (max-width: 650px) {
+    form {
+        width: 90%;
+        margin: 5vh auto;
+    }
+
+}
+@media only screen and (max-width: 550px) {
+    form {
+        width: 100%;
+        margin: 5vh auto;
+    }
+    .material-fields label {
+
+            position: relative;
+            left: -85px;
+            top: -5px;
+        }
+  
+        .material-fields input[type="number"],
+        .material-fields input[type="text"] {
+
+            position: relative;
+            left: -90px;
+        }
+
+        input[readonly] {
+            font-size: 15px;
+            position: relative;
+            top: -5px;
+
+}
+
+
+}
+
+@media only screen and (max-width: 455px) {
+    form {
+        width: 100%;
+        margin: 5vh auto;
+    }
+    .material-fields label {
+
+            position: relative;
+            left: -200px;
+            top: -3px;
+            font-size: 15px;
+        }
+  
+        .material-fields input[type="number"],
+        .material-fields input[type="text"] {
+
+            position: relative;
+            left: -205px;
+        }
+
+        input[readonly] {
+            font-size: 18px;
+            position: relative;
+            top: -30px;
+
+}
+
+
+}
+        
 
     </style>
     <header class="navbar">
@@ -250,7 +368,7 @@
     
     <form action="../PHP/AGGSO.php" method="post" class="solicitud">
         <input type="hidden" name="usuario" value="<?php echo $_SESSION["nombre"]; ?>">
-        <h1 style="text-align: center;">USUARIO: <?php echo $_SESSION["nombre"]; ?></h1><br><br>
+        <h1 style="text-align: center;">Usuario: <?php echo $_SESSION["nombre"]; ?></h1><br><br>
         <select id="obra" name="obra_id" required>
             <option value="">Seleccione una obra</option>
             <?php
@@ -274,8 +392,8 @@
 
             ?>
         </select><br><br>
-        <div id="productos">
-            <div>
+        <div id="materiales">
+            <div class="materiales">
     <div class="select-btn">
 
         <span class="btn-text">Seleccione Materiales</span>

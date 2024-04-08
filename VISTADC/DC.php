@@ -37,10 +37,22 @@
         <button class="btn1 div4" onclick="window.location.href='../PHP/LOGOUT.php'">Cerrar Sesion</button>
     </div>
 
-
-
-
 <br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
     
+
+
+<h1>Upload PDF</h1>
+    <form action="upload.php" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".pdf">
+        <button type="submit">Upload</button>
+    </form>
+
+
 </body>
 </html>

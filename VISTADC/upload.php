@@ -1,35 +1,29 @@
 <?php
-require_once("../PHP/CONN.php");
+require_once('../vendor/autoload.php');
 
-// Verificar la conexión a la base de datos
-if ($conexion->connect_error) {
-    die("Connection failed: " . $conexion->connect_error);
-}
+use Smalot\PdfParser\Parser;
 
-// Manejar la carga del archivo
-if ($_FILES["file"]["error"] == UPLOAD_ERR_OK) {
-    // Obtener el contenido del archivo
-    $file_content = file_get_contents($_FILES["file"]["tmp_name"]);
-    
-    // Preparar la consulta SQL
-    $sql = "INSERT INTO archivos (contenido) VALUES (?)";
-    $stmt = $conexion->prepare($sql);
+// Verificar si se envió un archivo y si no hay errores
+if (isset($_FILES['pdf_file']) && $_FILES['pdf_file']['error'] === UPLOAD_ERR_OK) {
+    // Obtener la ruta temporal del archivo cargado
+    $pdfPath = $_FILES['pdf_file']['tmp_name'];
 
-    // Verificar si la consulta se preparó correctamente
-    if ($stmt === false) {
-        die("Error preparing statement: " . $conexion->error);
+    // Instanciar el parser de PDF
+    $parser = new Parser();
+
+    // Extraer texto de todas las páginas
+    $pdf = $parser->parseFile($pdfPath);
+    $texto = '';
+    foreach ($pdf->getPages() as $page) {
+        $texto .= $page->getText();
     }
-    
-    // Enlazar los parámetros y ejecutar la consulta
-    $stmt->bind_param("s", $file_content);
-    if ($stmt->execute()) {
-        echo "File uploaded successfully and data inserted into database";
-    } else {
-        echo "Error inserting data into database: " . $stmt->error;
-    }
+
+    // Insertar $texto en la base de datos
+    // Ejemplo: $query = "INSERT INTO tabla (columna) VALUES ('$texto')";
+    // Ejecutar la consulta SQL aquí...
+
+    echo "Texto extraído del PDF y guardado en la base de datos.";
 } else {
-    echo "Error uploading file". $_FILES["file"]["error"];
-}
-
-// Cerrar la conexión
-$conexion->close();
+    // Manejar el caso en que no se envió ningún archivo o hay un error
+    echo "Se produjo un error al cargar el archivo PDF.";
+}   

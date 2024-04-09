@@ -48,10 +48,11 @@
 
 
 <h1>Upload PDF</h1>
-    <form action="upload.php" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".pdf">
-        <button type="submit">Upload</button>
-    </form>
+<form action="upload.php" method="post" enctype="multipart/form-data">
+    <input type="file" name="pdf_file">
+    <button type="submit">Enviar</button>
+</form>
+
 
 
 </body>

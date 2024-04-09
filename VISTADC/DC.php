@@ -47,11 +47,11 @@
     
 
 
-<h1>Upload PDF</h1>
-<form action="upload.php" method="post" enctype="multipart/form-data">
-    <input type="file" name="pdf_file">
-    <button type="submit">Enviar</button>
-</form>
+<h1>Subir PDF</h1>
+    <form action="../PYTHON/PROCESARPDF.cgi" method="post" enctype="multipart/form-data">
+        <input type="file" name="pdf_file" accept=".pdf">
+        <button type="submit">Subir</button>
+    </form>
 
 
 

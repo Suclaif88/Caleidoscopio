@@ -1,7 +1,0 @@
-{
-    "name": "tu/nombre-del-proyecto",
-    "description": "Descripción de tu proyecto",
-    "require": {
-        "smalot/pdfparser": "^0.9.0"
-    }
-}

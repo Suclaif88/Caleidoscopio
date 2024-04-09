@@ -47,11 +47,7 @@
     
 
 
-<h1>Subir PDF</h1>
-    <form action="../PYTHON/PROCESARPDF.cgi" method="post" enctype="multipart/form-data">
-        <input type="file" name="pdf_file" accept=".pdf">
-        <button type="submit">Subir</button>
-    </form>
+
 
 
 

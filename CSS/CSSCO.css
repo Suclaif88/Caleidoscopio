@@ -89,7 +89,7 @@ input[type="submit"]:hover {
         min-width: 0;
         border-radius: 20px;
         padding: 8px 12px;
-        max-width: 200px;
+        max-width: 700px;
         width: 100%;
     }
     
@@ -149,7 +149,7 @@ input[type="submit"]:hover {
         margin-top: 20px;
       }
       .form-control {
-        width: 300px;
+        width: 70vh;
         padding: 10px;
       }
       .btn2 {
@@ -254,6 +254,39 @@ input[type="submit"]:hover {
   margin-top: 20px;
 }
 
+.v{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    color: #000000;
+    text-decoration: none;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: calc(50% - 5px);
+     
+    box-sizing: border-box;
+    background: #f0c760;
+    background-image: -webkit-linear-gradient(top, #f0c760, #d6941a);
+    background-image: -moz-linear-gradient(top, #f0c760, #d6941a);
+    background-image: -ms-linear-gradient(top, #f0c760, #d6941a);
+    background-image: -o-linear-gradient(top, #f0c760, #d6941a);
+    background-image: linear-gradient(to bottom, #f0c760, #d6941a);
+    -webkit-border-radius: 60;
+    -moz-border-radius: 60;
+}
+
+.v:hover {
+  background: #777777;
+  background-image: -webkit-linear-gradient(top, #777777, #000000);
+  background-image: -moz-linear-gradient(top, #777777, #000000);
+  background-image: -ms-linear-gradient(top, #777777, #000000);
+  background-image: -o-linear-gradient(top, #777777, #000000);
+  background-image: linear-gradient(to bottom, #777777, #000000);
+  text-decoration: none;
+  color: #fff;
+}
 .v{
     display: flex;
     justify-content: center;

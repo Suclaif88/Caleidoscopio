@@ -29,7 +29,7 @@
         <div class="navbar">
             <h1>AGREGAR</h1>
              <ul>
-                <li><a href="AGREGARCO.php">Atras</a></li>
+                <li><a href="COTIZACION.php">Atras</a></li>
             </ul>
             <ul>
                 <li><a href="AGG_MA.php" style="color:white;">Materiales</a></li>

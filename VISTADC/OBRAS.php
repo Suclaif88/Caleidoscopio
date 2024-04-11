@@ -30,7 +30,7 @@ if(strval($_SESSION["rol"]) !== "3") {
 <div class="navbar">
     <h1 style="cursor:default;">OBRAS</h1>
     <ul>
-        <li><a href="COMPRA-MATERIALES.php">Compra de materiales</a></li>
+        <li><a href="SOLICITUDES.php">Solicitudes</a></li>
         <li><a href="" style="color:white;">Obras</a></li>
         <li><a href="COTIZACION.php">Cotizaciones</a></li>
         <li><a href="DC.php">Inicio</a></li>

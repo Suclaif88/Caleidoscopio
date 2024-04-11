@@ -90,6 +90,6 @@ if(strval($_SESSION["rol"]) !== "3") {
     ?>
 
     <br>
-    <a href="obras.php" class="btn">Volver a la lista de obras</a>
+    <a href="OBRAS.php" class="btn">Volver a la lista de obras</a>
 </body>
 </html>

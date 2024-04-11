@@ -114,7 +114,7 @@ $pedido = $resultado->fetch_assoc();
 <div class="navbar">
     <h1 style="cursor:default;">DETALLES</h1>
     <ul>
-        <li><a href="" style="color:white;">Compra de materiales</a></li>
+        <li><a href="" style="color:white;">Solicitudes</a></li>
         <li><a href="COMPRA-SIMPLE.php">Compra simple</a></li>
         <li><a href="OBRAS.php" >Obras</a></li>
         <li><a href="COTIZACION.php">Cotizaciones</a></li>
@@ -193,6 +193,6 @@ if (isset($_GET['fecha_pedido'])) {
 
     <br>
     <br>
-    <a href="COMPRA-MATERIALES.php" class="btn">Volver a la lista de solicitudes</a>
+    <a href="SOLICITUDES.php" class="btn">Volver a la lista de solicitudes</a>
 </body>
 </html>

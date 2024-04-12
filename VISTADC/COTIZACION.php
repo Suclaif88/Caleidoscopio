@@ -63,13 +63,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
         }
 
         form {
-            width: 120vh;
+            width: 100%;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #f9f9f9;
             margin-left: auto;
             margin-right: auto;
+        }
+        .parent{
+            display: flex;
+            gap: 10px;
         }
 
         label {
@@ -188,7 +192,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
             </select>
             <button type="submit" class="v">Mostrar Materiales</button>
         </form>
-    </div>
+    </div><br><br>
     <!--Agregar cotizaciones-->
     
     <div class="container">

@@ -143,6 +143,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
     <!-- Seleccionar el proveedor-->
     <div class="container">
         <h1>SELECCIONE PROVEEDOR</h1>
+
+            
         <form action="OBTENER_MA.php" method="post">
         <label for="obra">Obra:</label>
         <select id="obra" name="obra_id" required>
@@ -192,97 +194,106 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
     <!--Agregar cotizaciones-->
     
     <div class="container">
-        <h1>Agregar cotizacion</h1>
+    <h1>Agregar cotización</h1>
     <form action="../PHP/AGGCO.php" method="post">
-    <div id="cotizaciones">
-    <h3>Cotización</h3>
-    <div>
-        <label for="material">Material:</label>
-        <select name="material_id[]" required>
-        <option value="">Seleccione un material</option>
-            <?php
-            $consulta = "SELECT id, material FROM agregar_materiales";
-            $resultado = mysqli_query($conexion, $consulta);
-            while ($fila = mysqli_fetch_assoc($resultado)) {
-                echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
-            }
-            ?>
-        </select>
-        <label for="descripcion">Descripción:</label>
-        <input type="text" name="descripcion[]" required>
-        <label for="unidad">Unidad:</label>
-        <input type="text" name="unidad[]" required>
-        <label for="precio">Precio:</label>
-        <input type="number" name="precio[]" required>
-        <label for="proveedor">Proveedor:</label>
-        <select name="proveedor_id[]" required>
-        <option value="">Seleccione un proveedor</option>
-            <?php
-            $consulta = "SELECT id, proveedor FROM proveedores";
-            $resultado = mysqli_query($conexion, $consulta);
-            while ($fila = mysqli_fetch_assoc($resultado)) {
-                echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
-            }
-            ?>
-        </select>
-    </div>
-    </div>
-    <button type="button" class="v" onclick="agregarCotizacion()">Agregar cotización</button><br><br>
-    <input type="submit" value="Enviar cotización">
-   </form>
-   <br>
-   
-   <br>
-   <div class="parent">
+        <table id="cotizaciones">
+            <thead>
+                <tr>
+                    <th>Material</th>
+                    <th>Descripción</th>
+                    <th>Unidad</th>
+                    <th>Precio</th>
+                    <th>Proveedor</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <select name="material_id[]" required>
+                            <option value="">Seleccione un material</option>
+                            <?php
+                            $consulta = "SELECT id, material FROM agregar_materiales";
+                            $resultado = mysqli_query($conexion, $consulta);
+                            while ($fila = mysqli_fetch_assoc($resultado)) {
+                                echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </td>
+                    <td><input type="text" name="descripcion[]" required></td>
+                    <td><input type="text" name="unidad[]" required></td>
+                    <td><input type="number" name="precio[]" required></td>
+                    <td>
+                        <select name="proveedor_id[]" required>
+                            <option value="">Seleccione un proveedor</option>
+                            <?php
+                            $consulta = "SELECT id, proveedor FROM proveedores";
+                            $resultado = mysqli_query($conexion, $consulta);
+                            while ($fila = mysqli_fetch_assoc($resultado)) {
+                                echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
+                            }
+                            ?>
+                        </select>
+                    </td>
+                    <td><button type="button" onclick="eliminarCotizacion(this)">Eliminar</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" onclick="agregarCotizacion()">Agregar cotización</button><br><br>
+        <input type="submit" value="Enviar cotización">
+    </form>
+    <br>
+    <br>
+    <div class="parent">
         <button type="button" class="v divb1" onclick="window.location.href='AGG_MA.php'" style="cursor:pointer;">Agregar material</button>
         <button type="button" class="v divb3" onclick="window.location.href='AGG_PRO.php'" style="cursor:pointer;">Agregar proveedor</button>
         <button type="button" class="v divb2" onclick="window.location.href='MOD_PRECIO.php'" style="cursor:pointer;">Editar precios</button>
-   </div>
-    
+    </div>
+
     <script>
         function agregarCotizacion() {
-            var contenedor = document.getElementById("cotizaciones");
-            var nuevaCotizacion = document.createElement("div");
-            nuevaCotizacion.innerHTML = `
-                <div>
-                <h3>Cotización</h3><br>
-                <label for="material">Material:</label>
-                <select name="material_id[]" require>
-                    <?php
-                    $consulta = "SELECT id, material FROM agregar_materiales";
-                    $resultado = mysqli_query($conexion, $consulta);
-                    while ($fila = mysqli_fetch_assoc($resultado)) {
-                        echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
-                    }
-                    ?>
-                </select>
-                <label for="descripcion">Descripción:</label>
-                <input type="text" name="descripcion[]" required>
-                <label for="unidad">Unidad:</label>
-                <input type="text" name="unidad[]" required>
-                <label for="precio">Precio:</label>
-                <input type="number" name="precio[]" required>
-                <label for="proveedor">Proveedor:</label>
-                <select name="proveedor_id[]" require>
-                    <?php
-                    $consulta = "SELECT id, proveedor FROM proveedores";
-                    $resultado = mysqli_query($conexion, $consulta);
-                    while ($fila = mysqli_fetch_assoc($resultado)) {
-                        echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
-                    }
-                    ?>
-                </select>
-                <button type="button" class="v" onclick="eliminarCotizacion(this)">Eliminar</button>
-                </div>
+            var tabla = document.getElementById("cotizaciones").getElementsByTagName('tbody')[0];
+            var nuevaFila = tabla.insertRow(-1);
+            nuevaFila.innerHTML = `
+                <td>
+                    <select name="material_id[]" required>
+                    
+                        <?php
+                        $consulta = "SELECT id, material FROM agregar_materiales";
+                        $resultado = mysqli_query($conexion, $consulta);
+                        while ($fila = mysqli_fetch_assoc($resultado)) {
+                            echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
+                        }
+                        ?>
+                    </select>
+                </td>
+                <td><input type="text" name="descripcion[]" required></td>
+                <td><input type="text" name="unidad[]" required></td>
+                <td><input type="number" name="precio[]" required></td>
+                <td>
+                    <select name="proveedor_id[]" required>
+                    <option value="">Seleccione un proveedor</option>
+                        <?php
+                        $consulta = "SELECT id, proveedor FROM proveedores";
+                        $resultado = mysqli_query($conexion, $consulta);
+                        while ($fila = mysqli_fetch_assoc($resultado)) {
+                            echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
+                        }
+                        ?>
+                    </select>
+                </td>
+                <td><button type="button" onclick="eliminarCotizacion(this)">Eliminar</button></td>
             `;
-            contenedor.appendChild(nuevaCotizacion);
         }
 
-        function eliminarCotizacion(elemento) {
-            elemento.parentNode.parentNode.removeChild(elemento.parentNode);
+        function eliminarCotizacion(btn) {
+            var fila = btn.parentNode.parentNode;
+            fila.parentNode.removeChild(fila);
         }
     </script>
-    </div>
+</div>
+
 
 </body>
 

@@ -29,6 +29,7 @@
     background-image: -o-linear-gradient(top, #777777, #000000);
     background-image: linear-gradient(to bottom, #777777, #000000);
     text-decoration: none;
+    cursor: pointer;
   }
   .cabeza{
       width: 100%;

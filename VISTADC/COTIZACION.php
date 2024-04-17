@@ -146,13 +146,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
 
     <!-- Seleccionar el proveedor-->
     <div class="container">
-        <h1>SELECCIONE PROVEEDOR</h1>
-        <form action="OBTENER_MA.php" method="post">
+    <h1>SELECCIONE PROVEEDOR</h1>
+    <form action="OBTENER_MA.php" method="get"> <!-- Cambiamos el método a GET -->
         <label for="obra">Obra:</label>
         <select id="obra" name="obra_id" required>
             <option value="">Seleccione una obra</option>
             <?php
-
             require_once("../PHP/CONN.php");
 
             if ($conexion->connect_error) {
@@ -169,30 +168,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
             } else {
                 echo "<option value=''>No hay obras disponibles</option>";
             }
-
             ?>
         </select>
-            <label for="proveedor">Seleccione un proveedor:</label>
-            <select name="proveedor" id="proveedor">
+
+        <label for="proveedor">Seleccione un proveedor:</label>
+        <select name="proveedor" id="proveedor">
             <option value="">Seleccione un proveedor</option>
-                <?php
-                if (mysqli_connect_errno()) {
-                    echo "Error de conexión a MySQL: " . mysqli_connect_error();
-                    exit();
-                }
+            <?php
+            $consulta = "SELECT proveedor FROM proveedores";
+            $resultados = mysqli_query($conexion, $consulta);
 
-                $consulta = "SELECT proveedor FROM proveedores";
-                $resultados = mysqli_query($conexion, $consulta);
+            while ($fila = mysqli_fetch_array($resultados)) {
+                echo "<option value='" . $fila['proveedor'] . "'>" . $fila['proveedor'] . "</option>";
+            }
+            ?>
+        </select>
+        
+        <button type="submit" class="v">Mostrar Materiales</button>
+    </form>
+</div><br><br>
 
-                while ($fila = mysqli_fetch_array($resultados)) {
-                    echo "<option value='" . $fila['proveedor'] . "'>" . $fila['proveedor'] . "</option>";
-                }
-
-                ?>
-            </select>
-            <button type="submit" class="v">Mostrar Materiales</button>
-        </form>
-    </div><br><br>
     <!--Agregar cotizaciones-->
     
     <div class="container">

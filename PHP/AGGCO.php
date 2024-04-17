@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $consulta_proveedor = "SELECT proveedor FROM proveedores WHERE id = '$proveedor_id'";
         $resultado_proveedor = mysqli_query($conexion, $consulta_proveedor);
         $fila_proveedor = mysqli_fetch_assoc($resultado_proveedor);
-        $proveedor = $fila_proveedor['proveedor']; // Aquí recuperamos el nombre del proveedor
+        $proveedor = $fila_proveedor['proveedor'];
 
         $sql = "INSERT INTO cotizaciones (material, descripcion, unidad, precio, proveedor) VALUES ('$material', '$descripcion', '$unidad', $precio, '$proveedor')"; // Insertamos el nombre del proveedor en lugar del ID
 

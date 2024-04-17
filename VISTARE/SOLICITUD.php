@@ -64,7 +64,7 @@
             text-align: center;
             text-decoration: none;
             color: black;
-            margin-top: 4vh:
+            margin-top: 4vh;
         }
 
         .select-btn{

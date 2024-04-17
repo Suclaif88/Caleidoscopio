@@ -187,7 +187,10 @@ input[type="submit"]:hover {
 
   a{
     text-decoration: none;
-    color: fff;
+    color: #ffffff;
+  }
+  a:hover{
+    color: #d6941a;
   }
 
 #productos{

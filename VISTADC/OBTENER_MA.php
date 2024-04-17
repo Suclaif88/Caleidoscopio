@@ -1,3 +1,19 @@
+<?php
+    require_once("../PHP/CONN.php");
+    session_start();
+    if(!isset($_SESSION["nombre"])){
+        header("Location:../INDEX.html");
+        exit();
+    }
+
+    if(strval($_SESSION["rol"]) !== "3") {
+        header("Location: ../INDEX.html");
+        exit();
+    }
+    
+    $usuario=$_SESSION["nombre"];
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -246,55 +262,73 @@
 </style>
 </head>
 <body>
+<br>
+<div class="contobtenerma">
+    <h1>Solicitud de Materiales</h1>
+    <form action="../PHP/PROCESAR_SOLICITUD.php" method="post" class="solicitud">
+        <!-- Obtener proveedor preseleccionado de la URL -->
+        <?php
+        $proveedor = '';
+        $obra_id = '';
 
-<form action="" method="post" class="solicitud">
-    <div id="materiales">
-        <div class="materiales">
-            <div class="select-btn">
-                <span class="btn-text">Seleccione Materiales</span>
-                <span class="arrow-dwn">
-                    <i class="fas fa-chevron-down"></i>
-                </span>
-            </div>
-            <ul class="list-items">
-                <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Buscar Materiales">
+        if (isset($_GET['proveedor'])) {
+            $proveedor = $_GET['proveedor'];
+        }
+        if (isset($_GET['obra_id'])) {
+            $obra_id = $_GET['obra_id'];
+        }
+        ?>
+
+        <div id="materiales">
+            <div class="materiales">
+                <div class="select-btn">
+                    <span class="btn-text">Seleccione Materiales</span>
+                    <span class="arrow-dwn">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
                 </div>
-                <?php
-                    if (isset($_POST['proveedor'])) {
-                        $proveedor = $_POST['proveedor'];
-                        require_once("../PHP/CONN.php");
+                <ul class="list-items">
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="Buscar Materiales">
+                    </div>
+                    <?php
 
-                        if ($conexion->connect_error) {
-                            die("Error de conexión: " . $conexion->connect_error);
-                        }
-
-                        $sql = "SELECT id, producto, descripcion, precio FROM cotizaciones WHERE proveedor = '$proveedor'";
-                        $resultado = $conexion->query($sql);
-
-                        if ($resultado->num_rows > 0) {
-                            while ($row = $resultado->fetch_assoc()) {
-                                echo '<li class="item" data-id="' . $row["id"] . '">
-                                    <span class="checkbox">
-                                        <i class="check-icon fas fa-check"></i>
-                                    </span>
-                                    <span class="item-text">' . $row["producto"] . '</span>
-                                    <span class="item-price">' . $row["precio"] . '</span>
-                                </li>';
-                            }
-                        } else {
-                            echo "Sin resultados";
-                        }
-                        $conexion->close();
+                    if ($conexion->connect_error) {
+                        die("Error de conexión: " . $conexion->connect_error);
                     }
-                ?>
-            </ul>
-            <div class="material-fields"></div>
+
+                    $sql = "SELECT id, producto, descripcion, precio FROM cotizaciones WHERE proveedor = '$proveedor'";
+                    $resultado = $conexion->query($sql);
+
+                    if ($resultado->num_rows > 0) {
+                        while ($row = $resultado->fetch_assoc()) {
+                            echo '<li class="item" data-id="' . $row["id"] . '">
+                                <span class="checkbox">
+                                    <i class="check-icon fas fa-check"></i>
+                                </span>
+                                <span class="item-text">' . $row["producto"] . '</span>
+                                <span class="item-price">' . $row["precio"] . '</span>
+                            </li>';
+                        }
+                    } else {
+                        echo "<li>Sin resultados</li>";
+                    }
+
+                    $conexion->close();
+                    ?>
+                </ul>
+                <div class="material-fields"></div>
+            </div>
         </div>
-    </div>
-    <button class="btn1 div2" type="submit"><em>Enviar Solicitud</em></button>
-    <button class="btn1 div2"><em><a href="COTIZACION.php">Volver</a></em></button>
-</form>
+
+        <!-- Campos ocultos para enviar el resto de la informacion -->
+        <input type="hidden" name="proveedor" value="<?php echo htmlspecialchars($proveedor); ?>">
+        <input type="hidden" name="obra_id" value="<?php echo htmlspecialchars($obra_id); ?>">
+        <input type="hidden" name="usuario" value="<?php echo htmlspecialchars($usuario); ?>">
+        <button class="btn1 div2" type="submit"><em>Enviar Solicitud</em></button><br>
+        <button class="btn1 div2"><em><a href="COTIZACION.php">Volver</a></em></button>
+    </form>
+</div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {

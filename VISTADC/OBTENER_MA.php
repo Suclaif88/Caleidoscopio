@@ -297,7 +297,7 @@
                         die("Error de conexión: " . $conexion->connect_error);
                     }
 
-                    $sql = "SELECT id, producto, descripcion, precio FROM cotizaciones WHERE proveedor = '$proveedor'";
+                    $sql = "SELECT id, material, descripcion, precio FROM cotizaciones WHERE proveedor = '$proveedor'";
                     $resultado = $conexion->query($sql);
 
                     if ($resultado->num_rows > 0) {
@@ -306,7 +306,7 @@
                                 <span class="checkbox">
                                     <i class="check-icon fas fa-check"></i>
                                 </span>
-                                <span class="item-text">' . $row["producto"] . '</span>
+                                <span class="item-text">' . $row["material"] . '</span>
                                 <span class="item-price">' . $row["precio"] . '</span>
                             </li>';
                         }

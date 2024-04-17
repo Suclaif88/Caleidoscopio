@@ -116,6 +116,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
             background-image: linear-gradient(to bottom, #777777, #000000);
             text-decoration: none;
         }
+        .container {
+            width: 100%; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-gap: 20px;
+            margin-top: 20px;
+        }
+
+        .container form {
+            width: 100%; 
+        }
+
+        .container form table {
+            width: 100%; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            table-layout: auto;
+        }
+
+        .container form table th,
+        .container form table td {
+            padding: 8px; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis;
+        }
+
+        .container form table th {
+            background-color: #f0f0f0; 
+        }
+        .t{
+            width: 100%;
+            margin-top:5vh;
+        }
     </style>
 </head>
 
@@ -205,6 +241,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
                     <th>Descripción</th>
                     <th>Unidad</th>
                     <th>Precio</th>
+                    <th>descuento</th>
+                    <th>impuesto</th>
                     <th>Proveedor</th>
                     <th>Acción</th>
                 </tr>
@@ -212,37 +250,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
             <tbody>
                 <tr>
                     <td>
-        <select name="material_id[]" required>
-        <option value="">Seleccione un material</option>
-            <?php
-            $consulta = "SELECT id, material FROM agregar_materiales";
-            $resultado = mysqli_query($conexion, $consulta);
-            while ($fila = mysqli_fetch_assoc($resultado)) {
-                echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
-            }
-            ?>
-        </select>
+                <select name="material_id[]" required>
+                <option value="">Seleccione un material</option>
+                    <?php
+                    $consulta = "SELECT id, material FROM agregar_materiales";
+                    $resultado = mysqli_query($conexion, $consulta);
+                    while ($fila = mysqli_fetch_assoc($resultado)) {
+                        echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
+                    }
+                    ?>
+                </select>
                     </td>
                     <td><input type="text" name="descripcion[]" required></td>
                     <td><input type="text" name="unidad[]" required></td>
                     <td><input type="number" name="precio[]" required></td>
+                    <td><input type="number" name="descuento[]" required></td>
+                    <td><input type="number" name="impuesto[]" required></td>
                     <td>
-        <select name="proveedor_id[]" required>
-        <option value="">Seleccione un proveedor</option>
-            <?php
-            $consulta = "SELECT id, proveedor FROM proveedores";
-            $resultado = mysqli_query($conexion, $consulta);
-            while ($fila = mysqli_fetch_assoc($resultado)) {
-                echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
-            }
-            ?>
-        </select>
+                    <select name="proveedor_id[]" required>
+                    <option value="">Seleccione un proveedor</option>
+                        <?php
+                        $consulta = "SELECT id, proveedor FROM proveedores";
+                        $resultado = mysqli_query($conexion, $consulta);
+                        while ($fila = mysqli_fetch_assoc($resultado)) {
+                            echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
+                        }
+                        ?>
+                    </select>
                     </td>
                     <td><button type="button" onclick="eliminarCotizacion(this)">Eliminar</button></td>
                 </tr>
             </tbody>
         </table>
-        <button type="button" onclick="agregarCotizacion()">Agregar cotización</button><br><br>
+        <button type="button" class="v t" onclick="agregarCotizacion()">Agregar cotización</button><br><br>
     <input type="submit" value="Enviar cotización">
    </form>
    <br>
@@ -260,30 +300,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
             nuevaFila.innerHTML = `
                 <td>
                     <select name="material_id[]" required>
-                    
-                    <?php
-                    $consulta = "SELECT id, material FROM agregar_materiales";
-                    $resultado = mysqli_query($conexion, $consulta);
-                    while ($fila = mysqli_fetch_assoc($resultado)) {
-                        echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
-                    }
-                    ?>
-                </select>
+                        <option value="">Seleccione un material</option>
+                        <?php
+                        $consulta = "SELECT id, material FROM agregar_materiales";
+                        $resultado = mysqli_query($conexion, $consulta);
+                        while ($fila = mysqli_fetch_assoc($resultado)) {
+                            echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
+                        }
+                        ?>
+                    </select>
                 </td>
                 <td><input type="text" name="descripcion[]" required></td>
                 <td><input type="text" name="unidad[]" required></td>
                 <td><input type="number" name="precio[]" required></td>
+                <td><input type="text" name="descuento[]" required></td>
+                <td><input type="number" name="impuestos[]" required></td>
                 <td>
                     <select name="proveedor_id[]" required>
                     <option value="">Seleccione un proveedor</option>
-                    <?php
-                    $consulta = "SELECT id, proveedor FROM proveedores";
-                    $resultado = mysqli_query($conexion, $consulta);
-                    while ($fila = mysqli_fetch_assoc($resultado)) {
-                        echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
-                    }
-                    ?>
-                </select>
+                        <?php
+                        $consulta = "SELECT id, proveedor FROM proveedores";
+                        $resultado = mysqli_query($conexion, $consulta);
+                        while ($fila = mysqli_fetch_assoc($resultado)) {
+                            echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
+                        }
+                        ?>
+                    </select>
                 </td>
                 <td><button type="button" onclick="eliminarCotizacion(this)">Eliminar</button></td>
             `;

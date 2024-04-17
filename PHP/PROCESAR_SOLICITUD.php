@@ -14,7 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $material_nombres = $_POST['material_nombre'];
 
     for ($i = 0; $i < count($material_ids); $i++) {
-        // Recuperar datos específicos del material
         $material_id = intval($material_ids[$i]);
         $cantidad = intval($cantidades[$i]);
         $unidad = $conexion->real_escape_string($unidades[$i]);

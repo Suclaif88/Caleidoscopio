@@ -39,7 +39,6 @@
         <?php
         $proveedor = '';
         $obra_id = '';
-        $usuario = ''; // Asegúrate de obtener este valor de alguna manera
         if (isset($_GET['proveedor'])) {
             $proveedor = $_GET['proveedor'];
         }

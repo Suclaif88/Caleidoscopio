@@ -6,18 +6,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ID = $_POST['id'];
     $PASS = $_POST['pass'];
 
-    $consulta = "SELECT nombre, rol FROM usuarios WHERE id = :id AND pass = :pass";
+    $ID = htmlspecialchars($ID);
+    $PASS = htmlspecialchars($PASS);
+
+    $consulta = "SELECT nombre, rol, pass FROM usuarios WHERE id = :id";
     
     $stmt = $conexion->prepare($consulta);
     
     $stmt->bindParam(':id', $ID);
-    $stmt->bindParam(':pass', $PASS);
     
     $stmt->execute();
 
     $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($resultado) {
+    if ($resultado && password_verify($PASS, $resultado['pass'])) {
         $USER_NAME = $resultado['nombre'];
         $USER_ROL = $resultado['rol'];
 

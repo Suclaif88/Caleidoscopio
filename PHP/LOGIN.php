@@ -51,4 +51,3 @@ mysqli_stmt_execute($stmt);
         echo base64_decode('PHNjcmlwdD53aW5kb3cubG9jYXRpb24uaHJlZj0nLi4vSU5ERVguaHRtbCc7PC9zY3JpcHQ+x');
     }
 }
-/*ARREGLAR LOS MENSAJES DE ERRORES*/

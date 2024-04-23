@@ -1,6 +1,6 @@
 <?php
 
-include 'CONFIG.php';
+include '../CD/CONFIG.php';
 
 $conexion = mysqli_connect($servidor, $usuario, $clave, $db);
 

@@ -32,7 +32,6 @@
 
 
 
-
 <div class="contobtenerma">
     <h1>Solicitud de Materiales</h1>
     <form action="../PHP/PROCESAR_SOLICITUD.php" method="post" class="solicitud">
@@ -52,32 +51,30 @@
         <input type="hidden" name="precios_seleccionados" id="precios_seleccionados" value="">
 
         <div class="multiselect">
-            <div class="selectBox" onclick="showCheckboxes()">
-                <select>
-                    <option>Selecciona Materiales</option>
-                    <?php
-                    if ($conexion->connect_error) {
-                        die("Error de conexión: " . $conexion->connect_error);
-                    }
+    <div class="selectBox" onclick="mostrarCasillas()">
+        <div class="overSelect"></div>
+    </div>
+    <div id="checkboxes" class="oculto">
+        <?php
+        if ($conexion->connect_error) {
+            die("Error de conexión: " . $conexion->connect_error);
+        }
 
-                    $sql = "SELECT id, material, descripcion, precio FROM cotizaciones WHERE proveedor = '$proveedor'";
-                    $resultado = $conexion->query($sql);
+        $sql = "SELECT id, material, descripcion, precio FROM cotizaciones WHERE proveedor = '$proveedor'";
+        $resultado = $conexion->query($sql);
 
-                    if ($resultado->num_rows > 0) {
-                        while ($row = $resultado->fetch_assoc()) {
-                            echo '<option value="' . $row["id"] . '">' . $row["material"] . ' - ' . $row["precio"] . '</option>';
-                        }
-                    } else {
-                        echo "<option>Sin resultados</option>";
-                    }
+        if ($resultado->num_rows > 0) {
+            while ($row = $resultado->fetch_assoc()) {
+                echo '<div><input type="checkbox" name="materialesSeleccionados[]" value="' . $row["material"] . '">' . $row["material"] .' - ' . $row["descripcion"] . ' - ' . $row["precio"] . '</div>';
+            }
+        } else {
+            echo "<p>Sin resultados</p>";
+        }
 
-                    $conexion->close();
-                    ?>
-                </select>
-                <div class="overSelect"></div>
-            </div>
-            <div id="checkboxes" class="hide"></div>
-        </div>
+        $conexion->close();
+        ?>
+    </div>
+</div>
 
         <button class="btn1 div2" type="submit"><em>Enviar Solicitud</em></button><br>
         <button class="btn1 div2"><em><a href="COTIZACION.php">Volver</a></em></button>
@@ -85,18 +82,18 @@
 </div>
 
 <script>
-var expanded = false;
+    var expandido = false;
 
-function showCheckboxes() {
-  var checkboxes = document.getElementById("checkboxes");
-  if (!expanded) {
-    checkboxes.style.display = "block";
-    expanded = true;
-  } else {
-    checkboxes.style.display = "none";
-    expanded = false;
-  }
-}
+    function mostrarCasillas() {
+        var casillas = document.getElementById("checkboxes");
+        if (!expandido) {
+            casillas.style.display = "block";
+            expandido = true;
+        } else {
+            casillas.style.display = "none";
+            expandido = false;
+        }
+    }
 </script>
 
 

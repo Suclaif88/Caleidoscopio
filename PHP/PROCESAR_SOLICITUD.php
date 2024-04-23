@@ -1,35 +1,55 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    require_once "CONN.php";
+    if(isset($_POST['materialesSeleccionados']) && is_array($_POST['materialesSeleccionados'])) {
+        require_once("CONN.php");
 
-    if ($conexion->connect_error) {
-        die("Error de conexión: " . $conexion->connect_error);
-    }
+        $obra_id = $_POST['obra_id'];
+        $proveedor = $_POST['proveedor'];
 
-    $usuario = $conexion->real_escape_string($_POST['usuario']);
-    $obra_id = intval($_POST['obra_id']);
-    $material_ids = $_POST['material_id'];
-    $cantidades = $_POST['cantidad'];
-    $unidades = $_POST['unidad'];
-    $material_nombres = $_POST['material_nombre'];
+        foreach ($_POST['materialesSeleccionados'] as $material) {
+            $verificar_coincidencia = "SELECT COUNT(*) as coincidencia FROM pedidos WHERE producto = '$material' AND obra_id = '$obra_id'";
+            $resultado_coincidencia = $conexion->query($verificar_coincidencia);
+            $fila_coincidencia = $resultado_coincidencia->fetch_assoc();
+            $coincidencia = $fila_coincidencia['coincidencia'];
 
-    for ($i = 0; $i < count($material_ids); $i++) {
-        $material_id = intval($material_ids[$i]);
-        $cantidad = intval($cantidades[$i]);
-        $unidad = $conexion->real_escape_string($unidades[$i]);
-        $material_nombre = $conexion->real_escape_string($material_nombres[$i]);
+            if ($coincidencia > 0) {
 
-                $sql_insert = "INSERT INTO pedidos (usuario, obra_id, producto, cantidad, unidad, estado)
-                               VALUES ('$usuario', $obra_id, '$material_nombre', $cantidad, '$unidad', 1)";
-
-                if ($conexion->query($sql_insert) !== TRUE) {
-                    echo "Error al enviar la solicitud de materiales: " . $conexion->error;
+                $precio_material = obtenerPrecioMaterial($conexion, $proveedor, $material);
+                if ($precio_material !== false) {
+                    $sql_insert = "UPDATE pedidos SET precio = '$precio_material' WHERE producto = '$material' AND obra_id = '$obra_id' AND estado ='1'";
+                    if ($conexion->query($sql_insert) !== TRUE) {
+                        echo "Error al enviar la solicitud de materiales: " . $conexion->error;
+                        exit;
+                    }
+                } else {
+                    echo "No se pudo obtener el precio para el material '$material' y la obra '$obra_id'.";
                     exit;
                 }
-    }
-    
-    echo "<script>alert('¡Solicitud de materiales enviada con éxito!');</script>";
-    echo "<script>window.location.href = '../VISTADC/COTIZACION.php';</script>";
+            } else {
+                echo "El material '$material' no coincide con la obra '$obra_id'.";
+                exit;
+            }
+        }
 
-    $conexion->close();
+        $conexion->close();
+
+        echo "<script>alert('¡Solicitud de materiales enviada con éxito!');</script>";
+        echo "<script>window.location.href = '../VISTADC/COTIZACION.php';</script>";
+    } else {
+        echo "Error: No se han seleccionado materiales.";
+    }
+} else {
+    echo "Error: Acceso no válido.";
 }
+
+function obtenerPrecioMaterial($conexion, $proveedor, $material) {
+    $sql = "SELECT precio FROM cotizaciones WHERE proveedor = '$proveedor' AND material = '$material'";
+    $resultado = $conexion->query($sql);
+    if ($resultado && $resultado->num_rows > 0) {
+        $row = $resultado->fetch_assoc();
+        return $row['precio'];
+    } else {
+        return false;
+    }
+}
+?>

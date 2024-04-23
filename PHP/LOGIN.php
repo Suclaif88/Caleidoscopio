@@ -48,6 +48,6 @@ mysqli_stmt_execute($stmt);
         }
     } else {
         echo base64_decode('PHNjcmlwdD5hbGVydCgnRXJyb3IgZW4gbGFzIGNyZWRlbmNpYWxlcyBkZSBpbmljaW8gZGUgc2VzacOzbicpOzwvc2NyaXB0Pg==');
-        echo base64_decode('PHNjcmlwdD53aW5kb3cubG9jYXRpb24uaHJlZj0nLi4vSU5ERVguaHRtbCc7PC9zY3JpcHQ+x');
+        echo base64_decode('PHNjcmlwdD53aW5kb3cubG9jYXRpb24uaHJlZj0nLi4vaW5kZXguaHRtbCc7PC9zY3JpcHQ+');
     }
 }

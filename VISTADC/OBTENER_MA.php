@@ -77,8 +77,9 @@
 </div>
 
         <button class="btn1 div2" type="submit"><em>Enviar Solicitud</em></button><br>
-        <button class="btn1 div2"><em><a href="COTIZACION.php">Volver</a></em></button>
+        <a class="btn1 div2" href="COTIZACION.php">Volver</a>
     </form>
+    
 </div>
 
 <script>

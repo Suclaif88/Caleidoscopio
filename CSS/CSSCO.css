@@ -87,7 +87,6 @@ input[type="submit"]:hover {
     .input-group input[type="text"] {
         flex: 1;
         min-width: 0;
-        border-radius: 20px;
         padding: 8px 12px;
         max-width: 700px;
         width: 100%;
@@ -377,3 +376,140 @@ input[type="submit"]:hover {
   cursor: pointer;
   border-radius: 5px;
 }
+
+.contt{
+  margin: auto;
+  width: 40%;
+}
+
+.btneliminarcot{
+  color:#000000; 
+  border:2px solid black;
+  box-sizing: border-box;
+  background: #f0c760;
+  background-image: -webkit-linear-gradient(top, #f0c760, #d6941a);
+  background-image: -moz-linear-gradient(top, #f0c760, #d6941a);
+  background-image: -ms-linear-gradient(top, #f0c760, #d6941a);
+  background-image: -o-linear-gradient(top, #f0c760, #d6941a);
+  background-image: linear-gradient(to bottom, #f0c760, #d6941a);
+}
+
+.btneliminarcot:hover {
+  background: #777777;
+  background-image: -webkit-linear-gradient(top, #777777, #000000);
+  background-image: -moz-linear-gradient(top, #777777, #000000);
+  background-image: -ms-linear-gradient(top, #777777, #000000);
+  background-image: -o-linear-gradient(top, #777777, #000000);
+  background-image: linear-gradient(to bottom, #777777, #000000);
+  text-decoration: none;
+  color: #fff;
+}
+
+#tablaSeleccionados {
+  max-width: 100%;
+  margin: 10px auto;
+  overflow-x: auto;
+}
+
+#tablaSeleccionados td:nth-child(2) {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.styled-table th {
+    background-color: #f2f2f2;
+}
+
+.limited-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    position: relative;
+}
+
+.limited-text:hover {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+}
+
+.limited-text::before {
+    content: attr(data-full-text);
+    position: absolute;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #ccc;
+    z-index: 1;
+    white-space: normal;
+    max-width: 300px;
+    display: none;
+}
+
+.limited-text:hover::before {
+    display: block;
+}
+
+.container {
+  width: 100%; 
+  max-width: 900px; 
+  margin: 0 auto; 
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 20px;
+  margin-top: 20px;
+}
+
+.container form {
+  width: 100%; 
+}
+
+.container form table {
+  width: 100%; 
+  max-width: 800px; 
+  margin: 0 auto; 
+  table-layout: auto;
+}
+
+.container form table th,
+.container form table td {
+  padding: 8px; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis;
+}
+
+.container form table th {
+  background-color: #f0f0f0; 
+}
+.t{
+  width: 100%;
+  margin-top:5vh;
+}
+
+.input-group-item textarea[name="descripcion[]"] {
+width: calc(100% - 20px);
+padding: 10px;
+margin-bottom: 15px;
+border: 1px solid #ccc;
+border-radius: 5px;
+box-sizing: border-box;
+overflow: auto;
+}
+
+
+

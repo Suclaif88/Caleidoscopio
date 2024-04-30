@@ -9,6 +9,7 @@ if (!isset($_SESSION["nombre"]) || strval($_SESSION["rol"]) !== "3") {
 require_once("../PHP/CONN.php");
 
 $resultados = "";
+$seleccionados = []; // Array para almacenar los elementos seleccionados
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
     $busqueda = $conexion->real_escape_string($_POST['busqueda']);
@@ -18,14 +19,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
     if ($result) {
         if ($result->num_rows > 0) {
             $resultados .= "<table border='1'>";
-            $resultados .= "<tr><th>Material</th><th>Descripción</th><th>Unidad</th><th>Precio</th><th>Proveedor</th></tr>";
+            $resultados .= "<tr><th>Material</th><th>Descripción</th><th>Unidad</th><th>Precio</th><th>Descuento</th><th>Impuesto</th><th>Proveedor</th><th>Accion</th></tr>";
             while ($row = $result->fetch_assoc()) {
                 $resultados .= "<tr>";
                 $resultados .= "<td>" . htmlspecialchars($row["material"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["descripcion"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["unidad"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["precio"]) . "</td>";
+                $resultados .= "<td>" . htmlspecialchars($row["descuento"]) . "</td>";
+                $resultados .= "<td>" . htmlspecialchars($row["impuestos"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["proveedor"]) . "</td>";
+                $resultados .= "<td><button class='seleccionar' onclick='seleccionar(this)' style='
+                color:#000000; 
+                border:2px solid black;
+                box-sizing: border-box;
+                background: #f0c760;
+                background-image: -webkit-linear-gradient(top, #f0c760, #d6941a);
+                background-image: -moz-linear-gradient(top, #f0c760, #d6941a);
+                background-image: -ms-linear-gradient(top, #f0c760, #d6941a);
+                background-image: -o-linear-gradient(top, #f0c760, #d6941a);
+                background-image: linear-gradient(to bottom, #f0c760, #d6941a);
+                transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+                ' 
+                onmouseover='this.style.backgroundColor=\"#777777\"; this.style.borderColor=\"#000000\"; this.style.color=\"#fff\";' 
+                onmouseout='this.style.backgroundColor=\"#f0c760\"; this.style.borderColor=\"#000000\"; this.style.color=\"#000000\";'>Seleccionar</button></td>";
+
+
                 $resultados .= "</tr>";
             }
             $resultados .= "</table>";
@@ -36,6 +55,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
         $resultados = "Error al ejecutar la consulta.";
     }
 }
+
+$tablaSeleccionados = "<table border='1' id='tablaSeleccionados' class='styled-table'>
+                        <thead>
+                            <tr>
+                                <th>Material</th>
+                                <th>Descripción</th>
+                                <th>Unidad</th>
+                                <th>Precio</th>
+                                <th>Descuento</th>
+                                <th>Impuesto</th>
+                                <th>Proveedor</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>";
+
+$tablaSeleccionados .= "</tbody></table>";
+
 ?>
 
 <!DOCTYPE html>
@@ -53,6 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    
     <style>
         #formulario-container {
             display: flex;
@@ -63,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
         }
 
         form {
-            width: 100%;
+            width: 99%;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -88,7 +126,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ccc;
-            border-radius: 5px;
             box-sizing: border-box;
         }
 
@@ -118,7 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
         }
         .container {
             width: 100%; 
-            max-width: 800px; 
+            max-width: 900px; 
             margin: 0 auto; 
             display: grid;
             grid-template-columns: 1fr;
@@ -152,6 +189,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
             width: 100%;
             margin-top:5vh;
         }
+
+        .input-group-item textarea[name="descripcion[]"] {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        overflow: auto;
+        }
+
     </style>
 </head>
 
@@ -165,25 +213,131 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
             <li><a href="DC.php">Inicio</a></li>
         </ul>
     </div>
-     <!--busqueda de materiales-->
-    <div class="form-container">
-        <h1>Busqueda de materiales</h1>
-        <form action="" method="post" class="input-group">
-            <input type="text" name="busqueda" placeholder="Búsqueda de materiales" class="form-control"    >
-            <div class="input-group-btn">
-                <input type="submit" value="Buscar" class="btn2">
-            </div>
-        </form>
-    </div>
+<!-- busqueda de materiales -->
+<div class="form-container">
+    <h1>Búsqueda de materiales</h1>
+    <form action="" method="post" class="input-group">
+        <input type="text" name="busqueda" placeholder="Búsqueda de materiales" class="form-control">
+        <div class="input-group-btn">
+            <input type="submit" value="Buscar" class="btn2">
+        </div>
+    </form>
+</div>
 
-    <div class="table-container">
+<div class="table-container">
+    <?php if (!empty($resultados)) : ?>
         <?php echo $resultados; ?>
-    </div>
+        <!-- Agregar el botón para borrar los resultados -->
+        <form action="" method="post" class="input-group">
+            <input type="submit" name="borrar_resultados" value="Borrar resultados" class="btn2">
+        </form>
+    <?php else : ?>
+        
+    <?php endif; ?>
+</div>
 
-    <!-- Seleccionar el proveedor-->
+
+
+<!--COTIZACION-->
+
+
+
+<div class="container">
+    <h1>Agregar cotización</h1>
+    <form action="../PHP/AGGCO.php" method="post" id="formulario">
+        <!-- Campos de Material, Unidad, Precio, Descuento, Impuesto, Proveedor -->
+        <div class="input-group">
+            <!-- Campo de Material -->
+            <div class="input-group-item">
+                <label for="material">Material:</label>
+                <select name="material_id[]" required>
+                    <option value="">Seleccione un material</option>
+                    <?php
+                    $consulta = "SELECT id, material FROM agregar_materiales";
+                    $resultado = mysqli_query($conexion, $consulta);
+                        while ($fila = mysqli_fetch_assoc($resultado)) {
+                        echo "<option value='" . $fila['material'] . "'>" . $fila['material'] . "</option>";
+                    }
+                    ?>
+                </select>
+
+
+            </div>
+            <!-- Campo de Unidad -->
+            <div class="input-group-item">
+                <label for="unidad">Unidad:</label>
+                <input type="text" name="unidad[]" required>
+            </div>
+            <!-- Campo de Precio -->
+            <div class="input-group-item">
+                <label for="precio">Precio:</label>
+                <input type="number" name="precio[]" required>
+            </div>
+            <!-- Campo de Descuento -->
+            <div class="input-group-item">
+                <label for="descuento">Descuento:</label>
+                <input type="number" name="descuento[]" required>
+            </div>
+            <!-- Campo de Impuesto -->
+            <div class="input-group-item">
+                <label for="impuesto">Impuesto:</label>
+                <input type="number" name="impuesto[]" required>
+            </div>
+            <!-- Campo de Proveedor -->
+            <div class="input-group-item">
+                <label for="proveedor">Proveedor:</label>
+                <select name="proveedor_id[]" required>
+                <option value="">Seleccione un proveedor</option>
+                <?php
+                    $consulta = "SELECT id, proveedor FROM proveedores";
+                    $resultado = mysqli_query($conexion, $consulta);
+                        while ($fila = mysqli_fetch_assoc($resultado)) {
+                        echo "<option value='" . $fila['proveedor'] . "'>" . $fila['proveedor'] . "</option>";
+                    }
+                ?>
+                </select>
+
+            </div>
+        </div>
+
+        <!-- Campo de Descripción -->
+        <div class="input-group">
+            <div class="input-group-item">
+                <label for="descripcion">Descripción:</label>
+                <textarea name="descripcion[]" rows="4" cols="50" required></textarea>
+            </div>
+        </div><br>
+        <div class="contt">
+        <button type="button" onclick="limpiarCampos()" class="btneliminarcot">Limpiar campos</button>
+        </div><br>
+        <!-- Botón para agregar -->
+        <div class="contt">
+            <button type="button" class="btneliminarcot" onclick="seleccionar2(this)">Agregar</button><br>
+        </div>
+     <!-- Tabla de elementos seleccionados -->
+        <div class="input-group">
+            <?php echo $tablaSeleccionados; ?>
+        </div>
+        </form>
+    <div class="input-group">
+            <input type="submit" onclick="validarEnvioCotizacion()">
+    </div>
+    <!-- Botones adicionales -->
+    <br><br>
+    <div class="parent">
+        <button type="button" onclick="window.location.href='AGG_MA.php'" class="v t">Agregar material</button>
+        <button type="button" onclick="window.location.href='AGG_PRO.php'" class="v t">Agregar proveedor</button>
+        <button type="button" onclick="window.location.href='MOD_PRECIO.php'" class="v t">Editar precios</button>
+    </div>
+</div>
+
+
+
+
+    <!-- Seleccionar el proveedor comentado
     <div class="container">
     <h1>SELECCIONE PROVEEDOR</h1>
-    <form action="OBTENER_MA.php" method="get"> <!-- Cambiamos el método a GET -->
+    <form action="OBTENER_MA.php" method="get">
         <label for="obra">Obra:</label>
         <select id="obra" name="obra_id" required>
             <option value="">Seleccione una obra</option>
@@ -222,118 +376,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
         
         <button type="submit" class="v">Mostrar Materiales</button>
     </form>
-</div><br><br>
-
-    <!--Agregar cotizaciones-->
-    
-    <div class="container">
-    <h1>Agregar cotización</h1>
-    <form action="../PHP/AGGCO.php" method="post">
-        <table id="cotizaciones">
-            <thead>
-                <tr>
-                    <th>Material</th>
-                    <th>Descripción</th>
-                    <th>Unidad</th>
-                    <th>Precio</th>
-                    <th>descuento</th>
-                    <th>impuesto</th>
-                    <th>Proveedor</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                <select name="material_id[]" required>
-                <option value="">Seleccione un material</option>
-                    <?php
-                    $consulta = "SELECT id, material FROM agregar_materiales";
-                    $resultado = mysqli_query($conexion, $consulta);
-                    while ($fila = mysqli_fetch_assoc($resultado)) {
-                        echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
-                    }
-                    ?>
-                </select>
-                    </td>
-                    <td><input type="text" name="descripcion[]" required></td>
-                    <td><input type="text" name="unidad[]" required></td>
-                    <td><input type="number" name="precio[]" required></td>
-                    <td><input type="number" name="descuento[]" required></td>
-                    <td><input type="number" name="impuesto[]" required></td>
-                    <td>
-                    <select name="proveedor_id[]" required>
-                    <option value="">Seleccione un proveedor</option>
-                        <?php
-                        $consulta = "SELECT id, proveedor FROM proveedores";
-                        $resultado = mysqli_query($conexion, $consulta);
-                        while ($fila = mysqli_fetch_assoc($resultado)) {
-                            echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
-                        }
-                        ?>
-                    </select>
-                    </td>
-                    <td><button type="button" onclick="eliminarCotizacion(this)">Eliminar</button></td>
-                </tr>
-            </tbody>
-        </table>
-        <button type="button" class="v t" onclick="agregarCotizacion()">Agregar cotización</button><br><br>
-    <input type="submit" value="Enviar cotización">
-   </form>
-   <br>
-   <br>
-   <div class="parent">
-        <button type="button" class="v divb1" onclick="window.location.href='AGG_MA.php'" style="cursor:pointer;">Agregar material</button>
-        <button type="button" class="v divb3" onclick="window.location.href='AGG_PRO.php'" style="cursor:pointer;">Agregar proveedor</button>
-        <button type="button" class="v divb2" onclick="window.location.href='MOD_PRECIO.php'" style="cursor:pointer;">Editar precios</button>
-   </div>
-    
-    <script>
-        function agregarCotizacion() {
-            var tabla = document.getElementById("cotizaciones").getElementsByTagName('tbody')[0];
-            var nuevaFila = tabla.insertRow(-1);
-            nuevaFila.innerHTML = `
-                <td>
-                    <select name="material_id[]" required>
-                        <option value="">Seleccione un material</option>
-                        <?php
-                        $consulta = "SELECT id, material FROM agregar_materiales";
-                        $resultado = mysqli_query($conexion, $consulta);
-                        while ($fila = mysqli_fetch_assoc($resultado)) {
-                            echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
-                        }
-                        ?>
-                    </select>
-                </td>
-                <td><input type="text" name="descripcion[]" required></td>
-                <td><input type="text" name="unidad[]" required></td>
-                <td><input type="number" name="precio[]" required></td>
-                <td><input type="text" name="descuento[]" required></td>
-                <td><input type="number" name="impuestos[]" required></td>
-                <td>
-                    <select name="proveedor_id[]" required>
-                    <option value="">Seleccione un proveedor</option>
-                        <?php
-                        $consulta = "SELECT id, proveedor FROM proveedores";
-                        $resultado = mysqli_query($conexion, $consulta);
-                        while ($fila = mysqli_fetch_assoc($resultado)) {
-                            echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
-                        }
-                        ?>
-                    </select>
-                </td>
-                <td><button type="button" onclick="eliminarCotizacion(this)">Eliminar</button></td>
-            `;
-        }
-
-        function eliminarCotizacion(btn) {
-            var fila = btn.parentNode.parentNode;
-            fila.parentNode.removeChild(fila);
-        }
-    </script>
-    </div>
+</div>-->
 
 
+
+
+
+
+<br><br>
 </body>
-
+<script src="../JS/app.js"></script>
 </html>

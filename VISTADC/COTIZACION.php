@@ -270,6 +270,8 @@ $tablaSeleccionados .= "</tbody></table>";
 
 <div class="contenedor-tablas">
 
+<!--HAY QUE ARREGLAR ESTO-->
+
 <div class="cotcont">
 <?php if (!empty($cotizacion)) : ?>
         <?php echo $cotizacion; ?>
@@ -278,6 +280,7 @@ $tablaSeleccionados .= "</tbody></table>";
     <?php endif; ?>
     </div>
 </div>
+<!------------------------------>
 
 <div class="table-container">
 

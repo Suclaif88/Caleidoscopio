@@ -27,6 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
     if ($result) {
         if ($result->num_rows > 0) {
             $resultados .= "<table border='1'>";
+            $resultados .= "<h1>RESULTADOS DE BUSQUEDA</h1>";
             $resultados .= "<tr><th>Material</th><th>Descripción</th><th>Unidad</th><th>Precio</th><th>Descuento</th><th>Impuesto</th><th>Proveedor</th><th>Accion</th></tr>";
             while ($row = $result->fetch_assoc()) {
                 $resultados .= "<tr>";
@@ -82,14 +83,14 @@ $tablaSeleccionados = "<table border='1' id='tablaSeleccionados' class='styled-t
 $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
                         <thead>
                             <tr>
-                                <th>Material</th>
-                                <th>Descripción</th>
-                                <th>Unidad</th>
-                                <th>Precio</th>
-                                <th>Descuento</th>
-                                <th>Impuesto</th>
-                                <th>Proveedor</th>
-                                <th>Acción</th>
+                                <th style='background-color: #E6BA49;'>Material</th>
+                                <th style='background-color: #E6BA49;'>Descripción</th>
+                                <th style='background-color: #E6BA49;'>Unidad</th>
+                                <th style='background-color: #E6BA49;'>Precio</th>
+                                <th style='background-color: #E6BA49;'>Descuento</th>
+                                <th style='background-color: #E6BA49;'>Impuesto</th>
+                                <th style='background-color: #E6BA49;'>Proveedor</th>
+                                <th style='background-color: #E6BA49;'>Acción</th>
                             </tr>
                         </thead>
                         <tbody>";
@@ -266,28 +267,22 @@ $tablaSeleccionados .= "</tbody></table>";
 </div>
 
 
+
+<div class="contenedor-tablas">
+
+<div class="cotcont">
+<?php if (!empty($cotizacion)) : ?>
+        <?php echo $cotizacion; ?>
+    <?php else : ?>
+        
+    <?php endif; ?>
+    </div>
+</div>
+
 <div class="table-container">
 
     <?php if (!empty($resultados)) : ?>
         <?php echo $resultados; ?>
-
-
-
-
-
-        
-
-
-
-        <!-- <?php echo $cotizacion; ?> -->
-
-
-
-
-
-
-
-
         <!--Borrar los resultados -->
         <form action="" method="post" class="input-group">
             <input type="submit" name="borrar_resultados" value="Borrar resultados" class="btn2">
@@ -298,6 +293,7 @@ $tablaSeleccionados .= "</tbody></table>";
     <?php endif; ?>
 
 </div>
+
 <!--COTIZACION-->
 
 
@@ -380,7 +376,7 @@ $tablaSeleccionados .= "</tbody></table>";
         </div>
         </form>
     <div class="input-group">
-            <input type="submit" onclick="validarEnvioCotizacion()" value="Enviar Cotizacion">
+            <input type="submit" onclick="validarEnvioCotizacion()" value="Enviar Material">
     </div>
     <!-- Botones adicionales -->
     <br><br>

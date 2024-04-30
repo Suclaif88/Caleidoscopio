@@ -405,6 +405,10 @@ input[type="submit"]:hover {
   color: #fff;
 }
 
+#formulario{
+  background-color: #c5c4c4;
+}
+
 #tablaSeleccionados {
   max-width: 100%;
   margin: 10px auto;

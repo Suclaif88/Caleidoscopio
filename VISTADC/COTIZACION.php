@@ -68,14 +68,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
 $tablaSeleccionados = "<table border='1' id='tablaSeleccionados' class='styled-table'>
                         <thead>
                             <tr>
-                                <th>Material</th>
-                                <th>Descripción</th>
-                                <th>Unidad</th>
-                                <th>Precio</th>
-                                <th>Descuento</th>
-                                <th>Impuesto</th>
-                                <th>Proveedor</th>
-                                <th>Acción</th>
+                                <th style='background-color: #E6BA49;'>Material</th>
+                                <th style='background-color: #E6BA49;'>Descripción</th>
+                                <th style='background-color: #E6BA49;'>Unidad</th>
+                                <th style='background-color: #E6BA49;'>Precio</th>
+                                <th style='background-color: #E6BA49;'>Descuento</th>
+                                <th style='background-color: #E6BA49;'>Impuesto</th>
+                                <th style='background-color: #E6BA49;'>Proveedor</th>
+                                <th style='background-color: #E6BA49;'>Acción</th>
                             </tr>
                         </thead>
                         <tbody>";
@@ -272,14 +272,14 @@ $tablaSeleccionados .= "</tbody></table>";
 
 <!--HAY QUE ARREGLAR ESTO-->
 
-<div class="cotcont">
+<!-- <div class="cotcont">
 <?php if (!empty($cotizacion)) : ?>
         <?php echo $cotizacion; ?>
     <?php else : ?>
         
     <?php endif; ?>
     </div>
-</div>
+</div> -->
 <!------------------------------>
 
 <div class="table-container">

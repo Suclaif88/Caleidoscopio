@@ -21,8 +21,8 @@ function seleccionar(btn) {
     var descuento = fila.cells[4].innerText;
     var impuesto = fila.cells[5].innerText;
     var proveedor = fila.cells[6].innerText
-    var tablaSeleccionados = document.getElementById("tablaSeleccionados");
-    var nuevaFila = tablaSeleccionados.insertRow(-1);
+    var cotizacion = document.getElementById("cotizacion");
+    var nuevaFila = cotizacion.insertRow(-1);
     nuevaFila.innerHTML = "<td>" + material + "</td><td>" + descripcion + "</td><td>" + unidad + "</td><td>" + precio + "</td><td>" + descuento + "</td><td>" + impuesto + "</td><td>" + proveedor + "</td><td><button onclick='eliminarCotizacion(this)' class='btneliminarcot'>Eliminar</button></td>";
     alert("Se ha agregado la cotización correctamente.");
 }
@@ -59,4 +59,3 @@ function limpiarCampos() {
     var formulario = document.getElementById("formulario");
     formulario.reset();
 }
-

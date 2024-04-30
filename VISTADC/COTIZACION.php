@@ -8,8 +8,16 @@ if (!isset($_SESSION["nombre"]) || strval($_SESSION["rol"]) !== "3") {
 
 require_once("../PHP/CONN.php");
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['seleccionar'])) {
+    if (!isset($_SESSION['seleccionados'])) {
+        $_SESSION['seleccionados'] = [];
+    }
+    $_SESSION['seleccionados'][] = $_POST['seleccionar'];
+}
+
+$seleccionados = isset($_SESSION['seleccionados']) ? $_SESSION['seleccionados'] : [];
+
 $resultados = "";
-$seleccionados = []; // Array para almacenar los elementos seleccionados
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
     $busqueda = $conexion->real_escape_string($_POST['busqueda']);
@@ -70,6 +78,39 @@ $tablaSeleccionados = "<table border='1' id='tablaSeleccionados' class='styled-t
                             </tr>
                         </thead>
                         <tbody>";
+
+$cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
+                        <thead>
+                            <tr>
+                                <th>Material</th>
+                                <th>Descripción</th>
+                                <th>Unidad</th>
+                                <th>Precio</th>
+                                <th>Descuento</th>
+                                <th>Impuesto</th>
+                                <th>Proveedor</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>";
+
+foreach ($seleccionados as $id) {
+    $sql = "SELECT * FROM cotizaciones WHERE id = $id";
+    $result = $conexion->query($sql);
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $tablaSeleccionados .= "<tr>";
+        $tablaSeleccionados .= "<td>" . htmlspecialchars($row["material"]) . "</td>";
+        $tablaSeleccionados .= "<td>" . htmlspecialchars($row["descripcion"]) . "</td>";
+        $tablaSeleccionados .= "<td>" . htmlspecialchars($row["unidad"]) . "</td>";
+        $tablaSeleccionados .= "<td>" . htmlspecialchars($row["precio"]) . "</td>";
+        $tablaSeleccionados .= "<td>" . htmlspecialchars($row["descuento"]) . "</td>";
+        $tablaSeleccionados .= "<td>" . htmlspecialchars($row["impuestos"]) . "</td>";
+        $tablaSeleccionados .= "<td>" . htmlspecialchars($row["proveedor"]) . "</td>";
+        $tablaSeleccionados .= "<td><button onclick='eliminarCotizacion(this)' class='btneliminarcot'>Eliminar</button></td>";
+        $tablaSeleccionados .= "</tr>";
+    }
+}
 
 $tablaSeleccionados .= "</tbody></table>";
 
@@ -224,26 +265,45 @@ $tablaSeleccionados .= "</tbody></table>";
     </form>
 </div>
 
+
 <div class="table-container">
+
     <?php if (!empty($resultados)) : ?>
         <?php echo $resultados; ?>
-        <!-- Agregar el botón para borrar los resultados -->
+
+
+
+
+
+        
+
+
+
+        <!-- <?php echo $cotizacion; ?> -->
+
+
+
+
+
+
+
+
+        <!--Borrar los resultados -->
         <form action="" method="post" class="input-group">
             <input type="submit" name="borrar_resultados" value="Borrar resultados" class="btn2">
         </form>
+
     <?php else : ?>
         
     <?php endif; ?>
+
 </div>
-
-
-
 <!--COTIZACION-->
 
 
 
 <div class="container">
-    <h1>Agregar cotización</h1>
+    <h1>Agregar material</h1>
     <form action="../PHP/AGGCO.php" method="post" id="formulario">
         <!-- Campos de Material, Unidad, Precio, Descuento, Impuesto, Proveedor -->
         <div class="input-group">
@@ -320,7 +380,7 @@ $tablaSeleccionados .= "</tbody></table>";
         </div>
         </form>
     <div class="input-group">
-            <input type="submit" onclick="validarEnvioCotizacion()">
+            <input type="submit" onclick="validarEnvioCotizacion()" value="Enviar Cotizacion">
     </div>
     <!-- Botones adicionales -->
     <br><br>
@@ -376,7 +436,7 @@ $tablaSeleccionados .= "</tbody></table>";
         
         <button type="submit" class="v">Mostrar Materiales</button>
     </form>
-</div>-->
+</div> -->
 
 
 

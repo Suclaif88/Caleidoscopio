@@ -500,16 +500,3 @@ input[type="submit"]:hover {
   width: 100%;
   margin-top:5vh;
 }
-
-.input-group-item textarea[name="descripcion[]"] {
-width: calc(100% - 20px);
-padding: 10px;
-margin-bottom: 15px;
-border: 1px solid #ccc;
-border-radius: 5px;
-box-sizing: border-box;
-overflow: auto;
-}
-
-
-

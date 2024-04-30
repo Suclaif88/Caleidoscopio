@@ -12,7 +12,7 @@ $resultados = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
     $busqueda = $conexion->real_escape_string($_POST['busqueda']);
-    $sql = "SELECT * FROM cotizaciones WHERE producto LIKE '%$busqueda%' OR descripcion LIKE '%$busqueda%' ORDER BY precio ASC";
+    $sql = "SELECT * FROM cotizaciones WHERE material LIKE '%$busqueda%' OR descripcion LIKE '%$busqueda%' ORDER BY precio ASC";
     $result = $conexion->query($sql);
 
     if ($result) {
@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
             $resultados .= "<tr><th>Material</th><th>Descripción</th><th>Unidad</th><th>Precio</th><th>Proveedor</th></tr>";
             while ($row = $result->fetch_assoc()) {
                 $resultados .= "<tr>";
-                $resultados .= "<td>" . htmlspecialchars($row["producto"]) . "</td>";
+                $resultados .= "<td>" . htmlspecialchars($row["material"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["descripcion"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["unidad"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["precio"]) . "</td>";

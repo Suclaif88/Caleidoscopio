@@ -249,7 +249,7 @@ $tablaSeleccionados .= "</tbody></table>";
     <div class="navbar">
         <h1 style="cursor:default;">COTIZACIONES</h1>
         <ul>
-            <li><a href="SOLICITUDES.php">Solicitud</a></li>
+            <li><a href="SOLICITUDES.php">Solicitudes</a></li>
             <li><a href="OBRAS.php">Obras</a></li>
             <li><a href="" style="color:white;">Cotizaciones</a></li>
             <li><a href="DC.php">Inicio</a></li>

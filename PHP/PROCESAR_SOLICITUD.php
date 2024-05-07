@@ -51,4 +51,3 @@ function obtenerPrecioMaterial($conexion, $proveedor, $material) {
         return false;
     }
 }
-?>

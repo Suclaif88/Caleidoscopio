@@ -8,15 +8,6 @@ if (!isset($_SESSION["nombre"]) || strval($_SESSION["rol"]) !== "3") {
 
 require_once("../PHP/CONN.php");
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['seleccionar'])) {
-    if (!isset($_SESSION['seleccionados'])) {
-        $_SESSION['seleccionados'] = [];
-    }
-    $_SESSION['seleccionados'][] = $_POST['seleccionar'];
-}
-
-$seleccionados = isset($_SESSION['seleccionados']) ? $_SESSION['seleccionados'] : [];
-
 $resultados = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
@@ -31,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
             $resultados .= "<tr><th>Material</th><th>Descripción</th><th>Unidad</th><th>Precio</th><th>Descuento</th><th>Impuesto</th><th>Proveedor</th><th>Accion</th></tr>";
             while ($row = $result->fetch_assoc()) {
                 $resultados .= "<tr>";
+                $resultados .= "<td style='display: none;'>" . htmlspecialchars($row["id"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["material"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["descripcion"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["unidad"]) . "</td>";
@@ -65,21 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
     }
 }
 
-$tablaSeleccionados = "<table border='1' id='tablaSeleccionados' class='styled-table'>
-                        <thead>
-                            <tr>
-                                <th style='background-color: #E6BA49;'>Material</th>
-                                <th style='background-color: #E6BA49;'>Descripción</th>
-                                <th style='background-color: #E6BA49;'>Unidad</th>
-                                <th style='background-color: #E6BA49;'>Precio</th>
-                                <th style='background-color: #E6BA49;'>Descuento</th>
-                                <th style='background-color: #E6BA49;'>Impuesto</th>
-                                <th style='background-color: #E6BA49;'>Proveedor</th>
-                                <th style='background-color: #E6BA49;'>Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody>";
-
 $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
                         <thead>
                             <tr>
@@ -94,27 +71,6 @@ $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
                             </tr>
                         </thead>
                         <tbody>";
-foreach ($seleccionados as $id) {
-    $sql = "SELECT * FROM cotizaciones WHERE id = $id";
-    $result = $conexion->query($sql);
-    if ($result && $result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $proveedor_info = explode(" - ", $row["proveedor"]);
-        $proveedor_id = $proveedor_info[0];
-        $tablaSeleccionados .= "<tr>";
-        $tablaSeleccionados .= "<td>" . htmlspecialchars($row["material"]) . "</td>";
-        $tablaSeleccionados .= "<td>" . htmlspecialchars($row["descripcion"]) . "</td>";
-        $tablaSeleccionados .= "<td>" . htmlspecialchars($row["unidad"]) . "</td>";
-        $tablaSeleccionados .= "<td>" . htmlspecialchars($row["precio"]) . "</td>";
-        $tablaSeleccionados .= "<td>" . htmlspecialchars($row["descuento"]) . "</td>";
-        $tablaSeleccionados .= "<td>" . htmlspecialchars($row["impuestos"]) . "</td>";
-        $tablaSeleccionados .= "<td>" . htmlspecialchars($proveedor_id) . "</td>";
-        $tablaSeleccionados .= "<td><button onclick='eliminarCotizacion(this)' class='btneliminarcot'>Eliminar</button></td>";
-        $tablaSeleccionados .= "</tr>";
-    }
-}
-
-
 ?>
 
 <!DOCTYPE html>
@@ -132,7 +88,8 @@ foreach ($seleccionados as $id) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         #formulario-container {
             display: flex;
@@ -286,9 +243,8 @@ foreach ($seleccionados as $id) {
             <?php if (!empty($resultados)) : ?>
             <?php echo $resultados; ?>
                 <!--Borrar los resultados -->
-                <form action="" method="post" class="input-group">
-                    <input type="submit" name="borrar_resultados" value="Borrar resultados" class="btn2">
-                    
+                <form id="formulario_borrar" action="" method="post" class="input-group">
+                    <button type="button" onclick="confirmacionBorrado()" class="v t">Borrar resultados</button>
                 </form>
             <?php else : ?>
             <?php endif; ?>

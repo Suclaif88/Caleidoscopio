@@ -32,9 +32,6 @@ tr:nth-child(even) {
     background-color: #b1b1b1;
 }
 
-
-
-
 input[type="text"] {
     width: 90%;
     padding: 10px;

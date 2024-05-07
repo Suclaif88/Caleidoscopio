@@ -17,58 +17,57 @@ function validarCotizacion(){
     });
 }
 
-function eliminarCotizacion(btn) {
-    var fila = btn.parentNode.parentNode;
-    fila.parentNode.removeChild(fila);
-}
+var materialesSeleccionados = []; // Aca se guardan los id de los materiales seleccionados (array)
 
 function seleccionar(btn) {
     var fila = btn.parentNode.parentNode;
-    var material = fila.cells[0].innerText;
-    var descripcion = fila.cells[1].innerText;
-    var unidad = fila.cells[2].innerText;
-    var precio = fila.cells[3].innerText;
-    var descuento = fila.cells[4].innerText;
-    var impuesto = fila.cells[5].innerText;
-    var proveedor = fila.cells[6].innerText
+    var idMaterial = fila.cells[0].innerText.trim();
+    var material = fila.cells[1].innerText;
+    var descripcion = fila.cells[2].innerText;
+    var unidad = fila.cells[3].innerText;
+    var precio = fila.cells[4].innerText;
+    var descuento = fila.cells[5].innerText;
+    var impuesto = fila.cells[6].innerText;
+    var proveedor = fila.cells[7].innerText;
     var cotizacion = document.getElementById("cotizacion");
     var nuevaFila = cotizacion.insertRow(-1);
     nuevaFila.innerHTML = "<td>" + material + "</td><td>" + descripcion + "</td><td>" + unidad + "</td><td>" + precio + "</td><td>" + descuento + "</td><td>" + impuesto + "</td><td>" + proveedor + "</td><td><button onclick='eliminarCotizacion(this)' class='btneliminarcot'>Eliminar</button></td>";
-    alert("Se ha agregado la cotización correctamente.");
+
+    Swal.fire({
+        position: "top-end",
+        icon: "success",
+        title: "¡Material agregado con éxito!",
+        showConfirmButton: false,
+        timer: 1500
+    });
 }
 
-function seleccionar2(btn) {
-    var formulario = btn.closest('form');
-    var material = formulario.querySelector('select[name="material_id[]"]').value;
-    var descripcion = formulario.querySelector('textarea[name="descripcion[]"]').value;
-    var unidad = formulario.querySelector('input[name="unidad[]"]').value;
-    var precio = formulario.querySelector('input[name="precio[]"]').value;
-    var descuento = formulario.querySelector('input[name="descuento[]"]').value;
-    var impuesto = formulario.querySelector('input[name="impuesto[]"]').value;
-    var proveedor = formulario.querySelector('select[name="proveedor_id[]"]').value;
 
-    if (material === "") {
-        alert("Por favor, seleccione un material.");
-        return;
-    }
 
-    if (proveedor === "") {
-        alert("Por favor, seleccione un proveedor.");
-        return;
-    }
+function eliminarCotizacion(btn) {
+    var fila = btn.parentNode.parentNode;
+    fila.parentNode.removeChild(fila);
+    console.log(materialesSeleccionados);
 
-    var tablaSeleccionados = document.getElementById("tablaSeleccionados");
-    
-    var nuevaFila = tablaSeleccionados.insertRow(-1);
-    
-    nuevaFila.innerHTML = "<td>" + material + "</td><td>" + descripcion + "</td><td>" + unidad + "</td><td>" + precio + "</td><td>" + descuento + "</td><td>" + impuesto + "</td><td>" + proveedor + "</td><td><button type='button' onclick='eliminarCotizacion(this)' class='btneliminarcot'>Eliminar</button></td>";
-    alert("Se ha agregado la cotización correctamente.");
+    Swal.fire({
+        title: "¡Eliminado!",
+        text: "Se eliminó el elemento con éxito",
+        icon: "success"
+    });
 }
 
-function limpiarCampos() {
-    var formulario = document.getElementById("formulario");
-    formulario.reset();
-}
+
+
+
+//arreglar la obtencion de los id
+
+
+
+
+
+
+
+
 function agregarCotizacion() {
     var tabla = document.getElementById("cotizaciones").getElementsByTagName('tbody')[0];
     var nuevaFila = tabla.insertRow(-1);
@@ -105,3 +104,27 @@ function agregarCotizacion() {
         <td><button type="button" onclick="eliminarCotizacion(this)">Eliminar</button></td>
     `;
 }
+
+    function confirmacionBorrado() {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¿Quieres borrar los resultados?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, borrar resultados',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setTimeout(function() {
+                    document.getElementById("formulario_borrar").submit();
+                }, 2000);
+                Swal.fire(
+                    'Borrado!',
+                    'Los resultados han sido borrados exitosamente.',
+                    'success'
+                );
+            }
+        });
+    }

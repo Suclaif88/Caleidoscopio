@@ -8,12 +8,12 @@ if ($_SERVER[base64_decode('UkVRVUVTVF9NRVRIT0Q=')] == base64_decode('UE9TVA==')
 
     $consulta = base64_decode('U0VMRUNUICogRlJPTSB1c3VhcmlvcyBXSEVSRSBpZGVudGlmaWNhY2lvbiA9ID8gQU5EIGNvbnRyYXNlbmEgPSA/');
     $stmt = mysqli_prepare($conexion, $consulta);
-if (!$stmt) {
-    die("Error al preparar la consulta: " . mysqli_error($conexion));
-}
+    if (!$stmt) {
+        die("Error al preparar la consulta: " . mysqli_error($conexion));
+    }
 
-mysqli_stmt_bind_param($stmt, "ss", $ID, $PASS);
-mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_param($stmt, "ss", $ID, $PASS);
+    mysqli_stmt_execute($stmt);
 
     $resultado = mysqli_stmt_get_result($stmt);
 
@@ -46,6 +46,17 @@ mysqli_stmt_execute($stmt);
                 echo base64_decode('PHNjcmlwdD5hbGVydCgnRXN0ZSB1c3VhcmlvIG5vIHRpZW5lIHVuIHJvbCBhc2lnbmFkby4nKTs8L3NjcmlwdD4=');
                 echo base64_decode('PHNjcmlwdD53aW5kb3cubG9jYXRpb24uaHJlZj0nLi4vSU5ERVguaHRtbCc7PC9zY3JpcHQ+');
         }
+
+        // Mostrar la alerta después de la redirección
+        echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Inicio de sesión exitoso!',
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1500 // Cierra automáticamente el mensaje después de 1.5 segundos
+                });
+              </script>";
     } else {
         echo base64_decode('PHNjcmlwdD5hbGVydCgnRXJyb3IgZW4gbGFzIGNyZWRlbmNpYWxlcyBkZSBpbmljaW8gZGUgc2VzacOzbicpOzwvc2NyaXB0Pg==');
         echo base64_decode('PHNjcmlwdD53aW5kb3cubG9jYXRpb24uaHJlZj0nLi4vaW5kZXguaHRtbCc7PC9zY3JpcHQ+');

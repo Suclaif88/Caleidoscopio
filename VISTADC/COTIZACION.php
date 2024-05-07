@@ -22,7 +22,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
             $resultados .= "<tr><th>Material</th><th>Descripción</th><th>Unidad</th><th>Precio</th><th>Descuento</th><th>Impuesto</th><th>Proveedor</th><th>Accion</th></tr>";
             while ($row = $result->fetch_assoc()) {
                 $resultados .= "<tr>";
-                $resultados .= "<td style='display: none;'>" . htmlspecialchars($row["id"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["material"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["descripcion"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["unidad"]) . "</td>";
@@ -30,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
                 $resultados .= "<td>" . htmlspecialchars($row["descuento"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["impuestos"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["proveedor"]) . "</td>";
-                $resultados .= "<td><button class='seleccionar' onclick='seleccionar(this)' style='
+                $resultados .= "<td><button class='seleccionar' onclick='seleccionar(this, " . htmlspecialchars($row["id"]) . ")' style='
                 color:#000000; 
                 border:2px solid black;
                 box-sizing: border-box;
@@ -44,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
                 ' 
                 onmouseover='this.style.backgroundColor=\"#777777\"; this.style.borderColor=\"#000000\"; this.style.color=\"#fff\";' 
                 onmouseout='this.style.backgroundColor=\"#f0c760\"; this.style.borderColor=\"#000000\"; this.style.color=\"#000000\";'>Seleccionar</button></td>";
+
 
 
                 $resultados .= "</tr>";
@@ -201,6 +201,30 @@ $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
         box-sizing: border-box;
         overflow: auto;
     }
+
+    #loader {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+    #loader img {
+  width: 50px;
+  height: 50px;
+}
+    #loader p {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #ffffff;
+}
+
         
     </style>
 </head>
@@ -226,15 +250,37 @@ $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
     </div>
 </div>
     <!-- busqueda de materiales -->
-<div class="table-container">
-<div class="form-container">
-    <form action="" method="post" class="input-group">
-        <input type="text" name="busqueda" placeholder="Búsqueda de materiales" class="form-control">
-        <div class="input-group-btn">
-            <input type="submit" value="Buscar" class="btn2">
+    <div class="table-container">
+    <div class="form-container">
+        <form action="" method="post" class="input-group" id="searchForm">
+            <input type="text" name="busqueda" placeholder="Búsqueda de materiales" class="form-control">
+            <div class="input-group-btn">
+                <input type="submit" value="Buscar" class="btn2">
+            </div>
+        </form>
+        <div id="loader" style="display: none;">
+            <img src="../IMG/loader.gif" alt="Cargando...">
+            <p>Cargando...</p>
         </div>
-    </form>
+    </div>
 </div>
+
+    <script>
+    document.getElementById("searchForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        mostrarLoader();
+    });
+
+    function mostrarLoader() {
+        document.getElementById("loader").style.display = "flex";
+        setTimeout(function() {
+            document.getElementById("searchForm").submit();
+        }, 500);
+    }
+    </script>
+</div>
+
+
 
 <div class="contenedor-tablas">
 
@@ -251,7 +297,7 @@ $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
             <div class="cotcont">
                 <div>
                  <form id="formulario-cotizacion" action="../PHP/PROCESAR_SOLICITUD.php" method="post">
-                    <input type="submit" value="Enviar Materiales" onclick="validarCotizacion()" class="btn2">
+                 <input type="submit" value="Enviar Materiales" onclick="validarCotizacion(materialesSeleccionados)" class="btn2">
                     <?php if (!empty($cotizacion)) : ?>
                         <?php echo $cotizacion; ?>
                     <?php else : ?>

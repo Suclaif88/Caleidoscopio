@@ -37,9 +37,10 @@ function seleccionar(btn, idMaterial) {
     var nuevaFila = cotizacion.insertRow(-1);
     nuevaFila.innerHTML = "<td>" + material + "</td><td>" + descripcion + "</td><td>" + unidad + "</td><td>" + precio + "</td><td>" + descuento + "</td><td>" + impuesto + "</td><td>" + proveedor + "</td><td><button onclick='eliminarCotizacion(this, " + idMaterial + ")' class='btneliminarcot'>Eliminar</button></td>";
 
-    materialesSeleccionados.push(parseInt(idMaterial));
+    // materialesSeleccionados.push(parseInt(material)); //en caso de necesitar el idMaterial
+    materialesSeleccionados.push(material); //inserta el nombre del material
     
-    // console.log(materialesSeleccionados); //depuracion
+    // console.log(materialesSeleccionados); //Activar para ver el array
 
     Swal.fire({
         position: "top-end",
@@ -61,7 +62,7 @@ function eliminarCotizacion(btn, idMaterial) {
     var fila = btn.parentNode.parentNode;
     fila.parentNode.removeChild(fila);
 
-    // console.log(materialesSeleccionados); // Depuración
+    // console.log(materialesSeleccionados); //Activar para ver el array
 
     Swal.fire({
         position: "top-end",

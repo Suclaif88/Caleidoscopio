@@ -1,10 +1,20 @@
-function validarEnvioCotizacion() {
-    var tablaSeleccionados = document.getElementById("tablaSeleccionados");
-    if (tablaSeleccionados.rows.length <= 1) {
-        alert("La tabla de elementos seleccionados está vacía. Agrega elementos antes de enviar la cotización.");
-    } else {
-        document.getElementById("formulario").submit();
-    }
+function validarCotizacion(){
+    document.getElementById('formulario-cotizacion').addEventListener('submit', function(event) {
+        event.preventDefault();
+    
+        var formData = new FormData(this);
+    
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '../PHP/PROCESAR_SOLICITUD.php', true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                console.log(xhr.responseText);
+            } else {
+                console.error('Error al procesar la solicitud');
+            }
+        };
+        xhr.send(formData);
+    });
 }
 
 function eliminarCotizacion(btn) {
@@ -58,4 +68,40 @@ function seleccionar2(btn) {
 function limpiarCampos() {
     var formulario = document.getElementById("formulario");
     formulario.reset();
+}
+function agregarCotizacion() {
+    var tabla = document.getElementById("cotizaciones").getElementsByTagName('tbody')[0];
+    var nuevaFila = tabla.insertRow(-1);
+    nuevaFila.innerHTML = `
+        <td>
+            <select name="material_id[]" required>
+                <option value="">Seleccione un material</option>
+                <?php
+                $consulta = "SELECT id, material FROM agregar_materiales";
+                $resultado = mysqli_query($conexion, $consulta);
+                while ($fila = mysqli_fetch_assoc($resultado)) {
+                    echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
+                }
+                ?>
+            </select>
+        </td>
+        <td><input type="text" name="descripcion[]" required></td>
+        <td><input type="text" name="unidad[]" required></td>
+        <td><input type="number" name="precio[]" required></td>
+        <td><input type="text" name="descuento[]" required></td>
+        <td><input type="number" name="impuestos[]" required></td>
+        <td>
+            <select name="proveedor_id[]" required>
+            <option value="">Seleccione un proveedor</option>
+                <?php
+                $consulta = "SELECT id, proveedor FROM proveedores";
+                $resultado = mysqli_query($conexion, $consulta);
+                while ($fila = mysqli_fetch_assoc($resultado)) {
+                    echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
+                }
+                ?>
+            </select>
+        </td>
+        <td><button type="button" onclick="eliminarCotizacion(this)">Eliminar</button></td>
+    `;
 }

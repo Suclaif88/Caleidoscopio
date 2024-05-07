@@ -94,12 +94,13 @@ $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
                             </tr>
                         </thead>
                         <tbody>";
-
 foreach ($seleccionados as $id) {
     $sql = "SELECT * FROM cotizaciones WHERE id = $id";
     $result = $conexion->query($sql);
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();
+        $proveedor_info = explode(" - ", $row["proveedor"]);
+        $proveedor_id = $proveedor_info[0];
         $tablaSeleccionados .= "<tr>";
         $tablaSeleccionados .= "<td>" . htmlspecialchars($row["material"]) . "</td>";
         $tablaSeleccionados .= "<td>" . htmlspecialchars($row["descripcion"]) . "</td>";
@@ -107,13 +108,12 @@ foreach ($seleccionados as $id) {
         $tablaSeleccionados .= "<td>" . htmlspecialchars($row["precio"]) . "</td>";
         $tablaSeleccionados .= "<td>" . htmlspecialchars($row["descuento"]) . "</td>";
         $tablaSeleccionados .= "<td>" . htmlspecialchars($row["impuestos"]) . "</td>";
-        $tablaSeleccionados .= "<td>" . htmlspecialchars($row["proveedor"]) . "</td>";
+        $tablaSeleccionados .= "<td>" . htmlspecialchars($proveedor_id) . "</td>";
         $tablaSeleccionados .= "<td><button onclick='eliminarCotizacion(this)' class='btneliminarcot'>Eliminar</button></td>";
         $tablaSeleccionados .= "</tr>";
     }
 }
 
-$tablaSeleccionados .= "</tbody></table>";
 
 ?>
 
@@ -141,7 +141,10 @@ $tablaSeleccionados .= "</tbody></table>";
             height: 100px;
             margin-bottom: 20px;
         }
-
+        #title{
+            text-align: center;
+            margin: 3vh;
+        }
         form {
             width: 99%;
             padding: 20px;
@@ -240,8 +243,8 @@ $tablaSeleccionados .= "</tbody></table>";
         border-radius: 5px;
         box-sizing: border-box;
         overflow: auto;
-        }
-
+    }
+        
     </style>
 </head>
 
@@ -255,9 +258,19 @@ $tablaSeleccionados .= "</tbody></table>";
             <li><a href="DC.php">Inicio</a></li>
         </ul>
     </div>
-<!-- busqueda de materiales -->
+    <!-- Botones adicionales -->
+    <br><br>
+    <div class="parent table-container">
+        <button type="button" onclick="window.location.href='AGG_MA.php'" class="v t">Agregar material</button>
+        <button type="button" onclick="window.location.href='AGG_PRO.php'" class="v t">Agregar proveedor</button>
+        <button type="button" onclick="window.location.href='MOD_PRECIO.php'" class="v t">Editar precios</button>
+        <button type="button" onclick="window.location.href='AGG_CO.php'" class="v t">Agregar productos</button>
+    </div>
+    </div>
+</div>
+    <!-- busqueda de materiales -->
+<div class="table-container">
 <div class="form-container">
-    <h1>Búsqueda de materiales</h1>
     <form action="" method="post" class="input-group">
         <input type="text" name="busqueda" placeholder="Búsqueda de materiales" class="form-control">
         <div class="input-group-btn">
@@ -266,181 +279,66 @@ $tablaSeleccionados .= "</tbody></table>";
     </form>
 </div>
 
-
-
 <div class="contenedor-tablas">
 
-<!--HAY QUE ARREGLAR ESTO-->
+    <div class="table-container">
+        <div>
+            <?php if (!empty($resultados)) : ?>
+            <?php echo $resultados; ?>
+                <!--Borrar los resultados -->
+                <form action="" method="post" class="input-group">
+                    <input type="submit" name="borrar_resultados" value="Borrar resultados" class="btn2">
+                    
+                </form>
+            <?php else : ?>
+            <?php endif; ?>
+            <div class="cotcont">
+                <div>
+                 <form id="formulario-cotizacion" action="../PHP/PROCESAR_SOLICITUD.php" method="post">
+                    <input type="submit" value="Enviar Materiales" onclick="validarCotizacion()" class="btn2">
+                    <?php if (!empty($cotizacion)) : ?>
+                        <?php echo $cotizacion; ?>
+                    <?php else : ?>
+                        <p>No hay cotizaciones disponibles.</p>
+                    <?php endif; ?>
+                    
+                    <select id="obra" name="obra_id" required>
+                        <option value="">Seleccione una obra</option>
+                        <?php
 
-<!-- <div class="cotcont">
-<?php if (!empty($cotizacion)) : ?>
-        <?php echo $cotizacion; ?>
-    <?php else : ?>
-        
-    <?php endif; ?>
-    </div>
-</div> -->
-<!------------------------------>
+                        require_once("../PHP/CONN.php");
 
-<div class="table-container">
+                        if ($conexion->connect_error) {
+                            die("Error de conexión: " . $conexion->connect_error);
+                        }
 
-    <?php if (!empty($resultados)) : ?>
-        <?php echo $resultados; ?>
-        <!--Borrar los resultados -->
-        <form action="" method="post" class="input-group">
-            <input type="submit" name="borrar_resultados" value="Borrar resultados" class="btn2">
-        </form>
+                        $sql = "SELECT id, nombre FROM obras";
+                        $resultado = $conexion->query($sql);
 
-    <?php else : ?>
-        
-    <?php endif; ?>
+                        if ($resultado->num_rows > 0) {
+                            while ($fila = $resultado->fetch_assoc()) {
+                                echo "<option value='".$fila['id']."'>".$fila['nombre']."</option>";
+                            }
+                        } else {
+                            echo "<option value=''>No hay obras disponibles</option>";
+                        }
 
-</div>
+                        ?>
+                    </select>
 
-<!--COTIZACION-->
-
-
-
-<div class="container">
-    <h1>Agregar material</h1>
-    <form action="../PHP/AGGCO.php" method="post" id="formulario">
-        <!-- Campos de Material, Unidad, Precio, Descuento, Impuesto, Proveedor -->
-        <div class="input-group">
-            <!-- Campo de Material -->
-            <div class="input-group-item">
-                <label for="material">Material:</label>
-                <select name="material_id[]" required>
-                    <option value="">Seleccione un material</option>
-                    <?php
-                    $consulta = "SELECT id, material FROM agregar_materiales";
-                    $resultado = mysqli_query($conexion, $consulta);
-                        while ($fila = mysqli_fetch_assoc($resultado)) {
-                        echo "<option value='" . $fila['material'] . "'>" . $fila['material'] . "</option>";
-                    }
-                    ?>
-                </select>
-
-
-            </div>
-            <!-- Campo de Unidad -->
-            <div class="input-group-item">
-                <label for="unidad">Unidad:</label>
-                <input type="text" name="unidad[]" required>
-            </div>
-            <!-- Campo de Precio -->
-            <div class="input-group-item">
-                <label for="precio">Precio:</label>
-                <input type="number" name="precio[]" required>
-            </div>
-            <!-- Campo de Descuento -->
-            <div class="input-group-item">
-                <label for="descuento">Descuento:</label>
-                <input type="number" name="descuento[]" required>
-            </div>
-            <!-- Campo de Impuesto -->
-            <div class="input-group-item">
-                <label for="impuesto">Impuesto:</label>
-                <input type="number" name="impuesto[]" required>
-            </div>
-            <!-- Campo de Proveedor -->
-            <div class="input-group-item">
-                <label for="proveedor">Proveedor:</label>
-                <select name="proveedor_id[]" required>
-                <option value="">Seleccione un proveedor</option>
-                <?php
-                    $consulta = "SELECT id, proveedor FROM proveedores";
-                    $resultado = mysqli_query($conexion, $consulta);
-                        while ($fila = mysqli_fetch_assoc($resultado)) {
-                        echo "<option value='" . $fila['proveedor'] . "'>" . $fila['proveedor'] . "</option>";
-                    }
-                ?>
-                </select>
-
+                    <input type="hidden" name="proveedor" value="<?php echo $proveedor_id; ?>">
+                   
+                </form>
+                </div>
             </div>
         </div>
-
-        <!-- Campo de Descripción -->
-        <div class="input-group">
-            <div class="input-group-item">
-                <label for="descripcion">Descripción:</label>
-                <textarea name="descripcion[]" rows="4" cols="50" required></textarea>
-            </div>
-        </div><br>
-        <div class="contt">
-        <button type="button" onclick="limpiarCampos()" class="btneliminarcot">Limpiar campos</button>
-        </div><br>
-        <!-- Botón para agregar -->
-        <div class="contt">
-            <button type="button" class="btneliminarcot" onclick="seleccionar2(this)">Agregar</button><br>
-        </div>
-     <!-- Tabla de elementos seleccionados -->
-        <div class="input-group">
-            <?php echo $tablaSeleccionados; ?>
-        </div>
-        </form>
-    <div class="input-group">
-            <input type="submit" onclick="validarEnvioCotizacion()" value="Enviar Material">
-    </div>
-    <!-- Botones adicionales -->
-    <br><br>
-    <div class="parent">
-        <button type="button" onclick="window.location.href='AGG_MA.php'" class="v t">Agregar material</button>
-        <button type="button" onclick="window.location.href='AGG_PRO.php'" class="v t">Agregar proveedor</button>
-        <button type="button" onclick="window.location.href='MOD_PRECIO.php'" class="v t">Editar precios</button>
+    
     </div>
 </div>
-
-
-
-
-    <!-- Seleccionar el proveedor comentado
-    <div class="container">
-    <h1>SELECCIONE PROVEEDOR</h1>
-    <form action="OBTENER_MA.php" method="get">
-        <label for="obra">Obra:</label>
-        <select id="obra" name="obra_id" required>
-            <option value="">Seleccione una obra</option>
-            <?php
-            require_once("../PHP/CONN.php");
-
-            if ($conexion->connect_error) {
-                die("Error de conexión: " . $conexion->connect_error);
-            }
-
-            $sql = "SELECT id, nombre FROM obras";
-            $resultado = $conexion->query($sql);
-
-            if ($resultado->num_rows > 0) {
-                while ($fila = $resultado->fetch_assoc()) {
-                    echo "<option value='".$fila['id']."'>".$fila['nombre']."</option>";
-                }
-            } else {
-                echo "<option value=''>No hay obras disponibles</option>";
-            }
-            ?>
-        </select>
-
-        <label for="proveedor">Seleccione un proveedor:</label>
-        <select name="proveedor" id="proveedor">
-            <option value="">Seleccione un proveedor</option>
-            <?php
-            $consulta = "SELECT proveedor FROM proveedores";
-            $resultados = mysqli_query($conexion, $consulta);
-
-            while ($fila = mysqli_fetch_array($resultados)) {
-                echo "<option value='" . $fila['proveedor'] . "'>" . $fila['proveedor'] . "</option>";
-            }
-            ?>
-        </select>
-        
-        <button type="submit" class="v">Mostrar Materiales</button>
-    </form>
-</div> -->
-
-
-
-
-
+</div>
+<div class="input-group">
+            
+    </div>
 
 <br><br>
 </body>

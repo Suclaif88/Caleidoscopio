@@ -1,10 +1,10 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if(isset($_POST['materialesSeleccionados']) && is_array($_POST['materialesSeleccionados'])) {
+    if(isset($_POST['materialesSeleccionados']) && is_array($_POST['materialesSeleccionados']) && !empty($_POST['materialesSeleccionados'])) {
         require_once("CONN.php");
 
         $obra_id = $_POST['obra_id'];
-        $proveedor = $_POST['proveedor'];
+        $proveedor_id = isset($_POST['proveedor']) ? $_POST['proveedor'] : '';
 
         foreach ($_POST['materialesSeleccionados'] as $material) {
             $verificar_coincidencia = "SELECT COUNT(*) as coincidencia FROM pedidos WHERE producto = '$material' AND obra_id = '$obra_id'";
@@ -13,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $coincidencia = $fila_coincidencia['coincidencia'];
 
             if ($coincidencia > 0) {
-
                 $precio_material = obtenerPrecioMaterial($conexion, $proveedor, $material);
                 if ($precio_material !== false) {
                     $sql_insert = "UPDATE pedidos SET precio = '$precio_material' WHERE producto = '$material' AND obra_id = '$obra_id' AND estado ='1'";
@@ -36,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<script>alert('¡Solicitud de materiales enviada con éxito!');</script>";
         echo "<script>window.location.href = '../VISTADC/COTIZACION.php';</script>";
     } else {
-        echo "Error: No se han seleccionado materiales.";
+        echo "Error: No se han seleccionado materiales o la lista de materiales seleccionados está vacía.";
     }
 } else {
     echo "Error: Acceso no válido.";

@@ -57,7 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
     }
 }
 
-$cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
+$cotizacion = "<div class='table-container'>
+                    <table border='1' id='cotizacion' class='styled-table'>
                         <thead>
                             <tr>
                                 <th style='background-color: #E6BA49;'>Material</th>
@@ -70,7 +71,8 @@ $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
                                 <th style='background-color: #E6BA49;'>Acción</th>
                             </tr>
                         </thead>
-                        <tbody>";
+                        <tbody>
+                        </div>";
 ?>
 
 <!DOCTYPE html>

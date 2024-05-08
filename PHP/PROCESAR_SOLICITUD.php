@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $coincidencia = $fila_coincidencia['coincidencia'];
 
             if ($coincidencia > 0) {
-                $precio_material = obtenerPrecioMaterial($conexion, $proveedor, $material);
+                $precio_material = obtenerPrecioMaterial($conexion, $proveedor_id, $material);
                 if ($precio_material !== false) {
                     $sql_insert = "UPDATE pedidos SET precio = '$precio_material' WHERE producto = '$material' AND obra_id = '$obra_id' AND estado ='1'";
                     if ($conexion->query($sql_insert) !== TRUE) {

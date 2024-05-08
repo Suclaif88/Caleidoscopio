@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         exit;
                     }
                 } else {
-                    echo "No se pudo obtener el precio para el material '$material' y la obra '$obra_id'.";
+                    echo "No se pudo obtener el precio para el material '$material' y el proveedor '$proveedor_id'.";
                     exit;
                 }
             } else {

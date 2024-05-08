@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
                 $resultados .= "<td>" . htmlspecialchars($row["descuento"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["impuestos"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["proveedor"]) . "</td>";
-                $resultados .= "<td><button class='seleccionar' onclick='seleccionar(this, " . htmlspecialchars($row["id"]) . ")' style='
+                $resultados .= "<td><button class='seleccionar' onclick='seleccionar(this, " . htmlspecialchars($row["id"]) . ", \"" . htmlspecialchars($row["proveedor"]) . "\")' style='
                 color:#000000; 
                 border:2px solid black;
                 box-sizing: border-box;
@@ -57,8 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
     }
 }
 
-$cotizacion = "<div class='table-container'>
-                    <table border='1' id='cotizacion' class='styled-table'>
+$cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
                         <thead>
                             <tr>
                                 <th style='background-color: #E6BA49;'>Material</th>
@@ -71,10 +70,8 @@ $cotizacion = "<div class='table-container'>
                                 <th style='background-color: #E6BA49;'>Acción</th>
                             </tr>
                         </thead>
-                        <tbody>
-                        </div>";
+                        <tbody>";
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 

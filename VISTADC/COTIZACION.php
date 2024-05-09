@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
                 $resultados .= "<td>" . htmlspecialchars($row["descuento"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["impuestos"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["proveedor"]) . "</td>";
-                $resultados .= "<td><button class='seleccionar' onclick='seleccionar(this, " . htmlspecialchars($row["id"]) . ", \"" . htmlspecialchars($row["proveedor"]) . "\")' style='
+                $resultados .= "<td><button class='seleccionar' onclick='seleccionar(this, " . htmlspecialchars($row["id"]) . ", " . json_encode($row["proveedor"]) . ")' style='
                 color:#000000; 
                 border:2px solid black;
                 box-sizing: border-box;
@@ -46,14 +46,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
 
 
 
+
+
                 $resultados .= "</tr>";
             }
             $resultados .= "</table>";
         } else {
-            $resultados = "No se encontraron resultados para la búsqueda.";
+            $resultados = "<script>
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Sin resultados',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'OK'
+                                });
+                            </script>";
         }
     } else {
-        $resultados = "Error al ejecutar la consulta.";
+            $resultados = "<script>
+                                Swal.fire({
+                                icon: 'error',
+                                title: 'Error en la busqueda',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'OK'
+                                });
+                            </script>";
     }
 }
 
@@ -175,23 +191,23 @@ $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
             table-layout: auto;
         }
 
-        .container form table th,
-        .container form table td {
+.container form table th,
+.container form table td {
             padding: 8px; 
             white-space: nowrap; 
             overflow: hidden; 
             text-overflow: ellipsis;
         }
 
-        .container form table th {
+.container form table th {
             background-color: #f0f0f0; 
         }
-        .t{
+.t{
             width: 100%;
             margin-top:5vh;
         }
 
-        .input-group-item textarea[name="descripcion[]"] {
+.input-group-item textarea[name="descripcion[]"] {
         width: calc(100% - 20px);
         padding: 10px;
         margin-bottom: 15px;
@@ -201,7 +217,7 @@ $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
         overflow: auto;
     }
 
-    #loader {
+#loader {
   display: none;
   position: fixed;
   top: 0;
@@ -214,11 +230,11 @@ $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
   justify-content: center;
   align-items: center;
 }
-    #loader img {
+#loader img {
   width: 50px;
   height: 50px;
 }
-    #loader p {
+#loader p {
   margin-top: 10px;
   font-size: 18px;
   color: #ffffff;
@@ -326,8 +342,6 @@ $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
 
                         ?>
                     </select>
-
-                    <input type="hidden" name="proveedor" value="<?php echo $proveedor_id; ?>">
                    
                 </form>
                 </div>

@@ -420,10 +420,12 @@ input[type="submit"]:hover {
 
 .table-container {
   width: 100%;
+  justify-content: center;
+  align-items: center;
 }
 
 .styled-table {
-  width: 90%;
+  width: 98%;
   border-collapse: collapse;
 }
 
@@ -438,12 +440,6 @@ input[type="submit"]:hover {
   background-color: #e0e0e0;
   font-weight: bold;
 }
-
-.styled-table td:first-child {
-  font-weight: bold;
-  background-color: #f0f0f0;
-}
-
 
 
 .limited-text {

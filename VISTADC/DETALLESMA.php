@@ -137,7 +137,7 @@ if (isset($_GET['fecha_pedido'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT producto, cantidad, unidad, precio, historial
+    $sql = "SELECT producto, cantidad, unidad, precio, historial, descuento, impuesto
             FROM pedidos
             WHERE fecha_pedido = '$fecha_pedido' AND estado = 1";
     $resultado = $conexion->query($sql);
@@ -146,7 +146,7 @@ if (isset($_GET['fecha_pedido'])) {
 
     if ($resultado->num_rows > 0) {
         echo "<table border='1'>";
-        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Precio Total</th></tr>";
+        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Descuento</th><th>Impuesto</th><th>Precio Total</th></tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>".$fila['producto']."</td>";
@@ -178,9 +178,6 @@ if (isset($_GET['fecha_pedido'])) {
     echo "El parámetro para búsqueda no fue proporcionado.";
 }
 ?>
-
-
-
 
 <div class="op">
     <button class="aceptar" id="btnEnviarge">ENVIAR A GERENTE</button>

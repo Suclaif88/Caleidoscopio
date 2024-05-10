@@ -148,7 +148,7 @@ if (isset($_GET['obra_id'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT producto, cantidad, unidad, precio, estado
+    $sql = "SELECT producto, cantidad, unidad, precio, historial, descuento, impuesto
             FROM pedidos
             WHERE obra_id = $obra_id AND estado = 2";
     $resultado = $conexion->query($sql);
@@ -157,7 +157,7 @@ if (isset($_GET['obra_id'])) {
 
     if ($resultado->num_rows > 0) {
         echo "<table border='1'>";
-        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Precio Total</th><th>Estado</th></tr>";
+        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Descuento</th><th>Impuesto</th><th>Precio Total</th></tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>".$fila['unidad']."</td>";

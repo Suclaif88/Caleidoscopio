@@ -5,12 +5,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $obra_id = $_POST['obra_id'];
         $proveedor_id = isset($_POST['proveedor']) ? $_POST['proveedor'] : '';
-        $proveedor_nombre = obtenerNombreProveedor($conexion, $proveedor_id);
+        $proveedor = obtenerNombreProveedor($conexion, $proveedor_id);
 
-        if ($proveedor_nombre !== false){
+        if ($proveedor !== false){
 
         foreach ($_POST['materialesSeleccionados'] as $material) {
-            $verificar_coincidencia = $conexion->prepare("SELECT COUNT(*) as coincidencia FROM pedidos WHERE producto = ? AND obra_id = ?");
+            $verificar_coincidencia = $conexion->prepare("SELECT COUNT(*) as coincidencia FROM pedidos WHERE producto = '$material' AND obra_id = '$obra_id'");
             $verificar_coincidencia->bind_param("si", $material, $obra_id);
             $verificar_coincidencia->execute();
             $resultado_coincidencia = $verificar_coincidencia->get_result();
@@ -18,12 +18,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $coincidencia = $fila_coincidencia['coincidencia'];
 
             if ($coincidencia > 0) {
-                $precio_material = obtenerDatoMaterial($conexion, $proveedor_id, $material, 'precio');
-                $descuento_material = obtenerDatoMaterial($conexion, $proveedor_id, $material, 'descuento');
-                $impuesto_material = obtenerDatoMaterial($conexion, $proveedor_id, $material, 'impuesto');
+                $precio_material = obtenerPrecioMaterial($conexion, $proveedor, $material, 'precio');
+                $descuento_material = obtenerDescuentoMaterial($conexion, $proveedor, $material, 'descuento');
+                $impuesto_material = obtenerImpuestpMaterial($conexion, $proveedor, $material, 'impuesto');
 
                 if ($precio_material !== false && $descuento_material !== false && $impuesto_material !== false) {
-                    $sql_update = "UPDATE pedidos SET precio = ?, descuento = ?, impuesto = ? WHERE producto = ? AND obra_id = ? AND estado ='1'";
+                    $sql_update = "UPDATE pedidos SET precio = '%precio_material', descuento = ;$descuento_material;, impuesto = '$impuesto_material' WHERE producto = ? AND obra_id = ? AND estado ='1'";
                     $actualizar_pedido = $conexion->prepare($sql_update);
                     $actualizar_pedido->bind_param("dddsi", $precio_material, $descuento_material, $impuesto_material, $material, $obra_id);
                     if ($actualizar_pedido->execute() !== TRUE) {
@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         exit;
                     }
                 } else {
-                    echo "No se pudieron obtener los datos necesarios para el material '$material' y el proveedor '$proveedor_id'.";
+                    echo "No se pudieron obtener los datos necesarios para el material '$material' y el proveedor '$proveedor'.";
                     exit;
                 }
             } else {
@@ -68,7 +68,7 @@ function obtenerNombreProveedor($conexion, $proveedor_id) {
     }
 }
 function obtenerPrecioMaterial($conexion, $proveedor, $material, $precio) {
-    $sql = "SELECT $dato FROM cotizaciones WHERE proveedor = '$proveedor' AND material = '$material'";
+    $sql = "SELECT precio FROM cotizaciones WHERE proveedor = '$proveedor' AND material = '$material'";
     $consulta = $conexion->prepare($sql);
     $consulta->bind_param("ss", $proveedor, $material);
     $consulta->execute();
@@ -76,13 +76,13 @@ function obtenerPrecioMaterial($conexion, $proveedor, $material, $precio) {
 
     if ($resultado && $resultado->num_rows > 0) {
         $row = $resultado->fetch_assoc();
-        return $row[$precio];
+        return $row['precio'];
     } else {
         return false;
     }
 }
 function obtenerDescuentoMaterial($conexion, $proveedor, $material, $descuento) {
-    $sql = "SELECT $dato FROM cotizaciones WHERE proveedor = '$proveedor' AND material = '$material'";
+    $sql = "SELECT descuento FROM cotizaciones WHERE proveedor = '$proveedor' AND material = '$material'";
     $consulta = $conexion->prepare($sql);
     $consulta->bind_param("ss", $proveedor, $material);
     $consulta->execute();
@@ -90,13 +90,13 @@ function obtenerDescuentoMaterial($conexion, $proveedor, $material, $descuento) 
 
     if ($resultado && $resultado->num_rows > 0) {
         $row = $resultado->fetch_assoc();
-        return $row[$descuento];
+        return $row['descuento'];
     } else {
         return false;
     }
 }
 function obtenerImpuestoMaterial($conexion, $proveedor, $material, $impuesto) {
-    $sql = "SELECT $dato FROM cotizaciones WHERE proveedor = '$proveedor' AND material = '$material'";
+    $sql = "SELECT impuesto FROM cotizaciones WHERE proveedor = '$proveedor' AND material = '$material'";
     $consulta = $conexion->prepare($sql);
     $consulta->bind_param("ss", $proveedor, $material);
     $consulta->execute();
@@ -104,7 +104,7 @@ function obtenerImpuestoMaterial($conexion, $proveedor, $material, $impuesto) {
 
     if ($resultado && $resultado->num_rows > 0) {
         $row = $resultado->fetch_assoc();
-        return $row[$impuesto];
+        return $row['impuesto'];
     } else {
         return false;
     }

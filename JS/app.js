@@ -2,8 +2,8 @@ var materialesSeleccionados = [];
 var proveedoresSeleccionados = [];
 
 function validarCotizacion() {
-    // console.log("Materiales seleccionados:", materialesSeleccionados);
-    // console.log("Proveedores seleccionados:", proveedoresSeleccionados);
+    console.log("Materiales seleccionados:", materialesSeleccionados);
+    console.log("Proveedores seleccionados:", proveedoresSeleccionados);
     
     document.getElementById('formulario-cotizacion').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -19,28 +19,44 @@ function validarCotizacion() {
         xhr.open('POST', '../PHP/PROCESAR_SOLICITUD.php', true);
         xhr.onload = function() {
             if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                if (response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: response.success
-                    }).then(function() {
-                        window.location.href = '../VISTADC/COTIZACION.php';
-                    });
-                } else if (response.error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: response.error
-                    });
+                try {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: response.success
+                        }).then(function() {
+                            window.location.href = '../VISTADC/COTIZACION.php';
+                        });
+                    } else if (response.error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.error
+                        });
+                    } else {
+                        console.error('Respuesta no válida:', xhr.responseText);
+                    }
+                } catch (error) {
+                    // Si la respuesta parece ser un error del servidor mostrarlo en lugar de intentar analizarlo como JSON
+                    if (xhr.responseText.trim().startsWith("<")) {
+                        console.error('Error del servidor:', xhr.responseText);
+                    } else {
+                        console.error('Error al analizar la respuesta JSON:', error);
+                    }
                 }
             } else {
-                console.error('Error al procesar la solicitud');
+                console.error('Error al procesar la solicitud. Estado:', xhr.status);
             }
+        };
+        xhr.onerror = function() {
+            console.error('Error de red al procesar la solicitud.');
         };
         xhr.send(formData);
     });
 }
+
+
 
 
 function seleccionar(btn, idMaterial, proveedor) {
@@ -58,8 +74,8 @@ function seleccionar(btn, idMaterial, proveedor) {
     materialesSeleccionados.push(idMaterial);
     proveedoresSeleccionados.push(proveedor);
     
-    // console.log(materialesSeleccionados);
-    // console.log(proveedoresSeleccionados);
+    console.log(materialesSeleccionados);
+    console.log(proveedoresSeleccionados);
 
     Swal.fire({
         position: "top-end",
@@ -80,8 +96,8 @@ function eliminarCotizacion(btn, idMaterial) {
     var fila = btn.parentNode.parentNode;
     fila.parentNode.removeChild(fila);
 
-    // console.log(materialesSeleccionados);
-    // console.log(proveedoresSeleccionados);
+    console.log(materialesSeleccionados);
+    console.log(proveedoresSeleccionados);
 
     Swal.fire({
         position: "top-end",

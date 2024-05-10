@@ -9,50 +9,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($proveedor !== false){
 
-        foreach ($_POST['materialesSeleccionados'] as $material) {
-            $verificar_coincidencia = $conexion->prepare("SELECT COUNT(*) as coincidencia FROM pedidos WHERE producto = '$material' AND obra_id = '$obra_id'");
-            $verificar_coincidencia->bind_param("si", $material, $obra_id);
-            $verificar_coincidencia->execute();
-            $resultado_coincidencia = $verificar_coincidencia->get_result();
-            $fila_coincidencia = $resultado_coincidencia->fetch_assoc();
-            $coincidencia = $fila_coincidencia['coincidencia'];
+            foreach ($_POST['materialesSeleccionados'] as $material) {
+                $verificar_coincidencia = $conexion->prepare("SELECT COUNT(*) as coincidencia FROM pedidos WHERE producto = ? AND obra_id = ?");
+                $verificar_coincidencia->bind_param("si", $material, $obra_id);
+                $verificar_coincidencia->execute();
+                $resultado_coincidencia = $verificar_coincidencia->get_result();
+                $fila_coincidencia = $resultado_coincidencia->fetch_assoc();
+                $coincidencia = $fila_coincidencia['coincidencia'];
 
-            if ($coincidencia > 0) {
-                $precio_material = obtenerPrecioMaterial($conexion, $proveedor, $material, 'precio');
-                $descuento_material = obtenerDescuentoMaterial($conexion, $proveedor, $material, 'descuento');
-                $impuesto_material = obtenerImpuestpMaterial($conexion, $proveedor, $material, 'impuesto');
+                if ($coincidencia > 0) {
+                    $precio_material = obtenerPrecioMaterial($conexion, $proveedor, $material, 'precio');
+                    $descuento_material = obtenerDescuentoMaterial($conexion, $proveedor, $material, 'descuento');
+                    $impuesto_material = obtenerImpuestoMaterial($conexion, $proveedor, $material, 'impuesto');
 
-                if ($precio_material !== false && $descuento_material !== false && $impuesto_material !== false) {
-                    $sql_update = "UPDATE pedidos SET precio = '%precio_material', descuento = ;$descuento_material;, impuesto = '$impuesto_material' WHERE producto = ? AND obra_id = ? AND estado ='1'";
-                    $actualizar_pedido = $conexion->prepare($sql_update);
-                    $actualizar_pedido->bind_param("dddsi", $precio_material, $descuento_material, $impuesto_material, $material, $obra_id);
-                    if ($actualizar_pedido->execute() !== TRUE) {
-                        echo "Error al enviar la solicitud de materiales.";
+                    if ($precio_material !== false && $descuento_material !== false && $impuesto_material !== false) {
+                        $sql_update = "UPDATE pedidos SET precio = ?, descuento = ?, impuesto = ? WHERE producto = ? AND obra_id = ? AND estado ='1'";
+                        $actualizar_pedido = $conexion->prepare($sql_update);
+                        $actualizar_pedido->bind_param("dddsi", $precio_material, $descuento_material, $impuesto_material, $material, $obra_id);
+                        if ($actualizar_pedido->execute() !== TRUE) {
+                            $response = array("error" => "Error al enviar la solicitud de materiales.");
+                            echo json_encode($response);
+                            exit;
+                        }
+                    } else {
+                        $response = array("error" => "No se pudieron obtener los datos necesarios para el material '$material' y el proveedor '$proveedor'.");
+                        echo json_encode($response);
                         exit;
                     }
                 } else {
-                    echo "No se pudieron obtener los datos necesarios para el material '$material' y el proveedor '$proveedor'.";
+                    $response = array("error" => "El material '$material' no coincide con la obra '$obra_id'.");
+                    echo json_encode($response);
                     exit;
                 }
-            } else {
-                echo "El material '$material' no coincide con la obra '$obra_id'.";
-                exit;
             }
-        }}else {
-            echo "No se pudo obtener el nombre del proveedor.";
-            exit;
+            $conexion->close();
+            $response = array("success" => "¡Solicitud de materiales enviada con éxito!");
+            echo json_encode($response);
+        }else {
+            $response = array("error" => "No se pudo obtener el nombre del proveedor.");
+            echo json_encode($response);
         }
-
-        $conexion->close();
-
-        echo "<script>alert('¡Solicitud de materiales enviada con éxito!');</script>";
-        echo "<script>window.location.href = '../VISTADC/COTIZACION.php';</script>";
     } else {
-        echo "Error: No se han seleccionado materiales o la lista de materiales seleccionados está vacía.";
+        $response = array("error" => "Error: No se han seleccionado materiales o la lista de materiales seleccionados está vacía.");
+        echo json_encode($response);
     }
 } else {
-    echo "Error: Acceso no válido.";
+    $response = array("error" => "Error: Acceso no válido.");
+    echo json_encode($response);
 }
+
 function obtenerNombreProveedor($conexion, $proveedor_id) {
     $sql = "SELECT proveedor FROM proveedores WHERE id = 'proveedor_id'";
     $consulta = $conexion->prepare($sql);
@@ -110,4 +115,3 @@ function obtenerImpuestoMaterial($conexion, $proveedor, $material, $impuesto) {
     }
 }
 
-?>

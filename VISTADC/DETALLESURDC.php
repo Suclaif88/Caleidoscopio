@@ -149,11 +149,11 @@ if (isset($_GET['fecha_pedido'])) {
         echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Precio Total</th></tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
-            echo "<td>".$fila['producto']."</td>";
-            echo "<td>".$fila['cantidad']."</td>";
             echo "<td>".$fila['unidad']."</td>";
             echo "<td>".$fila['precio']."</td>";
-            $precio_total = $fila['cantidad'] * $fila['precio'];
+            echo "<td>".$fila['descuento']."</td>";
+            echo "<td>".$fila['impuesto']."</td>";
+            $precio_total = $fila['cantidad'] * ($fila['precio']-($fila['precio']*($fila['descuento']/100))+(($fila['precio']*($fila['descuento']/100))*($fila['impiesto']/100))) ;
             echo "<td>".$precio_total."</td>";
             $subtotal += $precio_total;
             echo "</tr>";

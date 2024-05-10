@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
                 $resultados .= "<td>" . htmlspecialchars($row["unidad"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["precio"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["descuento"]) . "</td>";
-                $resultados .= "<td>" . htmlspecialchars($row["impuestos"]) . "</td>";
+                $resultados .= "<td>" . htmlspecialchars($row["impuesto"]) . "</td>";
                 $resultados .= "<td>" . htmlspecialchars($row["proveedor"]) . "</td>";
                 $resultados .= "<td><button class='seleccionar' onclick='seleccionar(this, " . htmlspecialchars($row["id"]) . ", " . json_encode($row["proveedor"]) . ")' style='
                 color:#000000; 

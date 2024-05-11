@@ -70,11 +70,11 @@ function seleccionar(btn, idMaterial, proveedor) {
     var nuevaFila = cotizacion.insertRow(-1);
     nuevaFila.innerHTML = "<td>" + material + "</td><td>" + descripcion + "</td><td>" + unidad + "</td><td>" + precio + "</td><td>" + descuento + "</td><td>" + impuesto + "</td><td>" + proveedor + "</td><td><button onclick='eliminarCotizacion(this, " + idMaterial + ")' class='btneliminarcot'>Eliminar</button></td>";
 
-    // materialesSeleccionados.push(idMaterial);
-    // proveedoresSeleccionados.push(proveedor);
+    materialesSeleccionados.push(idMaterial);
+    proveedoresSeleccionados.push(proveedor);
     
-    console.log(materialesSeleccionados);
-    console.log(proveedoresSeleccionados);
+    // console.log(materialesSeleccionados);
+    // console.log(proveedoresSeleccionados);
 
     Swal.fire({
         position: "top-end",

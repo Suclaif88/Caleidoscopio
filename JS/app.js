@@ -2,8 +2,8 @@ var materialesSeleccionados = [];
 var proveedoresSeleccionados = [];
 
 function validarCotizacion() {
-    console.log("Materiales seleccionados:", materialesSeleccionados);
-    console.log("Proveedores seleccionados:", proveedoresSeleccionados);
+    // console.log("Materiales seleccionados:", materialesSeleccionados);
+    // console.log("Proveedores seleccionados:", proveedoresSeleccionados);
     
     document.getElementById('formulario-cotizacion').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -38,7 +38,6 @@ function validarCotizacion() {
                         console.error('Respuesta no válida:', xhr.responseText);
                     }
                 } catch (error) {
-                    // Si la respuesta parece ser un error del servidor mostrarlo en lugar de intentar analizarlo como JSON
                     if (xhr.responseText.trim().startsWith("<")) {
                         console.error('Error del servidor:', xhr.responseText);
                     } else {
@@ -71,8 +70,8 @@ function seleccionar(btn, idMaterial, proveedor) {
     var nuevaFila = cotizacion.insertRow(-1);
     nuevaFila.innerHTML = "<td>" + material + "</td><td>" + descripcion + "</td><td>" + unidad + "</td><td>" + precio + "</td><td>" + descuento + "</td><td>" + impuesto + "</td><td>" + proveedor + "</td><td><button onclick='eliminarCotizacion(this, " + idMaterial + ")' class='btneliminarcot'>Eliminar</button></td>";
 
-    materialesSeleccionados.push(idMaterial);
-    proveedoresSeleccionados.push(proveedor);
+    // materialesSeleccionados.push(idMaterial);
+    // proveedoresSeleccionados.push(proveedor);
     
     console.log(materialesSeleccionados);
     console.log(proveedoresSeleccionados);
@@ -96,8 +95,8 @@ function eliminarCotizacion(btn, idMaterial) {
     var fila = btn.parentNode.parentNode;
     fila.parentNode.removeChild(fila);
 
-    console.log(materialesSeleccionados);
-    console.log(proveedoresSeleccionados);
+    // console.log(materialesSeleccionados);
+    // console.log(proveedoresSeleccionados);
 
     Swal.fire({
         position: "top-end",
@@ -121,8 +120,10 @@ function confirmacionBorrado() {
         }).then((result) => {
             if (result.isConfirmed) {
                 setTimeout(function() {
-                    document.getElementById("formulario_borrar").submit();
-                }, 2000);
+                    var resultadosContainer = document.getElementById("resultadosBusqueda");
+                    resultadosContainer.innerHTML = "";
+                    document.getElementById("contenedorBotonBorrar").style.display = "none";
+                }, 1000);
                 Swal.fire(
                     'Borrado!',
                     'Los resultados han sido borrados exitosamente.',
@@ -130,4 +131,51 @@ function confirmacionBorrado() {
                 );
             }
         });
+    }
+
+
+    function realizarBusqueda() {
+        var busqueda = document.getElementById("busqueda").value;
+        document.getElementById("loader").style.display = "flex";
+        setTimeout(function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "../PHP/REALIZAR_BUSQUEDA.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.hasOwnProperty("resultados")) {
+                        document.getElementById("resultadosBusqueda").innerHTML = response.resultados;
+                        document.getElementById("loader").style.display = "none";
+                        document.getElementById("contenedorBotonBorrar").style.display = "block";
+                    } else {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Sin resultados',
+                            text: response.mensaje,
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        });
+                        document.getElementById("loader").style.display = "none";
+                        document.getElementById("contenedorBotonBorrar").style.display = "none";
+                    }
+                }
+            };
+            xhr.send("busqueda=" + busqueda);
+        }, 1000);
+    }
+    
+    
+    
+
+    function mostrarLoader() {
+        document.getElementById("loader").style.display = "flex";
+        setTimeout(function() {
+            document.getElementById("loader").style.display = "none";
+        }, 10000);
+    }
+    
+
+    function ocultarLoader() {
+        document.getElementById("loader").style.display = "none";
     }

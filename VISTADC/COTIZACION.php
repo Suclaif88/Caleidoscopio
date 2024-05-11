@@ -1,92 +1,5 @@
-<?php
-session_start();
-
-if (!isset($_SESSION["nombre"]) || strval($_SESSION["rol"]) !== "3") {
-    header("Location: ../INDEX.html");
-    exit();
-}
-
-require_once("../PHP/CONN.php");
-
-$resultados = "";
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['busqueda'])) {
-    $busqueda = $conexion->real_escape_string($_POST['busqueda']);
-    $sql = "SELECT * FROM cotizaciones WHERE material LIKE '%$busqueda%' OR descripcion LIKE '%$busqueda%' ORDER BY precio ASC";
-    $result = $conexion->query($sql);
-
-    if ($result) {
-        if ($result->num_rows > 0) {
-            $resultados .= "<table border='1'>";
-            $resultados .= "<h1>RESULTADOS DE BUSQUEDA</h1>";
-            $resultados .= "<tr><th>Material</th><th>Descripción</th><th>Unidad</th><th>Precio</th><th>Descuento</th><th>Impuesto</th><th>Proveedor</th><th>Accion</th></tr>";
-            while ($row = $result->fetch_assoc()) {
-                $resultados .= "<tr>";
-                $resultados .= "<td>" . htmlspecialchars($row["material"]) . "</td>";
-                $resultados .= "<td>" . htmlspecialchars($row["descripcion"]) . "</td>";
-                $resultados .= "<td>" . htmlspecialchars($row["unidad"]) . "</td>";
-                $resultados .= "<td>" . htmlspecialchars($row["precio"]) . "</td>";
-                $resultados .= "<td>" . htmlspecialchars($row["descuento"]) . "</td>";
-                $resultados .= "<td>" . htmlspecialchars($row["impuesto"]) . "</td>";
-                $resultados .= "<td>" . htmlspecialchars($row["proveedor"]) . "</td>";
-                $resultados .= "<td><button class='seleccionar' onclick='seleccionar(this, " . htmlspecialchars($row["id"]) . ", " . json_encode($row["proveedor"]) . ")' style='
-                color:#000000; 
-                border:2px solid black;
-                box-sizing: border-box;
-                background: #f0c760;
-                background-image: -webkit-linear-gradient(top, #f0c760, #d6941a);
-                background-image: -moz-linear-gradient(top, #f0c760, #d6941a);
-                background-image: -ms-linear-gradient(top, #f0c760, #d6941a);
-                background-image: -o-linear-gradient(top, #f0c760, #d6941a);
-                background-image: linear-gradient(to bottom, #f0c760, #d6941a);
-                transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-                ' 
-                onmouseover='this.style.backgroundColor=\"#777777\"; this.style.borderColor=\"#000000\"; this.style.color=\"#fff\";' 
-                onmouseout='this.style.backgroundColor=\"#f0c760\"; this.style.borderColor=\"#000000\"; this.style.color=\"#000000\";'>Seleccionar</button></td>";
-
-
-
-
-
-                $resultados .= "</tr>";
-            }
-            $resultados .= "</table>";
-        } else {
-            $resultados = "<script>
-                                Swal.fire({
-                                    icon: 'info',
-                                    title: 'Sin resultados',
-                                    confirmButtonColor: '#3085d6',
-                                    confirmButtonText: 'OK'
-                                });
-                            </script>";
-        }
-    } else {
-            $resultados = "<script>
-                                Swal.fire({
-                                icon: 'error',
-                                title: 'Error en la busqueda',
-                                confirmButtonColor: '#3085d6',
-                                confirmButtonText: 'OK'
-                                });
-                            </script>";
-    }
-}
-
-$cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
-                        <thead>
-                            <tr>
-                                <th style='background-color: #E6BA49;'>Material</th>
-                                <th style='background-color: #E6BA49;'>Descripción</th>
-                                <th style='background-color: #E6BA49;'>Unidad</th>
-                                <th style='background-color: #E6BA49;'>Precio</th>
-                                <th style='background-color: #E6BA49;'>Descuento</th>
-                                <th style='background-color: #E6BA49;'>Impuesto</th>
-                                <th style='background-color: #E6BA49;'>Proveedor</th>
-                                <th style='background-color: #E6BA49;'>Acción</th>
-                            </tr>
-                        </thead>
-                        <tbody>";
+<?php 
+require_once("../PHP/REALIZAR_BUSQUEDA.php");
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -118,14 +31,15 @@ $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
             margin: 3vh;
         }
         form {
-            width: 99%;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-            margin-left: auto;
-            margin-right: auto;
-        }
+    max-width: 900px;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    margin: 0 auto;
+}
+
         .parent{
             display: flex;
             gap: 10px;
@@ -145,6 +59,24 @@ $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
             border: 1px solid #ccc;
             box-sizing: border-box;
         }
+
+        .custom-submit {
+    width: 100px;
+    margin-left: 10px;
+    margin-bottom: 8px;
+    padding: 10px;
+    color: black;
+    border: black 2px solid;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #f0c760;
+    background-image: -webkit-linear-gradient(top, #f0c760, #d6941a);
+    background-image: -moz-linear-gradient(top, #f0c760, #d6941a);
+    background-image: -ms-linear-gradient(top, #f0c760, #d6941a);
+    background-image: -o-linear-gradient(top, #f0c760, #d6941a);
+    background-image: linear-gradient(to bottom, #f0c760, #d6941a);
+}
+
 
         input[type="submit"] {
             width: 100%;
@@ -267,12 +199,17 @@ $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
     <!-- busqueda de materiales -->
     <div class="table-container">
     <div class="form-container">
-        <form action="" method="post" class="input-group" id="searchForm">
-            <input type="text" name="busqueda" placeholder="Búsqueda de materiales" class="form-control">
-            <div class="input-group-btn">
-                <input type="submit" value="Buscar" class="btn2">
-            </div>
-        </form>
+        <form action="#" method="post" class="input-group" id="searchForm">
+            <input type="text" name="busqueda" id="busqueda" placeholder="Búsqueda de materiales" class="form-control">
+            <input type="button" value="Buscar" class="custom-submit" onclick="realizarBusqueda()">
+        </form>    
+<!--Borrar los resultados -->
+<!-- Contenedor del botón de borrar resultados -->
+<div id="contenedorBotonBorrar" style="display: none;">
+    <form id="formulario_borrar" action="" method="post" class="input-group">
+        <button type="button" onclick="confirmacionBorrado()" class="v t">Borrar resultados</button>
+    </form>
+</div>
         <div id="loader" style="display: none;">
             <img src="../IMG/loader.gif" alt="Cargando...">
             <p>Cargando...</p>
@@ -280,35 +217,12 @@ $cotizacion = "<table border='1' id='cotizacion' class='styled-table'>
     </div>
 </div>
 
-    <script>
-    document.getElementById("searchForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-        mostrarLoader();
-    });
-
-    function mostrarLoader() {
-        document.getElementById("loader").style.display = "flex";
-        setTimeout(function() {
-            document.getElementById("searchForm").submit();
-        }, 500);
-    }
-    </script>
+<div id="resultadosBusqueda">
+    <!--Aqui se muestran los resultados enviados por el php-->
 </div>
 
 
-
-<div class="contenedor-tablas">
-
-    <div class="table-container">
-        <div>
-            <?php if (!empty($resultados)) : ?>
-            <?php echo $resultados; ?>
-                <!--Borrar los resultados -->
-                <form id="formulario_borrar" action="" method="post" class="input-group">
-                    <button type="button" onclick="confirmacionBorrado()" class="v t">Borrar resultados</button>
-                </form>
-            <?php else : ?>
-            <?php endif; ?>
+<br>
             <div class="cotcont">
                 <div>
                  <form id="formulario-cotizacion" action="../PHP/PROCESAR_SOLICITUD.php" method="post">

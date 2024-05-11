@@ -26,4 +26,4 @@ if (isset($_POST['proveedor'])) {
 } else {
     echo json_encode(array("success" => false, "message" => "Error: No se proporcionó el ID del proveedor"));
 }
-?>
+

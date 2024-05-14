@@ -48,17 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
   
-    echo '<script>
-Swal.fire({
-  icon: "success",
-  title: "La cotización se ha agregado correctamente.",
-  showConfirmButton: false,
-  timer: 1500
-}).then(function() {
-  window.location.href = "../VISTADC/COTIZACION.php";
-});
-</script>';
-
+    echo '<script>alert("La cotización se ha agregado correctamente."); window.location.href = "../VISTADC/COTIZACION.php";</script>';
         
 } 
 

@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fila_proveedor = mysqli_fetch_assoc($resultado_proveedor);
         $proveedor = $fila_proveedor['proveedor'];
 
-        $sql = "INSERT INTO cotizaciones (material, descripcion, unidad, precio, descuento, impuestos, proveedor) VALUES ('$material', '$descripcion', '$unidad', $precio,'$descuento','$impuesto', '$proveedor')";
+        $sql = "INSERT INTO cotizaciones (material, descripcion, unidad, precio, descuento, impuesto, proveedor) VALUES ('$material', '$descripcion', '$unidad', '$precio', '$descuento', '$impuesto', '$proveedor')";
 
         if ($conexion->query($sql) !== TRUE) {
             echo "Error al enviar la cotización: " . $conexion->error;

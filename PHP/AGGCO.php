@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fila_proveedor = mysqli_fetch_assoc($resultado_proveedor);
         $proveedor = $fila_proveedor['proveedor'];
 
-        $sql = "INSERT INTO cotizaciones (material, descripcion, unidad, precio, descuento, impuestos, proveedor) VALUES ('$material', '$descripcion', '$unidad', $precio,'$descuento','$impuesto', '$proveedor')";
+        $sql = "INSERT INTO cotizaciones (material, descripcion, unidad, precio, descuento, impuesto, proveedor) VALUES ('$material', '$descripcion', '$unidad', $precio,'$descuento','$impuesto', '$proveedor')";
 
         if ($conexion->query($sql) !== TRUE) {
             echo "Error al enviar la cotización: " . $conexion->error;
@@ -48,7 +48,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
   
-    echo '<script>alert("La cotización se ha agregado correctamente."); window.location.href = "../VISTADC/COTIZACION.php";</script>';
+    echo '<script>
+Swal.fire({
+  icon: "success",
+  title: "La cotización se ha agregado correctamente.",
+  showConfirmButton: false,
+  timer: 1500
+}).then(function() {
+  window.location.href = "../VISTADC/COTIZACION.php";
+});
+</script>';
+
         
 } 
-?>
+

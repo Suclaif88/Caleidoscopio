@@ -1,17 +1,13 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['materialesSeleccionados']) && is_array($_POST['materialesSeleccionados']) && 
-        !empty($_POST['materialesSeleccionados'])) {
+    if (isset($_POST['materialesSeleccionados']) && is_array($_POST['materialesSeleccionados']) && !empty($_POST['materialesSeleccionados'])) {
 
         require_once("CONN.php");
 
         $obra_id = isset($_POST['obra_id']) ? intval($_POST['obra_id']) : 0;
+        $materialesSeleccionados = array_map('intval', $_POST['materialesSeleccionados']);
         
-        $materialesSeleccionados = $_POST['materialesSeleccionados'];
-        $materialesSeleccionados = array_map('intval', $materialesSeleccionados);
-        
-        $update_query = "UPDATE pedidos SET precio = ?, descuento = ?, impuesto = ? 
-                         WHERE producto = ? AND obra_id = ?";
+        $update_query = "UPDATE pedidos SET precio = ?, descuento = ?, impuesto = ?, proveedor = ? WHERE producto = ? AND obra_id = ?";
         $stmt_update = $conexion->prepare($update_query);
         
         foreach ($materialesSeleccionados as $material_id) {
@@ -19,11 +15,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($material !== false) {
                 $cotizacion = obtenerCotizacion($conexion, $material_id);
                 if ($cotizacion !== false) {
-                    $stmt_update->bind_param("dddsi", $cotizacion['precio'], 
-                                             $cotizacion['descuento'], $cotizacion['impuesto'], 
-                                             $material, $obra_id);
-                    if (!$stmt_update->execute()) {
-                        $response = array("error" => "Error al enviar la solicitud de materiales.");
+                    // Reemplaza $proveedor con el proveedor correcto
+                    $proveedor = obtenerProveedorMaterial($conexion, $material_id);
+                    if ($proveedor !== false) {
+                        $stmt_update->bind_param("dddssi", $cotizacion['precio'], $cotizacion['descuento'], $cotizacion['impuesto'], $proveedor, $material, $obra_id);
+                        if (!$stmt_update->execute()) {
+                            $response = array("error" => "Error al actualizar la solicitud de materiales.");
+                            echo json_encode($response);
+                            exit;
+                        }
+                    } else {
+                        $response = array("error" => "No se encontró el proveedor para el material '$material_id'.");
                         echo json_encode($response);
                         exit;
                     }
@@ -66,6 +68,7 @@ function obtenerNombreMaterial($conexion, $material_id) {
         return false;
     }
 }
+
 function obtenerCotizacion($conexion, $material_id) {
     $sql = "SELECT precio, descuento, impuesto FROM cotizaciones WHERE id = ?";
     $consulta = $conexion->prepare($sql);
@@ -82,14 +85,14 @@ function obtenerCotizacion($conexion, $material_id) {
     }
 }
 
-function obtenerPrecioMaterial($conexion, $proveedor, $material){
-    $sql = "SELECT precio FROM cotizaciones WHERE proveedor = ? AND material = ?";
+function obtenerProveedorMaterial($conexion, $material_id) {
+    $sql = "SELECT proveedor FROM cotizaciones WHERE id = ?";
     $consulta = $conexion->prepare($sql);
-    $consulta->bind_param("ss", $proveedor, $material);
+    $consulta->bind_param("i", $material_id);
     if ($consulta->execute()) {
         $resultado = $consulta->get_result();
         if ($row = $resultado->fetch_assoc()) {
-            return $row['precio'];
+            return $row['proveedor'];
         } else {
             return false;
         }
@@ -97,36 +100,4 @@ function obtenerPrecioMaterial($conexion, $proveedor, $material){
         return false;
     }
 }
-
-function obtenerDescuentoMaterial($conexion, $proveedor, $material){
-    $sql = "SELECT descuento FROM cotizaciones WHERE proveedor = ? AND material = ?";
-    $consulta = $conexion->prepare($sql);
-    $consulta->bind_param("ss", $proveedor, $material);
-    if ($consulta->execute()) {
-        $resultado = $consulta->get_result();
-        if ($row = $resultado->fetch_assoc()) {
-            return $row['descuento'];
-        } else {
-            return false;
-        }
-    } else {
-        return false;
-    }
-}
-
-function obtenerImpuestoMaterial($conexion, $proveedor, $material){
-    $sql = "SELECT impuesto FROM cotizaciones WHERE proveedor = ? AND material = ?";
-    $consulta = $conexion->prepare($sql);
-    $consulta->bind_param("ss", $proveedor, $material);
-    if ($consulta->execute()) {
-        $resultado = $consulta->get_result();
-        if ($row = $resultado->fetch_assoc()) {
-            return $row['impuesto'];
-        } else {
-            return false;
-        }
-    } else {
-        return false;
-    }
-}
-
+?>

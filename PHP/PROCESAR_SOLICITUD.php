@@ -15,7 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($material !== false) {
                 $cotizacion = obtenerCotizacion($conexion, $material_id);
                 if ($cotizacion !== false) {
-                    // Reemplaza $proveedor con el proveedor correcto
                     $proveedor = obtenerProveedorMaterial($conexion, $material_id);
                     if ($proveedor !== false) {
                         $stmt_update->bind_param("dddssi", $cotizacion['precio'], $cotizacion['descuento'], $cotizacion['impuesto'], $proveedor, $material, $obra_id);

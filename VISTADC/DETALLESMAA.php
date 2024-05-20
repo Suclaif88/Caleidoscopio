@@ -31,13 +31,30 @@ $pedido = $resultado->fetch_assoc();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle de Solicitud de Materiales A</title>
+    <title>Detalle de Solicitud de Materiales Aprobados</title>
     <link rel="stylesheet" href="../CSS/CSSDO.css">
     <link rel="stylesheet" href="../CSS/responsive.css">
     <link rel="stylesheet" href="../CSS/CSSCO.css">
     <link rel="stylesheet" href="../CSS/CSS.css">
     <link rel="icon" type="image/png" href="../IMG/favicon.png">
     <style>
+
+            @media print {
+            /* Ocultar el navbar */
+            .navbar {
+                display: none;
+            }
+            /* Establecer el ancho de la tabla al 100% */
+            table {
+                width: 100%;
+                margin-top: 20px;
+            }
+            /* Ocultar los botones de imprimir y volver */
+            .btn {
+                display: none;
+            }
+        }
+
         table {
             border-collapse: collapse;
             width: 60%;
@@ -115,7 +132,6 @@ $pedido = $resultado->fetch_assoc();
     <h1 style="cursor:default;">DETALLES</h1>
     <ul>
         <li><a href="" style="color:white;">Solicitudes</a></li>
-        <li><a href="COMPRA-SIMPLE.php">Compra simple</a></li>
         <li><a href="OBRAS.php" >Obras</a></li>
         <li><a href="COTIZACION.php">Cotizaciones</a></li>
         <li><a href="DC.php">Atras</a></li>
@@ -196,6 +212,12 @@ if (isset($_GET['fecha_pedido'])) {
 
     <br>
     <br>
-    <a href="SOLICITUDES.php" class="btn">Volver a la lista de solicitudes</a>
+<!-- Botón para imprimir la solicitud -->
+<button onclick="window.print();" class="btn">Imprimir Solicitud</button>
+<br>
+<br>
+<!-- Botón para volver a la lista de solicitudes -->
+<button onclick="window.location.href = 'SOLICITUDES.php';" class="btn">Volver a la lista de solicitudes</button>
+
 </body>
 </html>

@@ -115,7 +115,6 @@ $pedido = $resultado->fetch_assoc();
     <h1 style="cursor:default;">DETALLES</h1>
     <ul>
         <li><a href="" style="color:white;">Solicitudes</a></li>
-        <li><a href="COMPRA-SIMPLE.php">Compra simple</a></li>
         <li><a href="OBRAS.php" >Obras</a></li>
         <li><a href="COTIZACION.php">Cotizaciones</a></li>
         <li><a href="DC.php">Atras</a></li>
@@ -125,7 +124,6 @@ $pedido = $resultado->fetch_assoc();
 
 <br>
 <h2>Detalle de Solicitud de Materiales</h2>
-
 
 <?php
 if (isset($_GET['fecha_pedido'])) {
@@ -137,12 +135,13 @@ if (isset($_GET['fecha_pedido'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT producto, cantidad, unidad, precio, historial, descuento, impuesto
+    $sql = "SELECT producto, cantidad, unidad, precio, historial, descuento, impuesto, estado
             FROM pedidos
-            WHERE fecha_pedido = '$fecha_pedido' AND estado = 1";
+            WHERE fecha_pedido = '$fecha_pedido'";
     $resultado = $conexion->query($sql);
 
     $subtotal = 0;
+    $estadoPedido = 0; // Estado inicial del pedido
 
     if ($resultado->num_rows > 0) {
         echo "<table border='1'>";
@@ -163,10 +162,25 @@ if (isset($_GET['fecha_pedido'])) {
             echo "<td>".$precio_total."</td>";
             $subtotal += $precio_total;
             echo "</tr>";
+
+            // Actualizar el estado del pedido
+            $estadoPedido = $fila['estado'];
         }
         echo "</table>";
         echo "<br>";
         echo "<h1>Subtotal: <span style='float: right;'>" . number_format($subtotal, 2, '.', ',') . "</span></h1>";
+
+        // Mostrar el botón solo si el estado del pedido es 1
+        if ($estadoPedido == 1) {
+            echo "<div class='op'>";
+            echo "<button class='aceptar' id='btnEnviarge'>ENVIAR A GERENTE</button>";
+            echo "</div>";
+        }
+        else{
+            echo "<div class='op'>";
+            echo "<h3 style='color:red;'>ESTA SOLICITUD AUN NO SE HA APROBADO</h3>";
+            echo "</div>";
+        }
     } else {
         echo "<br>";
         echo "No se encontraron detalles de la solicitud de materiales para esta fecha de pedido.";
@@ -179,9 +193,6 @@ if (isset($_GET['fecha_pedido'])) {
 }
 ?>
 
-<div class="op">
-    <button class="aceptar" id="btnEnviarge">ENVIAR A GERENTE</button>
-</div>
 
 <script>
     document.getElementById("btnEnviarge").addEventListener("click", function() {
@@ -194,7 +205,7 @@ if (isset($_GET['fecha_pedido'])) {
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     alert(xhr.responseText);
-                    window.location.href = "COMPRA-MATERIALES.php";
+                    window.location.href = "SOLICITUDES.php";
                 }
             };
             xhr.send("accion=aceptar&fecha_pedido=" + fecha_pedido);

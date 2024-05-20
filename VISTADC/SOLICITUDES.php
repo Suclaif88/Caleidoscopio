@@ -86,7 +86,7 @@ if(strval($_SESSION["rol"]) !== "3") {
         $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
         FROM pedidos
         INNER JOIN obras ON pedidos.obra_id = obras.id
-        WHERE pedidos.estado = 1
+        WHERE pedidos.estado IN (1, 3)
         GROUP BY pedidos.fecha_pedido";
 
 
@@ -314,7 +314,7 @@ if ($conexion->connect_error) {
    $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
    FROM pedidos
    INNER JOIN obras ON pedidos.obra_id = obras.id
-   WHERE pedidos.estado IN (9, 15)
+   WHERE pedidos.estado IN (9, 14 ,15)
    GROUP BY pedidos.fecha_pedido";
 
 

@@ -35,26 +35,26 @@ if(strval($_SESSION["rol"]) !== "3") {
         </header>
     </div>
 
-    <form action="procesar_modificacion.php" method="post">
-        <label for="material_id">Seleccione el material:</label>
-        <select name="material_id" id="material_id">
+    <form action="../PHP/EDIT_PRECIO.php" method="post">
+        <label for="material">Seleccione el material:</label>
+        <select name="material" id="material">
             <?php
                 require_once "../PHP/CONN.php";
                 $consulta = "SELECT id, material FROM agregar_materiales";
                 $resultado = mysqli_query($conexion, $consulta);
                 while ($fila = mysqli_fetch_assoc($resultado)) {
-                    echo "<option value='" . $fila['id'] . "'>" . $fila['material'] . "</option>";
+                    echo "<option value='" . $fila['material'] . "'>" . $fila['material'] . "</option>";
                 }
             ?>
         </select><br><br>
 
-        <label for="proveedor_id">Seleccione el proveedor:</label>
-        <select name="proveedor_id" id="proveedor_id">
+        <label for="proveedor">Seleccione el proveedor:</label>
+        <select name="proveedor" id="proveedor">
             <?php
                 $consulta = "SELECT id, proveedor FROM proveedores";
                 $resultado = mysqli_query($conexion, $consulta);
                 while ($fila = mysqli_fetch_assoc($resultado)) {
-                    echo "<option value='" . $fila['id'] . "'>" . $fila['proveedor'] . "</option>";
+                    echo "<option value='" . $fila['proveedor'] . "'>" . $fila['proveedor'] . "</option>";
                 }
 
                 $conexion->close();
@@ -62,7 +62,7 @@ if(strval($_SESSION["rol"]) !== "3") {
         </select><br><br>
 
         <label for="nuevo_precio">Nuevo precio:</label>
-        <input type="text" name="nuevo_precio" id="nuevo_precio"><br><br>
+        <input type="number" name="nuevo_precio" id="nuevo_precio"><br><br>
         <button type="submit" class="btn">Modificar Precio</button>
     </form>
 </body>

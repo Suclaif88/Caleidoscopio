@@ -189,8 +189,8 @@ require_once("../PHP/REALIZAR_BUSQUEDA.php");
     <!-- Botones adicionales -->
     <br><br>
     <div class="parent table-container">
-        <button type="button" onclick="window.location.href='AGG_MA.php'" class="v t">Agregar material</button>
-        <button type="button" onclick="window.location.href='AGG_PRO.php'" class="v t">Agregar proveedor</button>
+        <button type="button" onclick="window.location.href='AGG_MA.php'" class="v t">Agregar</button>
+        <button type="button" onclick="window.location.href='MOD_PROVEEDOR.php'" class="v t">modificar proveedor</button>
         <button type="button" onclick="window.location.href='MOD_PRECIO.php'" class="v t">Editar precios</button>
         <button type="button" onclick="window.location.href='AGG_CO.php'" class="v t">Agregar productos</button>
     </div>

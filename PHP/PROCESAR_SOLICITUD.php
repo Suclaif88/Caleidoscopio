@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $obra_id = isset($_POST['obra_id']) ? intval($_POST['obra_id']) : 0;
         $materialesSeleccionados = array_map('intval', $_POST['materialesSeleccionados']);
         
-        $update_query = "UPDATE pedidos SET precio = ?, descuento = ?, impuesto = ?, proveedor = ? WHERE producto = ? AND obra_id = ?";
+        $update_query = "UPDATE pedidos SET precio = ?, descuento = ?, impuesto = ?, proveedor = ? WHERE producto = ? AND obra_id = ? AND estado = 1";
         $stmt_update = $conexion->prepare($update_query);
         
         foreach ($materialesSeleccionados as $material_id) {

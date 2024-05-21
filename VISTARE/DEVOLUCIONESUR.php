@@ -148,7 +148,7 @@ if (isset($_GET['obra_id'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT producto, cantidad, unidad, precio, historial, descuento, impuesto
+    $sql = "SELECT producto, cantidad, unidad, precio, historial, descuento, impuesto, proveedor
             FROM pedidos
             WHERE obra_id = $obra_id AND estado = 10";
     $resultado = $conexion->query($sql);
@@ -157,13 +157,14 @@ if (isset($_GET['obra_id'])) {
 
     if ($resultado->num_rows > 0) {
         echo "<table border='1'>";
-        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Descuento</th><th>Impuesto</th><th>Precio Total</th></tr>";
+        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Descuento</th><th>Impuesto</th><th>Precio Total</th><th>Proveedor</th></tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>".$fila['unidad']."</td>";
             echo "<td>".$fila['precio']."</td>";
             echo "<td>".$fila['descuento']."</td>";
             echo "<td>".$fila['impuesto']."</td>";
+            echo "<td>".$fila['proveedor']."</td>";
             $precio_total = $fila['cantidad'] * ($fila['precio']-($fila['precio']*($fila['descuento']/100))+(($fila['precio']*($fila['descuento']/100))*($fila['impuesto']/100))) ;
             echo "<td>".$precio_total."</td>";
             $subtotal += $precio_total;

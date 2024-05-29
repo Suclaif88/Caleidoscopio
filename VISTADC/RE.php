@@ -112,10 +112,9 @@ $pedido = $resultado->fetch_assoc();
 
 
 <div class="navbar">
-    <h1 style="cursor:default;">DETALLES</h1>
+<h1 style="cursor:default;">DETALLES</h1>
     <ul>
-        <li><a href="" style="color:white;">Compra de materiales</a></li>
-        <li><a href="COMPRA-SIMPLE.php">Compra simple</a></li>
+        <li><a href="" style="color:white;">Solicitudes</a></li>
         <li><a href="OBRAS.php" >Obras</a></li>
         <li><a href="COTIZACION.php">Cotizaciones</a></li>
         <li><a href="DC.php">Atras</a></li>
@@ -128,33 +127,46 @@ $pedido = $resultado->fetch_assoc();
 
 
 <?php
-if (isset($_GET['fecha_pedido'])) {
-    $fecha_pedido = $_GET['fecha_pedido'];
 
-    require_once("../PHP/CONN.php");
+require_once("../PHP/CONN.php");
 
-    if ($conexion->connect_error) {
-        die("Error de conexión: " . $conexion->connect_error);
-    }
+if ($conexion->connect_error) {
+    die("Error de conexión: " . $conexion->connect_error);
+}
 
-    $sql = "SELECT producto, cantidad, unidad, precio
+$fecha_pedido = $_GET['fecha_pedido'] ?? '';
+
+if ($fecha_pedido) {
+    $sql = "SELECT producto, cantidad, unidad, precio, historial, descuento, impuesto, proveedor
             FROM pedidos
-            WHERE fecha_pedido = '$fecha_pedido' AND estado = 5";
-    $resultado = $conexion->query($sql);
+            WHERE fecha_pedido = ? AND estado = 5";
+    $statement = $conexion->prepare($sql);
+    if ($statement === false) {
+        die("Error de preparación de la declaración: " . $conexion->error);
+    }
+    $statement->bind_param("s", $fecha_pedido);
+    $statement->execute();
+    $resultado = $statement->get_result();
 
     $subtotal = 0;
-
     if ($resultado->num_rows > 0) {
         echo "<table border='1'>";
-        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Precio Total</th></tr>";
+        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Descuento</th><th>Impuesto</th><th>Precio Total</th><th>Proveedor</th></tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
-            echo "<td>".$fila['producto']."</td>";
-            echo "<td>".$fila['cantidad']."</td>";
-            echo "<td>".$fila['unidad']."</td>";
-            echo "<td>".$fila['precio']."</td>";
-            $precio_total = $fila['cantidad'] * $fila['precio'];
-            echo "<td>".$precio_total."</td>";
+            echo "<td>" . htmlspecialchars($fila['producto']) . "</td>";
+            echo "<td style='position: relative;'>" . htmlspecialchars($fila['cantidad']);
+            if ($fila['historial'] == 3) {
+                echo "<span class='editado fa fa-exclamation-circle' title='Editado' style='position: absolute; top: 15px; right: -10px;'></span>";
+            }
+            echo "</td>";
+            echo "<td>" . htmlspecialchars($fila['unidad']) . "</td>";
+            echo "<td>" . htmlspecialchars($fila['precio']) . "</td>";
+            echo "<td>" . htmlspecialchars($fila['descuento']) . "</td>";
+            echo "<td>" . htmlspecialchars($fila['impuesto']) . "</td>";
+            $precio_total = $fila['cantidad'] * ($fila['precio'] - ($fila['precio'] * ($fila['descuento'] / 100)) + ($fila['precio'] * ($fila['impuesto'] / 100)));
+            echo "<td>" . htmlspecialchars($precio_total) . "</td>";
+            echo "<td>" . htmlspecialchars($fila['proveedor']) . "</td>";
             $subtotal += $precio_total;
             echo "</tr>";
         }
@@ -166,15 +178,17 @@ if (isset($_GET['fecha_pedido'])) {
         echo "No se encontraron detalles de la solicitud de materiales para esta fecha de pedido.";
     }
 
-    $conexion->close();
+    $statement->close();
 } else {
     echo "<br>";
     echo "El parámetro para búsqueda no fue proporcionado.";
 }
+
+$conexion->close();
 ?>
 
     <br>
     <br>
-    <a href="COMPRA-MATERIALES.php" class="btn">Volver a la lista de solicitudes</a>
+    <a href="SOLICITUDES.php" class="btn">Volver a la lista de solicitudes</a>
 </body>
 </html>

@@ -49,7 +49,7 @@ $pedido = $resultado->fetch_assoc();
 
         th {
             background-color: #b1b1b1;
-            cursor:default;"
+            cursor:default;
         }
 
         tr:nth-child(even) {

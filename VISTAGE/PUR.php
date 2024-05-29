@@ -88,6 +88,7 @@ $estados = array(
     4 => "Aprobado por Gerencia",
     5 => "Rechazado por Gerencia",
     7 => "Urgentes",
+    8 => "Urgente",
     9 => "Aprobado por Gerencia",
     10 => "Rechazado por Gerencia",
     11 => "Recibido sin verificacion",

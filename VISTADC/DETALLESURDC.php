@@ -153,9 +153,9 @@ if (isset($_GET['fecha_pedido'])) {
             echo "<td>".$fila['precio']."</td>";
             echo "<td>".$fila['descuento']."</td>";
             echo "<td>".$fila['impuesto']."</td>";
-            echo "<td>".$fila['proveedor']."</td>";
             $precio_total = $fila['cantidad'] * ($fila['precio']-($fila['precio']*($fila['descuento']/100))+(($fila['precio']*($fila['descuento']/100))*($fila['impuesto']/100))) ;
             echo "<td>".$precio_total."</td>";
+            echo "<td>".$fila['proveedor']."</td>";
             $subtotal += $precio_total;
             echo "</tr>";
         }

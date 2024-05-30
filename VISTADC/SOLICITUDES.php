@@ -75,7 +75,7 @@ if(strval($_SESSION["rol"]) !== "3") {
             7 => "Urgentes",
             9 => "Aprobado por Gerencia",
             10 => "Rechazado Urgente",
-            12 => "Aprobado por Gerencia verificado",
+            12 => "Aprobado por Gerencia verificacion",
             13 => "Aprobado por Gerencia sin Verificado",
             14 => "Aprobado por Gerencia Verificado Urgente",
             15 => "Aprobado por Gerencia sin verificar Urgente",

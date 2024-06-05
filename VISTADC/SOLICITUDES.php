@@ -29,7 +29,7 @@ if(strval($_SESSION["rol"]) !== "3") {
 
 
 <div class="navbar">
-    <h1 style="cursor:default;">COMPRA DE MATERIALES</h1>
+    <h1 style="cursor:default;">SOLICITUDES</h1>
     <ul>
         <li><a href="" style="color:white;">Solicitudes</a></li>
         <li><a href="OBRAS.php" >Obras</a></li>
@@ -100,7 +100,7 @@ $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
     while ($fila = $resultado->fetch_assoc()) {
         echo "<tr>";
-        echo "<td><a href='DETALLESMA.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+        echo "<td><a href='DETALLESSO.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
         echo "<td>".$fila['fecha_pedido']."</td>";
         echo "<td>".$fila['nombre']."</td>";
         echo "<td>".$estados[$fila['estado']]."</td>";
@@ -158,7 +158,7 @@ $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
 while ($fila = $resultado->fetch_assoc()) {
     echo "<tr>";
-    echo "<td><a href='DETALLESMAA.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+    echo "<td><a href='DETALLESSO.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
     echo "<td>".$fila['fecha_pedido']."</td>";
     echo "<td>".$fila['nombre']."</td>";
     echo "<td>".$estados[$fila['estado']]."</td>";
@@ -216,7 +216,7 @@ $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
 while ($fila = $resultado->fetch_assoc()) {
     echo "<tr>";
-    echo "<td><a href='RE.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+    echo "<td><a href='DETALLESSO.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
     echo "<td>".$fila['fecha_pedido']."</td>";
     echo "<td>".$fila['nombre']."</td>";
     echo "<td>".$estados[$fila['estado']]."</td>";
@@ -269,7 +269,7 @@ $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
 while ($fila = $resultado->fetch_assoc()) {
    echo "<tr>";
-   echo "<td><a href='DETALLESURDC.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+   echo "<td><a href='DETALLESSO.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
    echo "<td>".$fila['fecha_pedido']."</td>";
    echo "<td>".$fila['nombre']."</td>";
    echo "<td>".$estados[$fila['estado']]."</td>";
@@ -328,7 +328,7 @@ $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
 while ($fila = $resultado->fetch_assoc()) {
    echo "<tr>";
-   echo "<td><a href='DETALLESAUR.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+   echo "<td><a href='DETALLESSO.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
    echo "<td>".$fila['fecha_pedido']."</td>";
    echo "<td>".$fila['nombre']."</td>";
    echo "<td>".$estados[$fila['estado']]."</td>";
@@ -380,7 +380,7 @@ $resultado = $conexion->query($sql);
 if ($resultado->num_rows > 0) {
 while ($fila = $resultado->fetch_assoc()) {
    echo "<tr>";
-   echo "<td><a href='REUR.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+   echo "<td><a href='DETALLESSO?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
    echo "<td>".$fila['fecha_pedido']."</td>";
    echo "<td>".$fila['nombre']."</td>";
    echo "<td>".$estados[$fila['estado']]."</td>";

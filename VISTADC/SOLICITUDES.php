@@ -10,6 +10,29 @@ if(strval($_SESSION["rol"]) !== "3") {
   header("Location: ../INDEX.html");
   exit();
 }
+
+// ESTADOS DE LOS PEDIDOS
+
+    $estados = array(
+            0 => "Pendiente de aprobacion por director de obra",
+            1 => "Pendiente de envio a gerente",
+            2 => "Rechazado por director de obra",
+            3 => "Pendiente de aprobacion por gerencia",
+            4 => "Aprobado por gerencia",
+            5 => "Rechazado por Gerencia",
+            6 => "Urgente, Pendiente por aprobacion de director de obra",
+            7 => "Urgente, Aceptado por director de obra",
+            8 => "Urgente, Pendiente de aprobacion por gerencia", 
+            9 => "Urgente, Aprobado por gerencia",
+            10 => "Urgente, Rechazado",
+            11 => "Aprobado por director de obra sin verificar",
+            12 => "Aprobado por sin verificar por director de obra y gerente",
+            13 => "Aprobado y verificado por gerencia",
+            14 => "Urgente, Aprobado sin verificar por director de obra",
+            15 => "Urgente, Aprobado sin verificar por director de obra y gerente",
+            16 => "Urgente, Aprobado y verificado por gerente",
+        );
+
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +66,7 @@ if(strval($_SESSION["rol"]) !== "3") {
 
 <table border="1">
     <center>
-    <h1>Pendientes de Envio</h1>
+    <h1>Pendientes</h1>
     </center>
     <tr>
         <th>Nombre</th>
@@ -63,36 +86,11 @@ if(strval($_SESSION["rol"]) !== "3") {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-
-// ESTADOS DE LOS PEDIDOS
-
-    $estados = array(
-            1 => "Pendiente de Envio",
-            2 => "Rechazado",
-            3 => "Pendiente de Aprobacion",
-            4 => "Aprobado por Gerencia",
-            5 => "Rechazado por Gerencia",
-            7 => "Urgentes",
-            9 => "Aprobado por Gerencia",
-            10 => "Rechazado Urgente",
-            12 => "Aprobado por Gerencia verificado",
-            13 => "Aprobado por Gerencia sin verificar",
-            14 => "Aprobado por Gerencia Verificado Urgente",
-            15 => "Aprobado por Gerencia sin verificar Urgente",
-        );
-
-
-
         $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
         FROM pedidos
         INNER JOIN obras ON pedidos.obra_id = obras.id
-        WHERE pedidos.estado IN (1, 3)
+        WHERE pedidos.estado IN (1, 3, 12, 13)
         GROUP BY pedidos.fecha_pedido";
-
-
-
-
-
 
 
 $resultado = $conexion->query($sql);
@@ -144,7 +142,7 @@ if ($resultado->num_rows > 0) {
     $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
     FROM pedidos
     INNER JOIN obras ON pedidos.obra_id = obras.id
-    WHERE pedidos.estado IN (4, 12, 13)
+    WHERE pedidos.estado IN (4)
     GROUP BY pedidos.fecha_pedido";
 
 
@@ -202,7 +200,7 @@ echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
     $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
     FROM pedidos
     INNER JOIN obras ON pedidos.obra_id = obras.id
-    WHERE pedidos.estado IN (2, 5)
+    WHERE pedidos.estado IN (5)
     GROUP BY pedidos.fecha_pedido";
 
 
@@ -255,12 +253,8 @@ if ($conexion->connect_error) {
    $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
    FROM pedidos
    INNER JOIN obras ON pedidos.obra_id = obras.id
-   WHERE pedidos.estado = 7
+   WHERE pedidos.estado IN (7, 8, 15, 16)
    GROUP BY pedidos.fecha_pedido";
-
-
-
-
 
 
 
@@ -314,7 +308,7 @@ if ($conexion->connect_error) {
    $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
    FROM pedidos
    INNER JOIN obras ON pedidos.obra_id = obras.id
-   WHERE pedidos.estado IN (9, 14 ,15)
+   WHERE pedidos.estado IN (9)
    GROUP BY pedidos.fecha_pedido";
 
 
@@ -366,7 +360,7 @@ if ($conexion->connect_error) {
    $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
    FROM pedidos
    INNER JOIN obras ON pedidos.obra_id = obras.id
-   WHERE pedidos.estado = 10
+   WHERE pedidos.estado IN (10)
    GROUP BY pedidos.fecha_pedido";
 
 

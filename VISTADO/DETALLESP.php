@@ -179,16 +179,17 @@ if (isset($_GET['fecha_pedido'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT id, producto, cantidad, unidad, precio, historial, descuento, impuesto, proveedor
+    $sql = "SELECT id, producto, cantidad, unidad, precio, historial, descuento, impuesto, estado, proveedor
             FROM pedidos
-            WHERE fecha_pedido = '$fecha_pedido' AND estado = 0";
+            WHERE fecha_pedido = '$fecha_pedido'";
     $resultado = $conexion->query($sql);
 
     $subtotal = 0;
+    $estadoPedido = 0; // Estado inicial del pedido
 
     if ($resultado->num_rows > 0) {
         echo "<table border='1'>";
-        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Descuento</th><th>Impuesto</th><th>Precio Total</th><th>Proveedor</th></tr>";
+        echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Descuento</th><th>Impuesto</th><th>Precio Total</th><th>Proveedor</th><th>Accion</th></tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
             echo "<td>".$fila['producto']."</td>";
@@ -207,10 +208,31 @@ if (isset($_GET['fecha_pedido'])) {
             $subtotal += $precio_total;
             echo "<td><button class='editar fa fa-pencil-square-o fa-2x' data-id='".$fila['id']."' style='background-color:#d6941a; cursor:pointer;'></button></td>";
             echo "</tr>";
+            // Actualizar el estado del pedido
+            $estadoPedido = $fila['estado'];
         }
         echo "</table>";
         echo "<br>";
-        echo "<h1>Subtotal: <span style='float: right;'>" . number_format($subtotal, 2, '.', ',') . "</span></h1>";
+        echo "<h1>Subtotal: <span style='float: right;'>" . number_format($subtotal, 2, '.', ',') . "</span></h1>";         // Mostrar el botón solo si el estado del pedido es 1
+        
+        //configurar en caso de necesitar que aparezcan cosas especificas
+        if ($estadoPedido == 0) {
+            echo "<div class='op'>
+                    <button class='aceptar' id='btnAceptar'>ACEPTAR</button>
+                    <button class='rechazar' id='btnRechazar'>RECHAZAR</button>    
+                  </div>
+                  <div class='op'>
+                    <button class='esv' id='btnEnviadoSinVerificacion'>ENVIAR SIN VERIFICACION</button>
+                  </div>";
+        }
+        elseif($estadoPedido == 3){
+            echo "<div class='op'>";
+            echo "<h3 style='color:red;'>ESTA SOLICITUD AUN NO SE HA APROBADO</h3>"; //arreglar esto
+            echo "</div>";
+        }
+        else{
+        
+        }
     } else {
         echo "<br>";
         echo "No se encontraron detalles de la solicitud de materiales para esta fecha de pedido.";
@@ -222,21 +244,6 @@ if (isset($_GET['fecha_pedido'])) {
     echo "El parámetro para búsqueda no fue proporcionado.";
 }
 ?>
-
-
-
-
-
-
-
-<div class="op">
-    <button class="aceptar" id="btnAceptar">ACEPTAR</button>
-    <button class="rechazar" id="btnRechazar">RECHAZAR</button>    
-</div>
-<div class="op">
-<button class="esv" id="btnEnviadoSinVerificacion">ENVIAR SIN VERIFICACION</button>
-</div>
-
 
 <script>
     document.getElementById("btnAceptar").addEventListener("click", function() {
@@ -300,11 +307,6 @@ if (isset($_GET['fecha_pedido'])) {
 });
 
 
-
-
-
-
-
     document.querySelectorAll('.editar').forEach(button => {
     button.addEventListener('click', function() {
         const pedidoId = this.dataset.id;
@@ -327,12 +329,6 @@ if (isset($_GET['fecha_pedido'])) {
         }
     });
 });
-
-
-
-
-
-
 
 </script>
 

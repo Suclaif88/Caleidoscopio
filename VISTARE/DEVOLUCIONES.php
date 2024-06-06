@@ -41,19 +41,41 @@
 
 <table border="1">
     <center>
-    <h1>DEVOLUCION DE SOLICITUDES</h1>
+    <h1>Proceso de cotizacion</h1>
     </center>
     <tr>
         <th>Nombre</th>
         <th>Fecha Pedido</th>
         <th>Obra</th>
         <th>Estado</th>
+        
     </tr>
 
 
     
-    <?php
-  
+<?php
+// ESTADOS DE LOS PEDIDOS
+  $estados = array(
+    0 => "Pendiente de aprobacion por director de obra",
+    1 => "Aprobado por director de obra",
+    2 => "Rechazado por director de obra",
+    3 => "Pendiente de aprobacion por gerente",
+    4 => "Aprobado por gerencia",
+    5 => "Rechazado por gerencia",
+    6 => "Urgente, pendiente de aprobacion por director de obra",
+    7 => "Urgente, aprobado por director de obra",
+    8 => "Urgente, pendiente de aprobacion por gerente",
+    9 => "Urgente, aprobado por gerencia",
+    10 => "Urgente Rechazado ",
+    11 => "Aprobado por director de obra sin verificar",
+    12 => "Aprobado por director de obra y gerente sin verificar",
+    13 => "Aprobado y verificado por gerente",
+    14 => "Urgente, Aprobado por director de obra sin verificar",
+    15 => "Urgente, Aprobado por director de obra y gerente sin verificar",
+    16 => "Urgente, Aprobado y verificado por gerente",
+    
+);
+
     require_once("../PHP/CONN.php");
 
     if ($conexion->connect_error) {
@@ -61,46 +83,42 @@
     }
 
 
-// ESTADOS DE LOS PEDIDOS
-
-$estados = array(
-    1 => "Pendiente de Envio",
-    2 => "Rechazado",
-    3 => "Pendiente de Aprobacion",
-    4 => "Aprobado por Gerencia",
-    5 => "Rechazado por Gerencia",
-    7 => "Urgentes",
-    9 => "Aprobado por Gerencia",
-    10 => "Urgente Rechazado ",
-    
-);
-
-
-
-        $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
+        $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
         FROM pedidos
         INNER JOIN obras ON pedidos.obra_id = obras.id
-        WHERE pedidos.estado = 2";
-    $resultado = $conexion->query($sql);
+        WHERE pedidos.estado IN (0, 1, 3, 11, 12, 13)
+        GROUP BY pedidos.fecha_pedido";
 
-    if ($resultado->num_rows > 0) {
-        while ($fila = $resultado->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td><a href='DEVOLUCIONESDE.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
-            echo "<td>".$fila['fecha_pedido']."</td>";
-            echo "<td>".$fila['nombre_obra']."</td>";
-            echo "<td>".$estados[$fila['estado']]."</td>";
-            echo "</tr>";
-        }
-    } else {
-        echo "<tr><td colspan='5'>No se encontraron obras.</td></tr>";
+
+
+
+
+
+
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+    while ($fila = $resultado->fetch_assoc()) {
+        echo "<tr>";
+        echo "<td><a href='DETALLESSO.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+        echo "<td>".$fila['fecha_pedido']."</td>";
+        echo "<td>".$fila['nombre']."</td>";
+        echo "<td>".$estados[$fila['estado']]."</td>";
+        echo "</tr>";
+    }
+} else {
+    echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+}
+
 
  
-    }?>
+?>
+
+
 
 <table border="1">
-<center>
-    <h1>DEVOLUCION DE SOLICITUDES URGENTES</h1>
+    <center>
+    <h1>Aprobados</h1>
     </center>
     <tr>
         <th>Nombre</th>
@@ -110,36 +128,270 @@ $estados = array(
     </tr>
 
 
-    
-    <?php
 
-    if ($conexion->connect_error) {
+<?php
+
+ if ($conexion->connect_error) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-        $sql = "SELECT DISTINCT pedidos.obra_id, pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre_obra
-        FROM pedidos
-        INNER JOIN obras ON pedidos.obra_id = obras.id
-        WHERE pedidos.estado = 10";
-    $resultado = $conexion->query($sql);
-
-    if ($resultado->num_rows > 0) {
-        while ($fila = $resultado->fetch_assoc()) {
-            echo "<tr>";
-            echo "<td><a href='DEVOLUCIONESUR.php?obra_id=".$fila['obra_id']."'>".$fila['usuario']."</a></td>"; 
-            echo "<td>".$fila['fecha_pedido']."</td>";
-            echo "<td>".$fila['nombre_obra']."</td>";
-            echo "<td>".$estados[$fila['estado']]."</td>";
-            echo "</tr>";
-        }
-    } else {
-        echo "<tr><td colspan='5'>No se encontraron obras.</td></tr>";
-
- 
-    }?>
+    $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
+    FROM pedidos
+    INNER JOIN obras ON pedidos.obra_id = obras.id
+    WHERE pedidos.estado IN (4)
+    GROUP BY pedidos.fecha_pedido";
 
 
 
+
+
+
+
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+while ($fila = $resultado->fetch_assoc()) {
+    echo "<tr>";
+    echo "<td><a href='DETALLESSO.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+    echo "<td>".$fila['fecha_pedido']."</td>";
+    echo "<td>".$fila['nombre']."</td>";
+    echo "<td>".$estados[$fila['estado']]."</td>";
+    echo "</tr>";
+}
+} else {
+echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+}
+
+
+
+
+
+    ?>
+</table>
+
+
+
+
+
+
+<table border="1">
+    <center>
+    <h1>Rechazados</h1>
+    </center>
+    <tr>
+        <th>Nombre</th>
+        <th>Fecha Pedido</th>
+        <th>Obra</th>
+        <th>Estado</th>
+    </tr>
+
+
+
+<?php
+
+ if ($conexion->connect_error) {
+        die("Error de conexión: " . $conexion->connect_error);
+    }
+
+    $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
+    FROM pedidos
+    INNER JOIN obras ON pedidos.obra_id = obras.id
+    WHERE pedidos.estado IN (2, 5)
+    GROUP BY pedidos.fecha_pedido";
+
+
+
+
+
+
+
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+while ($fila = $resultado->fetch_assoc()) {
+    echo "<tr>";
+    echo "<td><a href='DETALLESSO.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+    echo "<td>".$fila['fecha_pedido']."</td>";
+    echo "<td>".$fila['nombre']."</td>";
+    echo "<td>".$estados[$fila['estado']]."</td>";
+    echo "</tr>";
+}
+} else {
+echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+}
+
+    ?>
+</table>
+
+
+
+
+
+<table border="1">
+    <center>
+    <h1>Urgentes en proceso de cotizacion</h1>
+    </center>
+    <tr>
+        <th>Nombre</th>
+        <th>Fecha Pedido</th>
+        <th>Obra</th>
+        <th>Estado</th>
+    </tr>
+
+
+
+    <?php
+
+if ($conexion->connect_error) {
+       die("Error de conexión: " . $conexion->connect_error);
+   }
+
+   $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
+   FROM pedidos
+   INNER JOIN obras ON pedidos.obra_id = obras.id
+   WHERE pedidos.estado IN (6, 7, 8, 14, 15, 16)
+   GROUP BY pedidos.fecha_pedido";
+
+
+
+
+
+
+
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+while ($fila = $resultado->fetch_assoc()) {
+   echo "<tr>";
+   echo "<td><a href='DETALLESSO.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+   echo "<td>".$fila['fecha_pedido']."</td>";
+   echo "<td>".$fila['nombre']."</td>";
+   echo "<td>".$estados[$fila['estado']]."</td>";
+   echo "</tr>";
+}
+} else {
+echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+}
+
+
+
+
+
+
+   ?>
+</table>
+
+
+
+
+
+
+<table border="1">
+    <center>
+    <h1>Urgentes Aprobados</h1>
+    </center>
+    <tr>
+        <th>Nombre</th>
+        <th>Fecha Pedido</th>
+        <th>Obra</th>
+        <th>Estado</th>
+    </tr>
+
+
+
+    <?php
+
+if ($conexion->connect_error) {
+       die("Error de conexión: " . $conexion->connect_error);
+   }
+
+   $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
+   FROM pedidos
+   INNER JOIN obras ON pedidos.obra_id = obras.id
+   WHERE pedidos.estado IN (9)
+   GROUP BY pedidos.fecha_pedido";
+
+
+
+
+
+
+
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+while ($fila = $resultado->fetch_assoc()) {
+   echo "<tr>";
+   echo "<td><a href='DETALLESSO.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+   echo "<td>".$fila['fecha_pedido']."</td>";
+   echo "<td>".$fila['nombre']."</td>";
+   echo "<td>".$estados[$fila['estado']]."</td>";
+   echo "</tr>";
+}
+} else {
+echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+}
+
+
+
+
+   ?>
+</table>
+
+<table border="1">
+    <center>
+    <h1>Urgentes Rechazados</h1>
+    </center>
+    <tr>
+        <th>Nombre</th>
+        <th>Fecha Pedido</th>
+        <th>Obra</th>
+        <th>Estado</th>
+    </tr>
+
+
+
+    <?php
+
+if ($conexion->connect_error) {
+       die("Error de conexión: " . $conexion->connect_error);
+   }
+
+   $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
+   FROM pedidos
+   INNER JOIN obras ON pedidos.obra_id = obras.id
+   WHERE pedidos.estado IN (10)
+   GROUP BY pedidos.fecha_pedido";
+
+
+
+
+
+
+
+$resultado = $conexion->query($sql);
+
+if ($resultado->num_rows > 0) {
+while ($fila = $resultado->fetch_assoc()) {
+   echo "<tr>";
+   echo "<td><a href='DETALLESSO?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+   echo "<td>".$fila['fecha_pedido']."</td>";
+   echo "<td>".$fila['nombre']."</td>";
+   echo "<td>".$estados[$fila['estado']]."</td>";
+   echo "</tr>";
+}
+} else {
+echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+}
+
+
+
+
+$conexion->close();
+
+
+   ?>
+</table>
 </div>
 
 </body>

@@ -9,6 +9,27 @@
         header("Location: ../INDEX.html");
         exit();
     }
+
+    $estados = array(
+        0 => "Pendientes de revision",
+        1 => "Aprobado por director de obra",
+        2 => "Rechazado por director de obra",
+        3 => "Pendiente de aprobacion por gerente",
+        4 => "Aprobado por gerencia",
+        5 => "Rechazado por gerencia",
+        6 => "Urgente, pendiente de aprobacion por director de obra",
+        7 => "Urgente, aprobado por director de obra",
+        8 => "Urgente, pendiente de aprobacion por gerente",
+        9 => "Urgente, aprobado por gerencia",
+        10 => "Urgente Rechazado ",
+        11 => "Aprobado por director de obra sin verificar",
+        12 => "Aprobado por director de obra y gerente sin verificar",
+        13 => "Aprobado y verificado por gerente",
+        14 => "Urgente, Aprobado por director de obra sin verificar",
+        15 => "Urgente, Aprobado por director de obra y gerente sin verificar",
+        16 => "Urgente, Aprobado y verificado por gerente",
+        
+    );
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +89,7 @@
         </nav>
 
         <div class="container">
-<center><h1>Solicitudes Entrantes</h1></center> <br>
+<center><h1>Solicitudes entrantes</h1></center> 
 <table border="1">
     <tr>
         <th>Nombre</th>
@@ -77,19 +98,6 @@
         <th>Estado</th>
     </tr>
     <?php
-
-$estados = array(
-    0 => 'Solicitudes Entrantes',
-    1 => "Pendiente de Envio",
-    2 => "Rechazado",
-    3 => "Pendiente de Aprobacion",
-    4 => "Aprobado por Gerencia",
-    5 => "Rechazado por Gerencia",
-    7 => "Urgentes",
-    9 => "Aprobado por Gerencia",
-    10 => "Rechazado por Gerencia",
-    
-);
 
     require_once("../PHP/CONN.php");
 
@@ -100,33 +108,73 @@ $estados = array(
     $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
     FROM pedidos
     INNER JOIN obras ON pedidos.obra_id = obras.id
-    WHERE pedidos.estado = 0
+    WHERE pedidos.estado IN (0)
     GROUP BY pedidos.fecha_pedido";
  
+    $resultado = $conexion->query($sql);
  
- 
- 
- 
- 
- 
- $resultado = $conexion->query($sql);
- 
- if ($resultado->num_rows > 0) {
- while ($fila = $resultado->fetch_assoc()) {
+    if ($resultado->num_rows > 0) {
+    while ($fila = $resultado->fetch_assoc()) {
     echo "<tr>";
     echo "<td><a href='DETALLESP.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
     echo "<td>".$fila['fecha_pedido']."</td>";
     echo "<td>".$fila['nombre']."</td>";
     echo "<td>".$estados[$fila['estado']]."</td>";
     echo "</tr>";
- }
- } else {
- echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
- }
+    }
+    } else {
+    echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+    }
+
+?>
+</table>
+
+
+<!----------------------------------------------->
+
+
+<center><h1>Solicitudes en procesos externos</h1></center>
+
+<table border="1">
+    <tr>
+        <th>Nombre</th>
+        <th>Fecha Pedido</th>
+        <th>Obra</th>
+        <th>Estado</th>
+    </tr>
+<?php
+
+    require_once("../PHP/CONN.php");
+
+    if ($conexion->connect_error) {
+        die("Error de conexión: " . $conexion->connect_error);
+    }
+
+    $sql = "SELECT pedidos.usuario, pedidos.fecha_pedido, pedidos.estado, obras.nombre AS nombre
+    FROM pedidos
+    INNER JOIN obras ON pedidos.obra_id = obras.id
+    WHERE pedidos.estado IN (1,2,3,4,5,11,12,13)
+    GROUP BY pedidos.fecha_pedido";
+ 
+    $resultado = $conexion->query($sql);
+ 
+    if ($resultado->num_rows > 0) {
+    while ($fila = $resultado->fetch_assoc()) {
+    echo "<tr>";
+    echo "<td><a href='DETALLESP.php?fecha_pedido=".$fila['fecha_pedido']."'>".$fila['usuario']."</a></td>";
+    echo "<td>".$fila['fecha_pedido']."</td>";
+    echo "<td>".$fila['nombre']."</td>";
+    echo "<td>".$estados[$fila['estado']]."</td>";
+    echo "</tr>";
+    }
+    } else {
+    echo "<tr><td colspan='4'>No se encontraron pedidos.</td></tr>";
+    }
 
     $conexion->close();
-    ?>
+?>
 </table>
+
 </div>
 
 

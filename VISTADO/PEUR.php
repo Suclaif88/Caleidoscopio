@@ -89,7 +89,7 @@
         </nav>
 
         <div class="container">
-        <center><h1>Solicitudes urgentes entrantes</h1></center>
+        <center><h1>Solicitudes urgentes pendientes</h1></center>
 <table border="1">
     <tr>
         <th>Nombre</th>

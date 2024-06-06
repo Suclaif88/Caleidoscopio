@@ -49,7 +49,7 @@ $pedido = $resultado->fetch_assoc();
 
         th {
             background-color: #b1b1b1;
-            cursor:default;"
+            cursor:default;
         }
 
         tr:nth-child(even) {
@@ -181,7 +181,7 @@ if (isset($_GET['fecha_pedido'])) {
 
     $sql = "SELECT id, producto, cantidad, unidad, precio, historial, descuento, impuesto, proveedor
             FROM pedidos
-            WHERE fecha_pedido = '$fecha_pedido' AND (estado = 3 OR estado = 11)";
+            WHERE fecha_pedido = '$fecha_pedido'";
     $resultado = $conexion->query($sql);
 
     $subtotal = 0;

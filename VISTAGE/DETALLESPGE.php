@@ -123,6 +123,48 @@ $pedido = $resultado->fetch_assoc();
     
     </style>
 </head>
+
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var fecha_pedido = "<?php echo isset($_GET['fecha_pedido']) ? $_GET['fecha_pedido'] : ''; ?>";
+
+            function sendRequest(url, action) {
+                if (fecha_pedido) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", url, true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            alert(xhr.responseText);
+                            window.location.href = "PEDIDOSGE.php";
+                        }
+                    };
+                    xhr.send("accion=" + action + "&fecha_pedido=" + encodeURIComponent(fecha_pedido));
+                } else {
+                    console.error("No se proporcionó la fecha de pedido.");
+                }
+            }
+
+            document.getElementById("btnAceptarGE")?.addEventListener("click", function() {
+                sendRequest("../PHP/ACEPTARGE.php", "aceptar");
+            });
+
+            document.getElementById("btnRechazarGE")?.addEventListener("click", function() {
+                sendRequest("../PHP/RECHAZARGE.php", "rechazar");
+            });
+
+            document.getElementById("btnEnviadoSinVerificacion2")?.addEventListener("click", function() {
+                if (confirm("¿Está seguro de que desea enviar sin verificación?")) {
+                    sendRequest("../PHP/ENVIADO_SIN_VERIFICACION2.php", "enviado_sin_verificacion");
+                }
+            });
+
+            document.getElementById("btnAceptarGE2")?.addEventListener("click", function() {
+                sendRequest("../PHP/ACEPTARGE2.php", "aceptar");
+            });
+        });
+    </script>
+
 <body>
 
 <nav class="main-menu">
@@ -179,7 +221,7 @@ if (isset($_GET['fecha_pedido'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT id, producto, cantidad, unidad, precio, historial, descuento, impuesto, proveedor
+    $sql = "SELECT id, producto, cantidad, unidad, precio, historial, descuento, impuesto, estado, proveedor
             FROM pedidos
             WHERE fecha_pedido = '$fecha_pedido'";
     $resultado = $conexion->query($sql);
@@ -206,10 +248,33 @@ if (isset($_GET['fecha_pedido'])) {
             echo "<td>".$fila['proveedor']."</td>";
             $subtotal += $precio_total;
             echo "</tr>";
+
+            // Actualizar el estado del pedido
+            $estadoPedido = $fila['estado'];
         }
         echo "</table>";
         echo "<br>";
         echo "<h1>Subtotal: <span style='float: right;'>" . number_format($subtotal, 2, '.', ',') . "</span></h1>";
+        if ($estadoPedido == 11) {
+            echo "
+            <div class='op'>
+                <button class='aceptar' id='btnAceptarGE2'>ACEPTAR</button>
+                <button class='rechazar' id='btnRechazarGE'>RECHAZAR</button>
+            </div>
+            <div class='op'>
+                <button class='esv' id='btnEnviadoSinVerificacion2'>ENVIAR SIN VERIFICACION</button>
+            </div>
+            ";
+        }
+        elseif ($estadoPedido == 3){
+            echo "
+            <div class='op'>
+                <button class='aceptar' id='btnAceptarGE'>ACEPTAR</button>
+                <button class='rechazar' id='btnRechazarGE'>RECHAZAR</button>
+            </div>
+            ";
+        }
+        
     } else {
         echo "<br>";
         echo "No se encontraron detalles de la solicitud de materiales para esta fecha de pedido.";
@@ -221,84 +286,6 @@ if (isset($_GET['fecha_pedido'])) {
     echo "El parámetro para búsqueda no fue proporcionado.";
 }
 ?>
-
-
-
-
-<div class="op">
-    <button class="aceptar" id="btnAceptarGE">ACEPTAR</button>
-    <button class="rechazar" id="btnRechazarGE">RECHAZAR</button>
-</div>
-<div class="op">
-<button class="esv" id="btnEnviadoSinVerificacion2">ENVIAR SIN VERIFICACION</button>
-</div>
-
-<script>
-    document.getElementById("btnAceptarGE").addEventListener("click", function() {
-        var fecha_pedido = "<?php echo isset($_GET['fecha_pedido']) ? $_GET['fecha_pedido'] : ''; ?>";
-        
-        if (fecha_pedido) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "../PHP/ACEPTARGE.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert(xhr.responseText);
-                    window.location.href = "PEDIDOSGE.php";
-                }
-            };
-            xhr.send("accion=aceptar&fecha_pedido=" + fecha_pedido);
-        } else {
-            console.error("No se proporcionó la fecha de pedido.");
-        }
-    });
-
-    document.getElementById("btnRechazarGE").addEventListener("click", function() {
-        var fecha_pedido = "<?php echo isset($_GET['fecha_pedido']) ? $_GET['fecha_pedido'] : ''; ?>";
-        
-        if (fecha_pedido) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "../PHP/RECHAZARGE.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert(xhr.responseText);
-                    window.location.href = "PEDIDOSGE.php";
-                }
-            };
-            xhr.send("accion=rechazar&fecha_pedido=" + fecha_pedido);
-        } else {
-            console.error("No se proporcionó la fecha de pedido.");
-        }
-    });
-
-
-
-    document.getElementById("btnEnviadoSinVerificacion2").addEventListener("click", function() {
-    if (confirm("¿Está seguro de que desea enviar sin verificacion?")) {
-        var fecha_pedido = "<?php echo isset($_GET['fecha_pedido']) ? $_GET['fecha_pedido'] : ''; ?>";
-        if (fecha_pedido) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "../PHP/ENVIADO_SIN_VERIFICACION2.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert(xhr.responseText);
-                    window.location.href = "PEDIDOSGE.php";
-                }
-            };
-            xhr.send("accion=enviado_sin_verificacion&fecha_pedido=" + fecha_pedido);
-        } else {
-            console.error("No se proporcionó la fecha de pedido.");
-        }
-    }
-});
-
-
-
-
-</script>
-
     <br>
     <br>
     <a href="PEDIDOSGE.php" class="btn">Volver a la lista de solicitudes</a>

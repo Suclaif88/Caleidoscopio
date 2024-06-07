@@ -52,66 +52,75 @@ $pedido = $resultado->fetch_assoc();
 
         th {
             background-color: #b1b1b1;
-            cursor:default;
+            cursor: default;
         }
 
         tr:nth-child(even) {
             background-color: #fff;
         }
 
-    .op {
-        margin-top: 20px;
-    }
-    .op button {
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        border: none;
-        outline: none;
-        margin-right: 10px;
-    }
-    .op button.aceptar {
-    -webkit-border-radius: 28;
-    -moz-border-radius: 28;
-    border-radius: 28px;
-    font-family: Arial;
-    color: #ffffff;
-    font-size: 20px;
-    background: #4CAF50;
-    padding: 10px 20px 10px 20px;
-    border: solid #000000 4px;
-    text-decoration: none;
-    }
+        .op {
+            margin-top: 20px;
+        }
+        .op button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            margin-right: 10px;
+        }
+        .op button.aceptar {
+            -webkit-border-radius: 28;
+            -moz-border-radius: 28;
+            border-radius: 28px;
+            font-family: Arial;
+            color: #ffffff;
+            font-size: 20px;
+            background: #4CAF50;
+            padding: 10px 20px 10px 20px;
+            border: solid #000000 4px;
+            text-decoration: none;
+        }
 
-    .op button.aceptar:hover{
-        background: #21a631;
-        text-decoration: none;
-    }
+        .op button.aceptar:hover {
+            background: #21a631;
+            text-decoration: none;
+        }
 
-    .op button.rechazar {
-    -webkit-border-radius: 28;
-    -moz-border-radius: 28;
-    border-radius: 28px;
-    font-family: Arial;
-    color: #ffffff;
-    font-size: 20px;
-    background: #e33d3d;
-    padding: 10px 20px 10px 20px;
-    border: solid #000000 4px;
-    text-decoration: none;
-    }
+        .op button.rechazar {
+            -webkit-border-radius: 28;
+            -moz-border-radius: 28;
+            border-radius: 28px;
+            font-family: Arial;
+            color: #ffffff;
+            font-size: 20px;
+            background: #e33d3d;
+            padding: 10px 20px 10px 20px;
+            border: solid #000000 4px;
+            text-decoration: none;
+        }
 
-    .op button.rechazar:hover{
-        background: #a62121;
-        text-decoration: none;
-    }
-    
+        .op button.rechazar:hover {
+            background: #a62121;
+            text-decoration: none;
+        }
+
+        @media print {
+            .non-printable {
+                display: none;
+            }
+
+            .printable-table {
+                display: table;
+            }
+        }
     </style>
-</head>
-<script>
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             var btnEnviarge = document.getElementById("btnEnviarge");
             var btnEnviarge2 = document.getElementById("btnEnviarge2");
+            var btnImprimir = document.getElementById("btnImprimir");
 
             function sendRequest(url, fecha_pedido) {
                 var xhr = new XMLHttpRequest();
@@ -158,6 +167,12 @@ $pedido = $resultado->fetch_assoc();
                     }
                 });
             }
+
+            if (btnImprimir) {
+                btnImprimir.addEventListener("click", function() {
+                    window.print();
+                });
+            }
         });
     </script>
 </head>
@@ -184,7 +199,7 @@ $pedido = $resultado->fetch_assoc();
         $estadoPedido = 0; // Estado inicial del pedido
 
         if ($resultado->num_rows > 0) {
-            echo "<table border='1'>";
+            echo "<table class='printable-table'>";
             echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Descuento</th><th>Impuesto</th><th>Precio Total</th><th>Proveedor</th></tr>";
             while ($fila = $resultado->fetch_assoc()) {
                 echo "<tr>";
@@ -209,27 +224,24 @@ $pedido = $resultado->fetch_assoc();
             }
             echo "</table>";
             echo "<br>";
-            echo "<h1>Subtotal: <span style='float: right;'>" . number_format($subtotal, 2, '.', ',') . "</span></h1>";
+            echo "<h1 class='printable-table'>Subtotal: <span style='float: right;'>" . number_format($subtotal, 2, '.', ',') . "</span></h1>";
 
-            // Mostrar el botón solo si
+            // Mostrar el botón según el estado del pedido
             if ($estadoPedido == 1) {
-                echo "<div class='op'>";
+                echo "<div class='op non-printable'>";
                 echo "<button class='aceptar' id='btnEnviarge'>ENVIAR A GERENTE</button>";
                 echo "</div>";
-            }
-            elseif($estadoPedido == 7){
-                echo "<div class='op'>";
+            } elseif ($estadoPedido == 7) {
+                echo "<div class='op non-printable'>";
                 echo "<button class='aceptar' id='btnEnviarge2'>ENVIAR A GERENTE</button>";
                 echo "</div>";
-            }
-            elseif($estadoPedido == 3){
-                echo "<div class='op'>";
+            } elseif ($estadoPedido == 3 || $estadoPedido == 8) {
+                echo "<div class='op non-printable'>";
                 echo "<h3 style='color:red;'>ESTA SOLICITUD AUN NO SE HA APROBADO</h3>";
                 echo "</div>";
-            }
-            elseif($estadoPedido == 8){
-                echo "<div class='op'>";
-                echo "<h3 style='color:red;'>ESTA SOLICITUD AUN NO SE HA APROBADO</h3>";
+            } elseif ($estadoPedido == 4 || $estadoPedido == 9) {
+                echo "<div class='op non-printable'>";
+                echo "<button class='aceptar' id='btnImprimir'>IMPRIMIR</button>";
                 echo "</div>";
             }
         } else {
@@ -245,6 +257,6 @@ $pedido = $resultado->fetch_assoc();
     ?>
     <br>
     <br>
-    <a href="SOLICITUDES.php" class="btn">Volver a la lista de solicitudes</a>
+    <a href="SOLICITUDES.php" class="btn non-printable">Volver a la lista de solicitudes</a>
 </body>
 </html>

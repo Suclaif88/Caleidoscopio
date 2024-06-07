@@ -126,48 +126,37 @@ $pedido = $resultado->fetch_assoc();
 <body>
 
 <nav class="main-menu">
-            <ul>
-                <li>
-                    <a href="PEDIDOSGE.php">
-                        <i class="fa fa-envelope fa-2x"></i>
-                        <span class="nav-text">
-                           Solicitudes
-                        </span>
-                    </a>
-                  
-                </li>
-                <li>
-                    <a href="PUR.php">
-                        <i class="fa fa-exclamation-triangle fa-2x"></i>
-                        <span class="nav-text">
-                            Solicitudes Urgentes
-                        </span>
-                    </a>
-                </li>
-                <li>
-                   <a href="GE.php">
-                        <i class="fa fa-user fa-2x"></i>
-                        <span class="nav-text">
-                            Usuario
-                        </span>
-                    </a>
-                </li>
-            </ul>
-
-            <ul class="logout">
-                <li>
-                   <a href="../PHP/LOGOUT.php">
-                         <i class="fa fa-power-off fa-2x"></i>
-                        <span class="nav-text">
-                            Logout
-                        </span>
-                    </a>
-                </li>  
-            </ul>
-        </nav>
+    <ul>
+        <li>
+            <a href="PEDIDOSGE.php">
+                <i class="fa fa-envelope fa-2x"></i>
+                <span class="nav-text">Solicitudes</span>
+            </a>
+        </li>
+        <li>
+            <a href="PUR.php">
+                <i class="fa fa-exclamation-triangle fa-2x"></i>
+                <span class="nav-text">Solicitudes Urgentes</span>
+            </a>
+        </li>
+        <li>
+            <a href="GE.php">
+                <i class="fa fa-user fa-2x"></i>
+                <span class="nav-text">Usuario</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="logout">
+        <li>
+            <a href="../PHP/LOGOUT.php">
+                <i class="fa fa-power-off fa-2x"></i>
+                <span class="nav-text">Logout</span>
+            </a>
+        </li>
+    </ul>
+</nav>
 <br>
 <h2>Detalle de Solicitud de Materiales</h2>
-
 
 <?php
 if (isset($_GET['fecha_pedido'])) {
@@ -179,15 +168,16 @@ if (isset($_GET['fecha_pedido'])) {
         die("Error de conexión: " . $conexion->connect_error);
     }
 
-    $sql = "SELECT id, producto, cantidad, unidad, precio, historial, descuento, impuesto, proveedor
+    $sql = "SELECT id, producto, cantidad, unidad, precio, historial, descuento, impuesto, estado, proveedor
             FROM pedidos
-            WHERE fecha_pedido = '$fecha_pedido' AND (estado = 8 OR estado = 14)";
+            WHERE fecha_pedido = '$fecha_pedido'";
     $resultado = $conexion->query($sql);
 
     $subtotal = 0;
+    $estadoPedido = 0; // Estado inicial del pedido
 
     if ($resultado->num_rows > 0) {
-        echo "<table border='1'>";
+        echo "<table>";
         echo "<tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Precio Unitario</th><th>Descuento</th><th>Impuesto</th><th>Precio Total</th><th>Proveedor</th></tr>";
         while ($fila = $resultado->fetch_assoc()) {
             echo "<tr>";
@@ -201,15 +191,34 @@ if (isset($_GET['fecha_pedido'])) {
             echo "<td>".$fila['precio']."</td>";
             echo "<td>".$fila['descuento']."</td>";
             echo "<td>".$fila['impuesto']."</td>";
-            $precio_total = $fila['cantidad'] * ($fila['precio']-($fila['precio']*($fila['descuento']/100))+(($fila['precio']*($fila['descuento']/100))*($fila['impuesto']/100))) ;
+            $precio_total = $fila['cantidad'] * ($fila['precio']-($fila['precio']*($fila['descuento']/100))+(($fila['precio']*($fila['descuento']/100))*($fila['impuesto']/100)));
             echo "<td>".$precio_total."</td>";
             echo "<td>".$fila['proveedor']."</td>";
             $subtotal += $precio_total;
             echo "</tr>";
+
+            // Actualizar el estado del pedido
+            $estadoPedido = $fila['estado'];
         }
         echo "</table>";
         echo "<br>";
         echo "<h1>Subtotal: <span style='float: right;'>" . number_format($subtotal, 2, '.', ',') . "</span></h1>";
+
+        // Mostrar los botones según el estado del pedido
+        if ($estadoPedido == 8) {
+            echo "<div class='op'>
+                    <button class='aceptar' id='btnAceptarGE'>ACEPTAR</button>
+                    <button class='rechazar' id='btnRechazarGE'>RECHAZAR</button>
+                  </div>";
+        } elseif ($estadoPedido == 14) {
+            echo "<div class='op'>
+                    <button class='aceptar' id='btnAceptarGEUR'>ACEPTAR</button>
+                    <button class='rechazar' id='btnRechazarGE'>RECHAZAR</button>
+                  </div>
+                  <div class='op'>
+                    <button class='esv' id='btnEnviadoSinVerificacion'>ENVIAR SIN VERIFICACION</button>
+                  </div>";
+        }
     } else {
         echo "<br>";
         echo "No se encontraron detalles de la solicitud de materiales para esta fecha de pedido.";
@@ -222,80 +231,91 @@ if (isset($_GET['fecha_pedido'])) {
 }
 ?>
 
-
-
-<div class="op">
-    <button class="aceptar" id="btnAceptarGE">ACEPTAR</button>
-    <button class="rechazar" id="btnRechazarGE">RECHAZAR</button>
-</div>
-
-<div class="op">
-<button class="esv" id="btnEnviadoSinVerificacion">ENVIAR SIN VERIFICACION</button>
-</div>
-
 <script>
-    document.getElementById("btnAceptarGE").addEventListener("click", function() {
-        var fecha_pedido = "<?php echo isset($_GET['fecha_pedido']) ? $_GET['fecha_pedido'] : ''; ?>";
-        
-        if (fecha_pedido) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "../PHP/ACEPTARURGE.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert(xhr.responseText);
-                    window.location.href = "PUR.php";
-                }
-            };
-            xhr.send("accion=aceptar&fecha_pedido=" + fecha_pedido);
-        } else {
-            console.error("No se proporcionó la fecha de pedido.");
-        }
-    });
+document.addEventListener("DOMContentLoaded", function() {
+    var fecha_pedido = "<?php echo isset($_GET['fecha_pedido']) ? $_GET['fecha_pedido'] : ''; ?>";
+    
+    if (document.getElementById("btnAceptarGE")) {
+        document.getElementById("btnAceptarGE").addEventListener("click", function() {
+            if (fecha_pedido) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "../PHP/ACEPTARURGE.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        alert(xhr.responseText);
+                        window.location.href = "PUR.php";
+                    }
+                };
+                xhr.send("accion=aceptar&fecha_pedido=" + fecha_pedido);
+            } else {
+                console.error("No se proporcionó la fecha de pedido.");
+            }
+        });
+    }
 
-    document.getElementById("btnRechazarGE").addEventListener("click", function() {
-        var fecha_pedido = "<?php echo isset($_GET['fecha_pedido']) ? $_GET['fecha_pedido'] : ''; ?>";
-        
-        if (fecha_pedido) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "../PHP/RECHAZARUR.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert(xhr.responseText);
-                    window.location.href = "PUR.php";
-                }
-            };
-            xhr.send("accion=rechazar&fecha_pedido=" + fecha_pedido);
-        } else {
-            console.error("No se proporcionó la fecha de pedido.");
-        }
-    });
+    if (document.getElementById("btnAceptarGEUR")) {
+        document.getElementById("btnAceptarGEUR").addEventListener("click", function() {
+            if (fecha_pedido) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "../PHP/ACEPTARGEUR.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        alert(xhr.responseText);
+                        window.location.href = "PUR.php";
+                    }
+                };
+                xhr.send("accion=aceptar&fecha_pedido=" + fecha_pedido);
+            } else {
+                console.error("No se proporcionó la fecha de pedido.");
+            }
+        });
+    }
 
-    document.getElementById("btnEnviadoSinVerificacion").addEventListener("click", function() {
-    if (confirm("¿Está seguro de que desea enviar sin verificacion?")) {
-        var fecha_pedido = "<?php echo isset($_GET['fecha_pedido']) ? $_GET['fecha_pedido'] : ''; ?>";
-        if (fecha_pedido) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "../PHP/ENVIADO_SIN_VERIFICACION4.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert(xhr.responseText);
-                    window.location.href = "PUR.php";
+    if (document.getElementById("btnRechazarGE")) {
+        document.getElementById("btnRechazarGE").addEventListener("click", function() {
+            if (fecha_pedido) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "../PHP/RECHAZARUR.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        alert(xhr.responseText);
+                        window.location.href = "PUR.php";
+                    }
+                };
+                xhr.send("accion=rechazar&fecha_pedido=" + fecha_pedido);
+            } else {
+                console.error("No se proporcionó la fecha de pedido.");
+            }
+        });
+    }
+
+    if (document.getElementById("btnEnviadoSinVerificacion")) {
+        document.getElementById("btnEnviadoSinVerificacion").addEventListener("click", function() {
+            if (confirm("¿Está seguro de que desea enviar sin verificacion?")) {
+                if (fecha_pedido) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "../PHP/ENVIADO_SIN_VERIFICACION4.php", true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            alert(xhr.responseText);
+                            window.location.href = "PUR.php";
+                        }
+                    };
+                    xhr.send("accion=enviado_sin_verificacion&fecha_pedido=" + fecha_pedido);
+                } else {
+                    console.error("No se proporcionó la fecha de pedido.");
                 }
-            };
-            xhr.send("accion=enviado_sin_verificacion&fecha_pedido=" + fecha_pedido);
-        } else {
-            console.error("No se proporcionó la fecha de pedido.");
-        }
+            }
+        });
     }
 });
 </script>
 
-
-    <br>
-    <br>
-    <a href="PUR.php" class="btn">Volver a la lista de solicitudes</a>
+<br><br>
+<a href="PUR.php" class="btn">Volver a la lista de solicitudes</a>
 </body>
 </html>

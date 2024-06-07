@@ -1,4 +1,4 @@
-<div class="navbar">
+<div class="navbar non-printable">
     <h1 style="cursor:default;">DETALLES</h1>
     <ul>
         <li><a href="" style="color:white;">Solicitudes</a></li>

@@ -243,6 +243,10 @@ $pedido = $resultado->fetch_assoc();
                 echo "<div class='op non-printable'>";
                 echo "<button class='aceptar' id='btnImprimir'>IMPRIMIR</button>";
                 echo "</div>";
+            } elseif ($estadoPedido == 13) {
+                echo "<div class='op non-printable'>";
+                echo "<button class='aceptar' id='btnEnviarge'>ENVIAR A GERENTE</button>";
+                echo "</div>";
             }
         } else {
             echo "<br>";
